@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý DRL CTU Tích Hợp API By N.DUY</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Custom Background Dynamics */
+        body {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        body.dark-mode header {
+            background-color: rgba(15, 23, 42, 0.9) !important;
+            border-color: rgba(51, 65, 85, 0.8) !important;
+        }
+
+        body.dark-mode .bg-white\/95,
+        body.dark-mode .bg-white {
+            background-color: rgba(30, 41, 59, 0.95) !important;
+            color: #f8fafc !important;
+            border-color: rgba(51, 65, 85, 0.8) !important;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
+        body.dark-mode span:not(.theme-thumb-icon), body.dark-mode td {
+            color: #f1f5f9;
+        }
+
+        body.dark-mode p.text-slate-500, 
+        body.dark-mode p.text-slate-400,
+        body.dark-mode .text-slate-500,
+        body.dark-mode .text-slate-600 {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .bg-slate-100,
+        body.dark-mode .bg-slate-100\/70,
+        body.dark-mode .bg-slate-100\/80,
+        body.dark-mode .bg-slate-50 {
+            background-color: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .border-slate-200,
+        body.dark-mode .border-slate-300,
+        body.dark-mode .border-slate-200\/80,
+        body.dark-mode .divide-slate-100 > * + * {
+            border-color: #334155 !important;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="password"],
+        body.dark-mode input[type="number"],
+        body.dark-mode input[type="url"],
+        body.dark-mode select {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #475569 !important;
+        }
+
+        body.dark-mode tr:hover {
+            background-color: rgba(51, 65, 85, 0.5) !important;
+        }
+    </style>
+</head>
+<body id="app-body" class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+
+    <!-- ================= AUTH SECTION ================= -->
+    <div id="auth-section" class="min-h-screen flex items-center justify-center p-4 backdrop-blur-sm bg-slate-900/10">
+        <div class="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-200/80">
+            <div class="text-center mb-8">
+                <!-- Logo -->
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-3 overflow-hidden border border-slate-200 shadow">
+                    <img src="https://flagcdn.com/w160/fr.png" class="w-full h-full object-cover" alt="Logo">
+                </div>
+                <h1 class="text-2xl font-bold text-slate-800">TÍNH DRL BY N.DUY</h1>
+                <p class="text-slate-500 text-sm mt-1">Thuộc Khoa Ngoại Ngữ, Ngôn Ngữ Pháp A2</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex border-b border-slate-200 mb-6">
+                <button id="tab-login" onclick="switchAuthTab('login')" class="w-1/2 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all">Đăng nhập</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="w-1/2 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all">Đăng ký</button>
+            </div>
+
+            <!-- Form Đăng Nhập -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Số Sinh Viên (MSSV)</label>
+                    <input type="text" id="login-mssv" required placeholder="B2001234" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition">Đăng Nhập</button>
+            </form>
+
+            <!-- Form Đăng Ký -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Họ và Tên</label>
+                    <input type="text" id="reg-fullname" required placeholder="Nguyễn Văn A" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Số Sinh Viên (MSSV)</label>
+                    <input type="text" id="reg-mssv" required placeholder="B2001234" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition">Tạo Tài Khoản</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= DASHBOARD HUD SECTION ================= -->
+    <div id="dashboard-section" class="hidden min-h-screen flex flex-col backdrop-blur-xs bg-slate-900/10">
+        <!-- Header / Navigation -->
+        <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40 shadow-sm transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="https://flagcdn.com/w160/fr.png" alt="Cờ Pháp" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200">
+                    <div>
+                        <h1 class="font-bold text-slate-800 text-lg leading-tight">Hệ Thống DRL Sinh Viên</h1>
+                        <p class="text-xs text-slate-500">Quản lý & Tự đánh giá điểm rèn luyện</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <p id="user-display-name" class="font-semibold text-slate-800 text-sm">---</p>
+                        <p id="user-display-mssv" class="text-xs text-slate-500">MSSV: ---</p>
+                    </div>
+                    
+                    <!-- Nút Tùy Chỉnh Background -->
+                    <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300" title="Đổi hình nền">
+                        <i class="fa-solid fa-image text-blue-600"></i>
+                        <span class="hidden sm:inline">Hình nền</span>
+                    </button>
+
+                    <!-- Nút Chuyển Mode Sáng/Tối (iOS Toggle Switch) -->
+                    <button id="theme-toggle-btn" onclick="toggleTheme()" class="relative inline-flex items-center h-8 w-16 rounded-full p-1 transition-colors duration-300 focus:outline-none shadow-inner border border-slate-300/40 cursor-pointer" style="background-color: #FDEEBE;" title="Chuyển chế độ Sáng/Tối">
+                        <span id="theme-toggle-thumb" class="inline-flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300 transform translate-x-0 shadow-md" style="background-color: #F1B82D;">
+                            <i id="theme-toggle-icon" class="fa-solid fa-sun text-white text-xs theme-thumb-icon"></i>
+                        </span>
+                    </button>
+
+                    <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 p-2.5 rounded-lg transition border border-slate-300" title="Đăng xuất">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Layout -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Panel: HUD Highlights & Manual Quick Score -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- HUD Summary Card -->
+                <div class="bg-gradient-to-br from-blue-900/90 to-indigo-800/90 backdrop-blur-md rounded-2xl p-6 text-white shadow-lg relative overflow-hidden border border-white/20">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
+                        <i class="fa-solid fa-award text-9xl"></i>
+                    </div>
+                    <h2 class="text-sm font-medium text-blue-200 uppercase tracking-wider mb-1">Tổng Điểm Rèn Luyện</h2>
+                    <div class="flex items-baseline space-x-2 my-2">
+                        <span id="hud-total-score" class="text-5xl font-black tracking-tight">0</span>
+                        <span class="text-blue-200 font-medium text-lg">/ 100 điểm</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-blue-950/50 rounded-full h-3 my-4 p-0.5 border border-blue-400/30">
+                        <div id="hud-progress-bar" class="bg-gradient-to-r from-emerald-400 to-cyan-400 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-blue-700/50">
+                        <span class="text-xs text-blue-200">Xếp loại dự kiến:</span>
+                        <span id="hud-rating" class="font-bold text-sm px-3 py-1 bg-white/10 rounded-full border border-white/20">Chưa xếp loại</span>
+                    </div>
+                </div>
+
+                <!-- MỤC 1: Nhập điểm trực tiếp / Điều chỉnh nhanh -->
+                <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                    <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center">
+                        <i class="fa-solid fa-sliders text-blue-600 mr-2"></i>
+                        1. Nhập Điểm Trực Tiếp (Ghi đè)
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.</p>
+                    <div class="flex space-x-2">
+                        <input type="number" id="direct-score-input" min="0" max="100" placeholder="Nhập 0 - 100" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <button onclick="applyDirectScore()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex-shrink-0">
+                            Cập nhật
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Summary Breakdown -->
+                <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
+                    <h3 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2">Tóm tắt 5 Tiêu chí DRL</h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between items-center"><span class="text-slate-600">I. Ý thức học tập:</span> <span id="summary-sec-1" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600">II. Nội quy & Quy chế:</span> <span id="summary-sec-2" class="font-semibold text-slate-800">0/25</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600">III. Hoạt động Phong trào:</span> <span id="summary-sec-3" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600">IV. Quan hệ Cộng đồng:</span> <span id="summary-sec-4" class="font-semibold text-slate-800">0/15</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600">V. Công tác Cán bộ & Khác:</span> <span id="summary-sec-5" class="font-semibold text-slate-800">0/20</span></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Panel: MỤC 2: Bảng chi tiết 5 Nội dung -->
+            <div class="lg:col-span-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 mb-4 gap-2">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
+                        <p class="text-xs text-slate-500">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
+                    </div>
+                    <button onclick="resetAllScores()" class="text-xs text-rose-600 hover:text-rose-800 font-medium flex items-center gap-1 self-start sm:self-auto bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200 transition">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt lại bảng điểm
+                    </button>
+                </div>
+
+                <!-- Scrollable Table Area -->
+                <div class="overflow-x-auto custom-scrollbar flex-grow">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="bg-slate-100/70 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 w-1/2">Nội dung đánh giá</th>
+                                <th class="py-3 px-2 text-center w-20">Điểm tối đa</th>
+                                <th class="py-3 px-4 text-center w-36">Nhập/Chọn</th>
+                                <th class="py-3 px-2 text-center w-24">Điểm đạt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drl-table-body" class="text-sm divide-y divide-slate-100">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ================= MODAL CHỌN BACKGROUND ================= -->
+    <div id="bg-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-palette text-blue-600"></i> Cài Đặt Hình Nền
+                </h3>
+                <button onclick="toggleBgModal(false)" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-5">
+                <!-- Chọn sẵn -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hình nền gợi ý</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Trường học">
+                        </button>
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Núi đêm">
+                        </button>
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Biển">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tải từ thiết bị -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Tải ảnh từ máy tính / Điện thoại</label>
+                    <input type="file" id="bg-file-input" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                </div>
+
+                <!-- Đường dẫn URL -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hoặc dán Link URL Ảnh</label>
+                    <div class="flex gap-2">
+                        <input type="url" id="bg-url-input" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <button onclick="applyUrlBg()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Đổi</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between">
+                <button onclick="removeBgImage()" class="text-xs text-rose-600 font-medium hover:underline">Xóa ảnh nền (Về mặc định)</button>
+                <button onclick="toggleBgModal(false)" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-300 transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym2ddo_tffnOvS63KAMpYMxjG3Q4wOsDNxue8z-oRqpIqzoAT1i-pLhQtZ5PyykLZdcA/exec";
+
+        const drlStructure = [
+            {
+                sectionId: "I", title: "I. Trách nhiệm, tinh thần và thái độ trong học tập", maxScore: 20,
+                items: [
+                    { id: "i_a1", text: "Đi học đầy đủ, đúng giờ, nghiêm túc", max: 6, type: "number", placeholder: "Nhập điểm" },
+                    { id: "i_a2", text: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", max: 8, type: "select", options: [
+                        { label: "Không tham gia", score: 0 }, { label: "Tham gia đề tài (5đ)", score: 5 }, { label: "Chủ nhiệm đề tài (8đ)", score: 8 }, { label: "Có bài báo NCKH (8đ)", score: 8 }
+                    ]},
+                    { id: "i_a3", text: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", max: 5, type: "select", options: [
+                        { label: "Chưa có / Không tính", score: 0 }, { label: "Cơ bản và tương đương (3đ)", score: 3 }, { label: "Nâng cao (5đ)", score: 5 }
+                    ]},
+                    { id: "i_a4", text: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", max: 10, type: "select", options: [
+                        { label: "Chưa có / Không tính", score: 0 }, { label: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", score: 3 }, { label: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", score: 5 }, { label: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", score: 7 }, { label: "Bậc 4 (B2) trở lên / IELTS >=5.5 / TOEIC >=600 (10đ)", score: 10 }
+                    ]},
+                    { id: "i_a5", text: "Tham gia các CLB học thuật", max: 2, type: "checkbox", score: 2 },
+                    { id: "i_b1", text: "Không vi phạm quy chế thi/kiểm tra", max: 6, type: "number", placeholder: "Nhập điểm" },
+                    { id: "i_b2", text: "Tham gia kỳ thi chuyên ngành, Olympic...", max: 4, type: "select", options: [
+                        { label: "Không tham gia", score: 0 }, { label: "Có tham gia (2đ)", score: 2 }, { label: "Đạt giải cấp ĐH/Đơn vị (4đ)", score: 4 }
+                    ]},
+                    { id: "i_c1", text: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", max: 2, type: "checkbox", score: 2 },
+                    { id: "i_c2", text: "Kết quả học tập ĐTBCHK", max: 8, type: "select", options: [
+                        { label: "Dưới 2.00 (0đ)", score: 0 }, { label: "2.00 - 2.49 (2đ)", score: 2 }, { label: "2.50 - 3.19 (4đ)", score: 4 }, { label: "3.20 - 3.59 (6đ)", score: 6 }, { label: "Từ 3.60 trở lên (8đ)", score: 8 }
+                    ]}
+                ]
+            },
+            {
+                sectionId: "II", title: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", maxScore: 25,
+                items: [
+                    { id: "ii_a", text: "Chấp hành nội quy, quy chế nhà trường", max: 15, type: "number", placeholder: "Nhập điểm" },
+                    { id: "ii_b1", text: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", max: 8, type: "checkbox", score: 8 },
+                    { id: "ii_b2", text: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", max: 5, type: "number", placeholder: "Nhập điểm" }
+                ]
+            },
+            {
+                sectionId: "III", title: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", maxScore: 20,
+                items: [
+                    { id: "iii_a", text: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", max: 12, type: "number", placeholder: "Nhập điểm" },
+                    { id: "iii_b1", text: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", max: 5, type: "select", options: [
+                        { label: "Không", score: 0 }, { label: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", score: 3 }, { label: "Cấp ĐHCT / Đơn vị tương đương (5đ)", score: 5 }
+                    ]},
+                    { id: "iii_b2", text: "Khen thưởng hoạt động phong trào", max: 10, type: "select", options: [
+                        { label: "Không", score: 0 }, { label: "Giấy khen cấp cơ sở (6đ)", score: 6 }, { label: "Giấy khen cấp Đại học (8đ)", score: 8 }, { label: "Giấy khen cấp cao hơn (10đ)", score: 10 }
+                    ]},
+                    { id: "iii_c", text: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", max: 6, type: "number", placeholder: "Nhập điểm" }
+                ]
+            },
+            {
+                sectionId: "IV", title: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", maxScore: 15,
+                items: [
+                    { id: "iv_a", text: "IV.a Tuyên truyền chủ trương Đảng, pháp luật", max: 8, type: "number", placeholder: "Nhập điểm" },
+                    { id: "iv_b1", text: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", max: 10, type: "number", placeholder: "Nhập điểm" },
+                    { id: "iv_b2", text: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", max: 2, type: "checkbox", score: 2 }
+                ]
+            },
+            {
+                sectionId: "V", title: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", maxScore: 20,
+                items: [
+                    { id: "v_a", text: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", max: 10, type: "select", options: [
+                        { label: "Không đảm nhận", score: 0 }, { label: "Tổ trưởng, tổ phó (3đ)", score: 3 }, { label: "Thành viên ban chuyên môn (6đ)", score: 6 }, { label: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", score: 8 }, { label: "Bí thư, Lớp trưởng, Chủ nhiệm CLB, BCH Đoàn cơ sở (10đ)", score: 10 }
+                    ]},
+                    { id: "v_b", text: "Hỗ trợ, tham gia tích cực hoạt động chung", max: 12, type: "number", placeholder: "Nhập điểm" },
+                    { id: "v_c", text: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", max: 6, type: "select", options: [
+                        { label: "Không có", score: 0 }, { label: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", score: 4 }, { label: "Kết nạp Đảng / SV5T cấp ĐHCT / Giải NCKH / Giải Khởi nghiệp (6đ)", score: 6 }
+                    ]}
+                ]
+            }
+        ];
+
+        let currentUser = null;
+        let userScores = {};
+
+        // App Init, Load Saved Theme & Saved Background
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedTheme();
+            loadSavedBg();
+            const savedUser = localStorage.getItem('drl_current_user_api');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+        });
+
+        /* ================= THEME TOGGLE LOGIC ================= */
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('drl_theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        function updateThemeUI(isDark) {
+            const btn = document.getElementById('theme-toggle-btn');
+            const thumb = document.getElementById('theme-toggle-thumb');
+            const icon = document.getElementById('theme-toggle-icon');
+
+            if (!btn || !thumb || !icon) return;
+
+            if (isDark) {
+                btn.style.backgroundColor = '#0B192C'; // Navy tối
+                thumb.style.backgroundColor = '#2CB5F6'; // Xanh lam sáng
+                thumb.classList.remove('translate-x-0');
+                thumb.classList.add('translate-x-8');
+                icon.className = 'fa-solid fa-moon text-white text-xs theme-thumb-icon';
+            } else {
+                btn.style.backgroundColor = '#FDEEBE'; // Vàng nhạt
+                thumb.style.backgroundColor = '#F1B82D'; // Vàng rực
+                thumb.classList.remove('translate-x-8');
+                thumb.classList.add('translate-x-0');
+                icon.className = 'fa-solid fa-sun text-white text-xs theme-thumb-icon';
+            }
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('drl_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                updateThemeUI(true);
+            } else {
+                updateThemeUI(false);
+            }
+        }
+
+        /* ================= BACKGROUND CUSTOMIZATION LOGIC ================= */
+        function toggleBgModal(show) {
+            document.getElementById('bg-modal').classList.toggle('hidden', !show);
+        }
+
+        function setBgImage(url) {
+            document.body.style.backgroundImage = `url('${url}')`;
+            localStorage.setItem('drl_custom_bg', url);
+        }
+
+        function applyUrlBg() {
+            const url = document.getElementById('bg-url-input').value.trim();
+            if (url) {
+                setBgImage(url);
+                document.getElementById('bg-url-input').value = '';
+                toggleBgModal(false);
+            }
+        }
+
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    setBgImage(evt.target.result);
+                    toggleBgModal(false);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeBgImage() {
+            document.body.style.backgroundImage = '';
+            localStorage.removeItem('drl_custom_bg');
+            toggleBgModal(false);
+        }
+
+        function loadSavedBg() {
+            const savedBg = localStorage.getItem('drl_custom_bg');
+            if (savedBg) {
+                document.body.style.backgroundImage = `url('${savedBg}')`;
+            }
+        }
+
+        /* ================= AUTH & APP LOGIC ================= */
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLogin.className = "w-1/2 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all";
+                tabReg.className = "w-1/2 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabReg.className = "w-1/2 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all";
+                tabLogin.className = "w-1/2 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            const fullname = document.getElementById('reg-fullname').value.trim();
+            const mssv = document.getElementById('reg-mssv').value.trim().toUpperCase();
+            const password = document.getElementById('reg-password').value;
+
+            btn.disabled = true;
+            btn.innerText = "Đang xử lý...";
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ action: 'register', fullname: fullname, mssv: mssv, password: password })
+                });
+
+                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                if (!localUsers[mssv]) {
+                    localUsers[mssv] = { scores: {} };
+                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+                }
+
+                alert("Tạo tài khoản thành công! Bạn có thể đăng nhập ngay.");
+                document.getElementById('form-register').reset();
+                switchAuthTab('login');
+                document.getElementById('login-mssv').value = mssv;
+            } catch (err) {
+                alert("Có lỗi xảy ra kết nối mạng, vui lòng thử lại!");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Tạo Tài Khoản";
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            const mssv = document.getElementById('login-mssv').value.trim().toUpperCase();
+            const password = document.getElementById('login-password').value;
+
+            btn.disabled = true;
+            btn.innerText = "Đang kiểm tra...";
+
+            try {
+                const res = await fetch(SCRIPT_URL + "?action=getUsers");
+                const users = await res.json();
+                const user = users.find(u => String(u.mssv).toUpperCase() === mssv && String(u.password) === password);
+
+                if (user) {
+                    alert("Đăng nhập thành công!");
+                    
+                    let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                    let userLocalScores = localUsers[mssv] ? localUsers[mssv].scores : {};
+
+                    currentUser = {
+                        fullname: user.fullname,
+                        mssv: user.mssv,
+                        scores: userLocalScores
+                    };
+                    localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+                    showDashboard();
+                } else {
+                    alert("MSSV hoặc mật khẩu không chính xác!");
+                }
+            } catch (err) {
+                alert("Lỗi kết nối tới cơ sở dữ liệu Google Sheet!");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Đăng Nhập";
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('drl_current_user_api');
+            currentUser = null;
+            document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('login-password').value = '';
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            
+            document.getElementById('user-display-name').textContent = currentUser.fullname;
+            document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
+
+            userScores = currentUser.scores || {};
+            renderDRLTable();
+            calculateTotalHUD();
+        }
+
+        function renderDRLTable() {
+            const tbody = document.getElementById('drl-table-body');
+            tbody.innerHTML = '';
+
+            drlStructure.forEach(sec => {
+                const headerRow = document.createElement('tr');
+                headerRow.className = "bg-slate-100/80 font-bold text-slate-800";
+                headerRow.innerHTML = `
+                    <td class="py-2.5 px-4" colspan="2">${sec.title}</td>
+                    <td class="py-2.5 px-2 text-center text-xs text-blue-700">Tối đa: ${sec.maxScore}đ</td>
+                    <td class="py-2.5 px-2 text-center text-blue-700" id="sec-score-${sec.sectionId}">0</td>
+                `;
+                tbody.appendChild(headerRow);
+
+                sec.items.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50/80 transition-colors";
+                    let controlHTML = '';
+
+                    if (item.type === 'checkbox') {
+                        const isChecked = userScores[item.id] === true ? 'checked' : '';
+                        controlHTML = `<input type="checkbox" onchange="handleInputChange('${item.id}', this.checked)" ${isChecked} class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">`;
+                    } else if (item.type === 'number') {
+                        const placeholder = item.placeholder ? item.placeholder : 'Nhập điểm';
+                        const val = userScores[item.id] !== undefined ? userScores[item.id] : '';
+                        controlHTML = `<input type="number" min="0" max="${item.max}" placeholder="${placeholder}" value="${val}" oninput="handleInputChange('${item.id}', this.value)" class="w-28 px-2 py-1 text-center border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 text-xs">`;
+                    } else if (item.type === 'select') {
+                        let optsHTML = item.options.map((opt) => {
+                            const isSel = userScores[item.id] == opt.score ? 'selected' : '';
+                            return `<option value="${opt.score}" ${isSel}>${opt.label}</option>`;
+                        }).join('');
+                        controlHTML = `<select onchange="handleInputChange('${item.id}', this.value)" class="w-full px-2 py-1 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">${optsHTML}</select>`;
+                    }
+
+                    tr.innerHTML = `
+                        <td class="py-2 px-4 text-slate-700 pl-8">${item.text}</td>
+                        <td class="py-2 px-2 text-center text-slate-400 text-xs">${item.max}</td>
+                        <td class="py-2 px-4 text-center">${controlHTML}</td>
+                        <td class="py-2 px-2 text-center font-medium text-slate-800" id="item-score-${item.id}">0</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        function handleInputChange(itemId, value) {
+            userScores[itemId] = value;
+            saveUserScores();
+            calculateTotalHUD();
+        }
+
+        function calculateTotalHUD() {
+            let totalDRL = 0;
+            drlStructure.forEach(sec => {
+                let sectionTotal = 0;
+                sec.items.forEach(item => {
+                    const rawVal = userScores[item.id];
+                    let earned = 0;
+
+                    if (item.type === 'checkbox') {
+                        earned = rawVal === true ? item.score : 0;
+                    } else if (item.type === 'number') {
+                        const num = parseFloat(rawVal);
+                        earned = !isNaN(num) ? num : 0;
+                    } else if (item.type === 'select') {
+                        earned = parseFloat(rawVal) || 0;
+                    }
+
+                    earned = Math.min(item.max, Math.max(0, earned));
+                    
+                    const itemElem = document.getElementById(`item-score-${item.id}`);
+                    if (itemElem) itemElem.textContent = earned;
+                    sectionTotal += earned;
+                });
+
+                sectionTotal = Math.min(sec.maxScore, sectionTotal);
+                const secElem = document.getElementById(`sec-score-${sec.sectionId}`);
+                if (secElem) secElem.textContent = sectionTotal;
+
+                const summaryElem = document.getElementById(`summary-sec-${sec.sectionId === 'I' ? 1 : sec.sectionId === 'II' ? 2 : sec.sectionId === 'III' ? 3 : sec.sectionId === 'IV' ? 4 : 5}`);
+                if (summaryElem) summaryElem.textContent = `${sectionTotal}/${sec.maxScore}`;
+
+                totalDRL += sectionTotal;
+            });
+
+            totalDRL = Math.min(100, Math.max(0, totalDRL));
+
+            document.getElementById('hud-total-score').textContent = totalDRL;
+            document.getElementById('hud-progress-bar').style.width = `${totalDRL}%`;
+
+            const ratingElem = document.getElementById('hud-rating');
+            if (totalDRL >= 90) { ratingElem.textContent = "Xuất sắc"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
+            else if (totalDRL >= 80) { ratingElem.textContent = "Tốt"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
+            else if (totalDRL >= 65) { ratingElem.textContent = "Khá"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
+            else if (totalDRL >= 50) { ratingElem.textContent = "Trung bình"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
+            else { ratingElem.textContent = "Yếu"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+        }
+
+        function applyDirectScore() {
+            const input = document.getElementById('direct-score-input');
+            const score = parseFloat(input.value);
+            if (isNaN(score) || score < 0 || score > 100) { 
+                alert('Vui lòng nhập số điểm hợp lệ từ 0 đến 100!'); 
+                return; 
+            }
+            
+            document.getElementById('hud-total-score').textContent = score;
+            document.getElementById('hud-progress-bar').style.width = `${score}%`;
+            
+            const ratingElem = document.getElementById('hud-rating');
+            if (score >= 90) { ratingElem.textContent = "Xuất sắc"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
+            else if (score >= 80) { ratingElem.textContent = "Tốt"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
+            else if (score >= 65) { ratingElem.textContent = "Khá"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
+            else if (score >= 50) { ratingElem.textContent = "Trung bình"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
+            else { ratingElem.textContent = "Yếu"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+        }
+
+        function resetAllScores() {
+            userScores = {};
+            saveUserScores();
+            renderDRLTable();
+            calculateTotalHUD();
+        }
+
+        function saveUserScores() {
+            if (!currentUser) return;
+            currentUser.scores = userScores;
+            localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+            
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            localUsers[currentUser.mssv] = { scores: userScores };
+            localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+        }
+    </script>
+</body>
+</html>
