@@ -162,7 +162,7 @@
                         </span>
                     </button>
 
-                    <!-- CỤM MENU NÂNG CẤP: AVATAR & USER SETTINGS DROPDOWN -->
+                    <!-- MENU DROPDOWN NHÂN VIÊN & CÀI ĐẶT -->
                     <div class="relative inline-block text-left" id="user-menu-container">
                         <button id="user-avatar-btn" onclick="toggleSettingsDropdown(event)" class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 p-1.5 rounded-full border border-slate-300 dark:border-slate-600 transition focus:outline-none shadow-sm">
                             <img id="nav-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-blue-500">
@@ -170,9 +170,8 @@
                             <i class="fa-solid fa-chevron-down text-xs text-slate-500 dark:text-slate-400 pr-1.5"></i>
                         </button>
 
-                        <!-- Bảng Dropdown Settings Popup -->
+                        <!-- Popup Settings -->
                         <div id="settings-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 transition-all duration-200">
-                            <!-- Header thông tin cá nhân trong Menu -->
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
                                 <div class="relative group">
                                     <img id="dropdown-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-blue-600">
@@ -188,15 +187,12 @@
                                 </div>
                             </div>
 
-                            <!-- Các tùy chọn trong Menu -->
                             <div class="py-1">
-                                <!-- Đổi Avatar -->
                                 <button onclick="document.getElementById('avatar-file-input').click()" class="w-full text-left px-4 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2.5 transition">
                                     <i class="fa-solid fa-image text-blue-500 w-4 text-center"></i>
                                     <span data-i18n="changeAvatar">Thay đổi ảnh đại diện</span>
                                 </button>
 
-                                <!-- Đổi Ngôn ngữ -->
                                 <div class="px-4 py-2 flex items-center justify-between text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
                                     <div class="flex items-center gap-2.5">
                                         <i class="fa-solid fa-globe text-emerald-500 w-4 text-center"></i>
@@ -214,7 +210,6 @@
 
                             <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
 
-                            <!-- Đăng xuất -->
                             <button onclick="handleLogout()" class="w-full text-left px-4 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center gap-2.5 font-medium transition">
                                 <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
                                 <span data-i18n="logout">Đăng xuất</span>
@@ -228,7 +223,7 @@
         <!-- Main Content Layout -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Left Panel: HUD Highlights & Manual Quick Score -->
+            <!-- Left Panel -->
             <div class="lg:col-span-4 space-y-6">
                 
                 <!-- HUD Summary Card -->
@@ -239,7 +234,7 @@
                     <h2 class="text-sm font-medium text-blue-200 uppercase tracking-wider mb-1" data-i18n="totalScore">Tổng Điểm Rèn Luyện</h2>
                     <div class="flex items-baseline space-x-2 my-2">
                         <span id="hud-total-score" class="text-5xl font-black tracking-tight">0</span>
-                        <span class="text-blue-200 font-medium text-lg">/ 100 điểm</span>
+                        <span id="hud-max-unit" class="text-blue-200 font-medium text-lg">/ 100 điểm</span>
                     </div>
 
                     <!-- Progress Bar -->
@@ -253,7 +248,7 @@
                     </div>
                 </div>
 
-                <!-- MỤC 1: Nhập điểm trực tiếp / Điều chỉnh nhanh -->
+                <!-- MỤC 1: Nhập điểm trực tiếp -->
                 <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80">
                     <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center">
                         <i class="fa-solid fa-sliders text-blue-600 mr-2"></i>
@@ -268,7 +263,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Summary Breakdown -->
+                <!-- Tóm tắt 5 Tiêu chí DRL -->
                 <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
                     <h3 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2" data-i18n="summaryTitle">Tóm tắt 5 Tiêu chí DRL</h3>
                     <div class="space-y-2 text-xs">
@@ -282,7 +277,7 @@
 
             </div>
 
-            <!-- Right Panel: MỤC 2: Bảng chi tiết 5 Nội dung -->
+            <!-- Right Panel: Bảng chi tiết 5 Nội dung -->
             <div class="lg:col-span-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 mb-4 gap-2">
                     <div>
@@ -294,7 +289,7 @@
                     </button>
                 </div>
 
-                <!-- Scrollable Table Area -->
+                <!-- Table Area -->
                 <div class="overflow-x-auto custom-scrollbar flex-grow">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
@@ -328,7 +323,6 @@
             </div>
             
             <div class="p-6 space-y-5">
-                <!-- Chọn sẵn -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hình nền gợi ý</label>
                     <div class="grid grid-cols-3 gap-2">
@@ -344,13 +338,11 @@
                     </div>
                 </div>
 
-                <!-- Tải từ thiết bị -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Tải ảnh từ máy tính / Điện thoại</label>
                     <input type="file" id="bg-file-input" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
                 </div>
 
-                <!-- Đường dẫn URL -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hoặc dán Link URL Ảnh</label>
                     <div class="flex gap-2">
@@ -371,7 +363,7 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym2ddo_tffnOvS63KAMpYMxjG3Q4wOsDNxue8z-oRqpIqzoAT1i-pLhQtZ5PyykLZdcA/exec";
 
-        // TỪ ĐIỂN 5 NGÔN NGỮ
+        // TỪ ĐIỂN UI VÀ NỘI DUNG 5 NGÔN NGỮ
         const translations = {
             vi: {
                 authTitle: "TÍNH DRL BY N.DUY",
@@ -386,9 +378,13 @@
                 sysSub: "Quản lý & Tự đánh giá điểm rèn luyện",
                 background: "Hình nền",
                 totalScore: "Tổng Điểm Rèn Luyện",
+                maxUnit: "/ 100 điểm",
                 rating: "Xếp loại dự kiến:",
                 directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)",
                 directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.",
+                directPlaceholder: "Nhập 0 - 100",
+                inputPlaceholder: "Nhập điểm",
+                maxLabel: "Tối đa:",
                 update: "Cập nhật",
                 summaryTitle: "Tóm tắt 5 Tiêu chí DRL",
                 sec1: "I. Ý thức học tập:",
@@ -427,9 +423,13 @@
                 sysSub: "Manage & Self-evaluate training points",
                 background: "Wallpaper",
                 totalScore: "Total Training Score",
+                maxUnit: "/ 100 pts",
                 rating: "Expected Rating:",
                 directInputTitle: "1. Direct Score Entry (Override)",
                 directInputDesc: "You can directly enter your total score here if you don't want to select individual items.",
+                directPlaceholder: "Enter 0 - 100",
+                inputPlaceholder: "Enter score",
+                maxLabel: "Max:",
                 update: "Update",
                 summaryTitle: "Summary of 5 DRL Criteria",
                 sec1: "I. Academic Attitude:",
@@ -468,9 +468,13 @@
                 sysSub: "管理与自我评估操行得分",
                 background: "壁纸",
                 totalScore: "操行总得分",
+                maxUnit: "/ 100 分",
                 rating: "预计评级：",
                 directInputTitle: "1. 直接输入分数（覆盖）",
                 directInputDesc: "如果您不想逐项勾选，可以在此处直接输入总分。",
+                directPlaceholder: "输入 0 - 100",
+                inputPlaceholder: "输入分数",
+                maxLabel: "最高:",
                 update: "更新",
                 summaryTitle: "5大操行标准摘要",
                 sec1: "I. 学习态度与责任：",
@@ -509,9 +513,13 @@
                 sysSub: "점수 관리 및 자가 평가",
                 background: "배경화면",
                 totalScore: "총 점수",
+                maxUnit: "/ 100 점",
                 rating: "예상 등급:",
                 directInputTitle: "1. 직접 점수 입력 (덮어쓰기)",
                 directInputDesc: "각 항목을 선택하지 않고 직접 총점을 입력할 수 있습니다.",
+                directPlaceholder: "0 - 100 입력",
+                inputPlaceholder: "점수 입력",
+                maxLabel: "최대:",
                 update: "업데이트",
                 summaryTitle: "5가지 평가 기준 요약",
                 sec1: "I. 학습 태도 및 책임:",
@@ -550,9 +558,13 @@
                 sysSub: "Gestion & Auto-évaluation des points",
                 background: "Fond d'écran",
                 totalScore: "Score Total DRL",
+                maxUnit: "/ 100 pts",
                 rating: "Évaluation prévue :",
                 directInputTitle: "1. Saisie Directe du Score",
                 directInputDesc: "Vous pouvez saisir directement le score total ici sans tout cocher.",
+                directPlaceholder: "Saisir 0 - 100",
+                inputPlaceholder: "Saisir score",
+                maxLabel: "Max :",
                 update: "Mettre à jour",
                 summaryTitle: "Résumé des 5 Critères DRL",
                 sec1: "I. Attitude académique :",
@@ -580,73 +592,143 @@
             }
         };
 
-        const drlStructure = [
-            {
-                sectionId: "I", title: "I. Trách nhiệm, tinh thần và thái độ trong học tập", maxScore: 20,
-                items: [
-                    { id: "i_a1", text: "Đi học đầy đủ, đúng giờ, nghiêm túc", max: 6, type: "number", placeholder: "Nhập điểm" },
-                    { id: "i_a2", text: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", max: 8, type: "select", options: [
-                        { label: "Không tham gia", score: 0 }, { label: "Tham gia đề tài (5đ)", score: 5 }, { label: "Chủ nhiệm đề tài (8đ)", score: 8 }, { label: "Có bài báo NCKH (8đ)", score: 8 }
-                    ]},
-                    { id: "i_a3", text: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", max: 5, type: "select", options: [
-                        { label: "Chưa có / Không tính", score: 0 }, { label: "Cơ bản và tương đương (3đ)", score: 3 }, { label: "Nâng cao (5đ)", score: 5 }
-                    ]},
-                    { id: "i_a4", text: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", max: 10, type: "select", options: [
-                        { label: "Chưa có / Không tính", score: 0 }, { label: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", score: 3 }, { label: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", score: 5 }, { label: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", score: 7 }, { label: "Bậc 4 (B2) trở lên / IELTS >=5.5 / TOEIC >=600 (10đ)", score: 10 }
-                    ]},
-                    { id: "i_a5", text: "Tham gia các CLB học thuật", max: 2, type: "checkbox", score: 2 },
-                    { id: "i_b1", text: "Không vi phạm quy chế thi/kiểm tra", max: 6, type: "number", placeholder: "Nhập điểm" },
-                    { id: "i_b2", text: "Tham gia kỳ thi chuyên ngành, Olympic...", max: 4, type: "select", options: [
-                        { label: "Không tham gia", score: 0 }, { label: "Có tham gia (2đ)", score: 2 }, { label: "Đạt giải cấp ĐH/Đơn vị (4đ)", score: 4 }
-                    ]},
-                    { id: "i_c1", text: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", max: 2, type: "checkbox", score: 2 },
-                    { id: "i_c2", text: "Kết quả học tập ĐTBCHK", max: 8, type: "select", options: [
-                        { label: "Dưới 2.00 (0đ)", score: 0 }, { label: "2.00 - 2.49 (2đ)", score: 2 }, { label: "2.50 - 3.19 (4đ)", score: 4 }, { label: "3.20 - 3.59 (6đ)", score: 6 }, { label: "Từ 3.60 trở lên (8đ)", score: 8 }
-                    ]}
-                ]
-            },
-            {
-                sectionId: "II", title: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", maxScore: 25,
-                items: [
-                    { id: "ii_a", text: "Chấp hành nội quy, quy chế nhà trường", max: 15, type: "number", placeholder: "Nhập điểm" },
-                    { id: "ii_b1", text: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", max: 8, type: "checkbox", score: 8 },
-                    { id: "ii_b2", text: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", max: 5, type: "number", placeholder: "Nhập điểm" }
-                ]
-            },
-            {
-                sectionId: "III", title: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", maxScore: 20,
-                items: [
-                    { id: "iii_a", text: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", max: 12, type: "number", placeholder: "Nhập điểm" },
-                    { id: "iii_b1", text: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", max: 5, type: "select", options: [
-                        { label: "Không", score: 0 }, { label: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", score: 3 }, { label: "Cấp ĐHCT / Đơn vị tương đương (5đ)", score: 5 }
-                    ]},
-                    { id: "iii_b2", text: "Khen thưởng hoạt động phong trào", max: 10, type: "select", options: [
-                        { label: "Không", score: 0 }, { label: "Giấy khen cấp cơ sở (6đ)", score: 6 }, { label: "Giấy khen cấp Đại học (8đ)", score: 8 }, { label: "Giấy khen cấp cao hơn (10đ)", score: 10 }
-                    ]},
-                    { id: "iii_c", text: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", max: 6, type: "number", placeholder: "Nhập điểm" }
-                ]
-            },
-            {
-                sectionId: "IV", title: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", maxScore: 15,
-                items: [
-                    { id: "iv_a", text: "IV.a Tuyên truyền chủ trương Đảng, pháp luật", max: 8, type: "number", placeholder: "Nhập điểm" },
-                    { id: "iv_b1", text: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", max: 10, type: "number", placeholder: "Nhập điểm" },
-                    { id: "iv_b2", text: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", max: 2, type: "checkbox", score: 2 }
-                ]
-            },
-            {
-                sectionId: "V", title: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", maxScore: 20,
-                items: [
-                    { id: "v_a", text: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", max: 10, type: "select", options: [
-                        { label: "Không đảm nhận", score: 0 }, { label: "Tổ trưởng, tổ phó (3đ)", score: 3 }, { label: "Thành viên ban chuyên môn (6đ)", score: 6 }, { label: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", score: 8 }, { label: "Bí thư, Lớp trưởng, Chủ nhiệm CLB, BCH Đoàn cơ sở (10đ)", score: 10 }
-                    ]},
-                    { id: "v_b", text: "Hỗ trợ, tham gia tích cực hoạt động chung", max: 12, type: "number", placeholder: "Nhập điểm" },
-                    { id: "v_c", text: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", max: 6, type: "select", options: [
-                        { label: "Không có", score: 0 }, { label: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", score: 4 }, { label: "Kết nạp Đảng / SV5T cấp ĐHCT / Giải NCKH / Giải Khởi nghiệp (6đ)", score: 6 }
-                    ]}
-                ]
-            }
-        ];
+        // HÀM LẤY CẤU TRÚC BẢNG ĐIỂM THEO NGÔN NGỮ ĐƯỢC CHỌN
+        function getLocalizedDrlStructure(lang) {
+            const l = translations[lang] ? lang : 'vi';
+            return [
+                {
+                    sectionId: "I",
+                    title: {
+                        vi: "I. Trách nhiệm, tinh thần và thái độ trong học tập",
+                        en: "I. Academic Responsibility, Attitude & Effort",
+                        zh: "I. 学习态度与责任",
+                        ko: "I. 학습 태도 및 책임",
+                        fr: "I. Responsabilité et attitude académiques"
+                    }[l],
+                    maxScore: 20,
+                    items: [
+                        { id: "i_a1", text: { vi: "Đi học đầy đủ, đúng giờ, nghiêm túc", en: "Full, punctual, and serious class attendance", zh: "按时上课，全勤且态度端正", ko: "출석 및 수업 태도 양호", fr: "Assiduité et ponctualité aux cours" }[l], max: 6, type: "number" },
+                        { id: "i_a2", text: { vi: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", en: "Scientific Research: Member / Leader / Paper", zh: "科研项目：参与 / 主持 / 发表论文", ko: "학술 연구: 참여 / 책임자 / 논문", fr: "Recherche scientifique : Membre / Chef / Article" }[l], max: 8, type: "select", options: [
+                            { label: { vi: "Không tham gia", en: "None", zh: "未参与", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Tham gia đề tài (5đ)", en: "Project Member (5 pts)", zh: "参与项目 (5分)", ko: "연구 참여 (5점)", fr: "Membre du projet (5 pts)" }[l], score: 5 },
+                            { label: { vi: "Chủ nhiệm đề tài (8đ)", en: "Project Leader (8 pts)", zh: "主持项目 (8分)", ko: "연구 책임자 (8점)", fr: "Chef de projet (8 pts)" }[l], score: 8 },
+                            { label: { vi: "Có bài báo NCKH (8đ)", en: "Research Paper (8 pts)", zh: "发表论文 (8分)", ko: "논문 게재 (8점)", fr: "Article publié (8 pts)" }[l], score: 8 }
+                        ]},
+                        { id: "i_a3", text: { vi: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", en: "IT Cert (Basic: 3 pts | Advanced: 5 pts)", zh: "计算机证书（基础：3分 | 高级：5分）", ko: "IT 자격증 (기초: 3점 | 심화: 5점)", fr: "Certificat informatique (Base: 3 pts | Avancé: 5 pts)" }[l], max: 5, type: "select", options: [
+                            { label: { vi: "Chưa có / Không tính", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Cơ bản và tương đương (3đ)", en: "Basic & Equivalent (3 pts)", zh: "基础级 (3分)", ko: "기초 (3점)", fr: "Base (3 pts)" }[l], score: 3 },
+                            { label: { vi: "Nâng cao (5đ)", en: "Advanced (5 pts)", zh: "高级 (5分)", ko: "심화 (5점)", fr: "Avancé (5 pts)" }[l], score: 5 }
+                        ]},
+                        { id: "i_a4", text: { vi: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", en: "Foreign Language Cert (A1, A2, B1, B2...)", zh: "外语等级证书 (A1, A2, B1, B2...)", ko: "외국어 자격증 (A1, A2, B1, B2...)", fr: "Certificat de langue (A1, A2, B1, B2...)" }[l], max: 10, type: "select", options: [
+                            { label: { vi: "Chưa có / Không tính", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", en: "Level 1 (A1) (3 pts)", zh: "一级 (A1) (3分)", ko: "1단계 (A1) (3점)", fr: "Niveau 1 (A1) (3 pts)" }[l], score: 3 },
+                            { label: { vi: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", en: "Level 2 (A2) / IELTS 4.0 (5 pts)", zh: "二级 (A2) (5分)", ko: "2단계 (A2) (5점)", fr: "Niveau 2 (A2) (5 pts)" }[l], score: 5 },
+                            { label: { vi: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", en: "Level 3 (B1) / IELTS 4.5 (7 pts)", zh: "三级 (B1) (7分)", ko: "3단계 (B1) (7점)", fr: "Niveau 3 (B1) (7 pts)" }[l], score: 7 },
+                            { label: { vi: "Bậc 4 (B2) trở lên / IELTS >=5.5 (10đ)", en: "Level 4 (B2)+ / IELTS >=5.5 (10 pts)", zh: "四级 (B2)+ (10分)", ko: "4단계 (B2) 이상 (10점)", fr: "Niveau 4 (B2)+ (10 pts)" }[l], score: 10 }
+                        ]},
+                        { id: "i_a5", text: { vi: "Tham gia các CLB học thuật", en: "Participate in academic clubs", zh: "参与学术社团", ko: "학술 동아리 활동", fr: "Clubs académiques" }[l], max: 2, type: "checkbox", score: 2 },
+                        { id: "i_b1", text: { vi: "Không vi phạm quy chế thi/kiểm tra", en: "No violation of exam regulations", zh: "无违反考试规定", ko: "시험 규정 위반 없음", fr: "Aucune infraction aux examens" }[l], max: 6, type: "number" },
+                        { id: "i_b2", text: { vi: "Tham gia kỳ thi chuyên ngành, Olympic...", en: "Academic contests, Olympics...", zh: "参加专业竞赛、奥林匹克", ko: "전공 경진대회, 올림피아드", fr: "Concours académiques, Olympiades..." }[l], max: 4, type: "select", options: [
+                            { label: { vi: "Không tham gia", en: "None", zh: "未参与", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Có tham gia (2đ)", en: "Participant (2 pts)", zh: "参赛 (2分)", ko: "참가 (2점)", fr: "Participant (2 pts)" }[l], score: 2 },
+                            { label: { vi: "Đạt giải cấp ĐH/Đơn vị (4đ)", en: "Award Winner (4 pts)", zh: "获奖 (4分)", ko: "수상 (4점)", fr: "Lauréat (4 pts)" }[l], score: 4 }
+                        ]},
+                        { id: "i_c1", text: { vi: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", en: "GPA improvement / Semester GPA >= 3.6 (+2 pts)", zh: "学习进步 / 学期GPA >= 3.6 (+2分)", ko: "성적 향상 / 학기 GPA >= 3.6 (+2점)", fr: "Progrès / GPA du semestre >= 3.6 (+2 pts)" }[l], max: 2, type: "checkbox", score: 2 },
+                        { id: "i_c2", text: { vi: "Kết quả học tập ĐTBCHK", en: "Semester GPA result", zh: "学期GPA成绩", ko: "학기 GPA 성적", fr: "Résultat GPA du semestre" }[l], max: 8, type: "select", options: [
+                            { label: { vi: "Dưới 2.00 (0đ)", en: "< 2.00 (0 pts)", zh: "2.00 以下 (0分)", ko: "2.00 미만 (0점)", fr: "< 2.00 (0 pts)" }[l], score: 0 },
+                            { label: { vi: "2.00 - 2.49 (2đ)", en: "2.00 - 2.49 (2 pts)", zh: "2.00 - 2.49 (2分)", ko: "2.00 - 2.49 (2점)", fr: "2.00 - 2.49 (2 pts)" }[l], score: 2 },
+                            { label: { vi: "2.50 - 3.19 (4đ)", en: "2.50 - 3.19 (4 pts)", zh: "2.50 - 3.19 (4分)", ko: "2.50 - 3.19 (4점)", fr: "2.50 - 3.19 (4 pts)" }[l], score: 4 },
+                            { label: { vi: "3.20 - 3.59 (6đ)", en: "3.20 - 3.59 (6 pts)", zh: "3.20 - 3.59 (6分)", ko: "3.20 - 3.59 (6점)", fr: "3.20 - 3.59 (6 pts)" }[l], score: 6 },
+                            { label: { vi: "Từ 3.60 trở lên (8đ)", en: ">= 3.60 (8 pts)", zh: "3.60 及以上 (8分)", ko: "3.60 이상 (8점)", fr: ">= 3.60 (8 pts)" }[l], score: 8 }
+                        ]}
+                    ]
+                },
+                {
+                    sectionId: "II",
+                    title: {
+                        vi: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế",
+                        en: "II. Compliance with Laws, Rules & Regulations",
+                        zh: "II. 遵守法律法规与校规校纪",
+                        ko: "II. 교칙 및 법규 준수",
+                        fr: "II. Respect des lois et règlements"
+                    }[l],
+                    maxScore: 25,
+                    items: [
+                        { id: "ii_a", text: { vi: "Chấp hành nội quy, quy chế nhà trường", en: "Observe university rules & regulations", zh: "遵守学校各项规章制度", ko: "학교 규정 및 수칙 준수", fr: "Respect des règlements de l'université" }[l], max: 15, type: "number" },
+                        { id: "ii_b1", text: { vi: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", en: "Promote security, order & environment", zh: "积极宣传维护治安、秩序与环境", ko: "치안 및 환경 보전 활동 참여", fr: "Sensibilisation à la sécurité et à l'environnement" }[l], max: 8, type: "checkbox", score: 8 },
+                        { id: "ii_b2", text: { vi: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", en: "Participate in surveys organized by CTU", zh: "参与 CTU 组织的意见调查", ko: "CTU 주관 설문조사 참여", fr: "Participation aux enquêtes de CTU" }[l], max: 5, type: "number" }
+                    ]
+                },
+                {
+                    sectionId: "III",
+                    title: {
+                        vi: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ",
+                        en: "III. Socio-political, Cultural & Sports Activities",
+                        zh: "III. 参与政治社会与文体活动",
+                        ko: "III. 사회·정치·문화·체육 활동 참여",
+                        fr: "III. Activités socio-politiques, culturelles et sportives"
+                    }[l],
+                    maxScore: 20,
+                    items: [
+                        { id: "iii_a", text: { vi: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", en: "Full attendance in political, cultural & sports events", zh: "积极参加政治、文艺、体育活动", ko: "정치·문화·체육 행사 적극 참여", fr: "Participation aux événements culturels et sportifs" }[l], max: 12, type: "number" },
+                        { id: "iii_b1", text: { vi: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", en: "Core member of movements (Dept: 3 pts | CTU: 5 pts)", zh: "活动骨干成员（系/支部：3分 | 校级：5分）", ko: "활동 핵심 멤버 (학과/지부: 3점 | 학교급: 5점)", fr: "Membre clé des mouvements (Dépt: 3 pts | CTU: 5 pts)" }[l], max: 5, type: "select", options: [
+                            { label: { vi: "Không", en: "None", zh: "否", ko: "없음", fr: "Non" }[l], score: 0 },
+                            { label: { vi: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", en: "Dept/Faculty/Branch level (3 pts)", zh: "院/系/支部级 (3分)", ko: "학과/학부/지부급 (3점)", fr: "Niveau Dépt/Faculté (3 pts)" }[l], score: 3 },
+                            { label: { vi: "Cấp ĐHCT / Đơn vị tương đương (5đ)", en: "University level (5 pts)", zh: "校级及以上 (5分)", ko: "학교급 (5점)", fr: "Niveau Université (5 pts)" }[l], score: 5 }
+                        ]},
+                        { id: "iii_b2", text: { vi: "Khen thưởng hoạt động phong trào", en: "Commendation for movement activities", zh: "文体及社会活动表彰", ko: "활동 관련 포상", fr: "Distinctions pour activités" }[l], max: 10, type: "select", options: [
+                            { label: { vi: "Không", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Giấy khen cấp cơ sở (6đ)", en: "Faculty level commendation (6 pts)", zh: "院级表彰 (6分)", ko: "단대/지부 표창 (6점)", fr: "Certificat de la faculté (6 pts)" }[l], score: 6 },
+                            { label: { vi: "Giấy khen cấp Đại học (8đ)", en: "University level commendation (8 pts)", zh: "校级表彰 (8分)", ko: "학교급 표창 (8점)", fr: "Certificat de l'Université (8 pts)" }[l], score: 8 },
+                            { label: { vi: "Giấy khen cấp cao hơn (10đ)", en: "Higher level commendation (10 pts)", zh: "省级/国家级表彰 (10分)", ko: "상급 기관 표창 (10점)", fr: "Niveau supérieur (10 pts)" }[l], score: 10 }
+                        ]},
+                        { id: "iii_c", text: { vi: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", en: "Anti-crime & social evils awareness campaign", zh: "参与防范犯罪与社会恶习宣传", ko: "범죄 예방 및 사회악 퇴치 캠페인", fr: "Campagnes de prévention de la criminalité" }[l], max: 6, type: "number" }
+                    ]
+                },
+                {
+                    sectionId: "IV",
+                    title: {
+                        vi: "IV. Trách nhiệm công dân trong quan hệ cộng đồng",
+                        en: "IV. Citizenship & Community Relations",
+                        zh: "IV. 公民责任与社区关系",
+                        ko: "IV. 시민 의식 및 지역사회 관계",
+                        fr: "IV. Citoyenneté et relations communautaires"
+                    }[l],
+                    maxScore: 15,
+                    items: [
+                        { id: "iv_a", text: { vi: "Tuyên truyền chủ trương Đảng, pháp luật", en: "Promote guidelines and laws", zh: "宣传党和国家方针政策及法律", ko: "법률 및 정책 홍보 활동", fr: "Promotion des lois et directives" }[l], max: 8, type: "number" },
+                        { id: "iv_b1", text: { vi: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", en: "Join community benefit groups & volunteer", zh: "参与社区公益团体与志愿服务", ko: "지역사회 봉사 단체 활동", fr: "Participation aux groupes d'intérêt communautaire" }[l], max: 10, type: "number" },
+                        { id: "iv_b2", text: { vi: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", en: "Help peers in study and life", zh: "在学习和列表中互助友爱", ko: "동료 지원 및 학업/생활 상부상조", fr: "Entraide entre étudiants" }[l], max: 2, type: "checkbox", score: 2 }
+                    ]
+                },
+                {
+                    sectionId: "V",
+                    title: {
+                        vi: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng",
+                        en: "V. Student Leadership, Movements & Awards",
+                        zh: "V. 干部工作、活动及表彰",
+                        ko: "V. 학생 간부 활동 및 기타 포상",
+                        fr: "V. Responsabilités de délégué et distinctions"
+                    }[l],
+                    maxScore: 20,
+                    items: [
+                        { id: "v_a", text: { vi: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", en: "Student leader positions (Class / Union)", zh: "担任班级/团支部/学生会干部", ko: "학급/동아리/학생회 간부 직책", fr: "Postes de délégué / BDE / Union" }[l], max: 10, type: "select", options: [
+                            { label: { vi: "Không đảm nhận", en: "None", zh: "未担任", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Tổ trưởng, tổ phó (3đ)", en: "Group leader/vice (3 pts)", zh: "组长/副组长 (3分)", ko: "조장/부조장 (3점)", fr: "Chef/Adjoint de groupe (3 pts)" }[l], score: 3 },
+                            { label: { vi: "Thành viên ban chuyên môn (6đ)", en: "Committee member (6 pts)", zh: "专业委员会成员 (6分)", ko: "전문 위원 (6점)", fr: "Membre de commission (6 pts)" }[l], score: 6 },
+                            { label: { vi: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", en: "Class Vice / Union Executive (8 pts)", zh: "班长/团支委/副班长 (8分)", ko: "부반장/지부 간부 (8점)", fr: "Délégué adjoint (8 pts)" }[l], score: 8 },
+                            { label: { vi: "Bí thư, Lớp trưởng, Chủ nhiệm CLB, BCH Đoàn cơ sở (10đ)", en: "Class Leader / Club President (10 pts)", zh: "班长/团支书/社长 (10分)", ko: "반장/동아리 회장/지부장 (10점)", fr: "Délégué principal / Président (10 pts)" }[l], score: 10 }
+                        ]},
+                        { id: "v_b", text: { vi: "Hỗ trợ, tham gia tích cực hoạt động chung", en: "Support and active participation in common tasks", zh: "积极支持并参与集体活动", ko: "공동 활동 적극 지원 및 참여", fr: "Soutien et participation active aux tâches" }[l], max: 12, type: "number" },
+                        { id: "v_c", text: { vi: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", en: "Research, Startup, Outstanding Student award...", zh: "科研/双创/优秀学生/党员等荣誉", ko: "연구/창업/우수학생/당원 등 포상", fr: "Prix de recherche, Entrepreneuriat, Étudiant..." }[l], max: 6, type: "select", options: [
+                            { label: { vi: "Không có", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
+                            { label: { vi: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", en: "Faculty level Outstanding Student (4 pts)", zh: "院级优秀学生 (4分)", ko: "단대급 우수학생 (4점)", fr: "Étudiant 5-Bon niveau faculté (4 pts)" }[l], score: 4 },
+                            { label: { vi: "Kết nạp Đảng / SV5T cấp ĐHCT / Giải NCKH (6đ)", en: "University level Outstanding Student / Award (6 pts)", zh: "校级优秀学生/科研创投奖 (6分)", ko: "학교급 우수학생/연구상 (6점)", fr: "Étudiant 5-Bon université / Prix (6 pts)" }[l], score: 6 }
+                        ]}
+                    ]
+                }
+            ];
+        }
 
         let currentUser = null;
         let userScores = {};
@@ -712,6 +794,7 @@
             localStorage.setItem('drl_selected_lang', lang);
             const t = translations[lang] || translations.vi;
 
+            // Cập nhật tất cả nhãn UI tĩnh
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key]) {
@@ -719,9 +802,17 @@
                 }
             });
 
+            // Cập nhật ô placeholder nhập điểm trực tiếp
+            const directInput = document.getElementById('direct-score-input');
+            if (directInput && t.directPlaceholder) {
+                directInput.placeholder = t.directPlaceholder;
+            }
+
             const langSelect = document.getElementById('language-select');
             if (langSelect) langSelect.value = lang;
 
+            // Render lại toàn bộ Bảng DRL và tính lại điểm
+            renderDRLTable();
             calculateTotalHUD();
         }
 
@@ -836,7 +927,7 @@
             const password = document.getElementById('reg-password').value;
 
             btn.disabled = true;
-            btn.innerText = "Đang xử lý...";
+            btn.innerText = "...";
 
             try {
                 await fetch(SCRIPT_URL, {
@@ -852,12 +943,12 @@
                     localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
                 }
 
-                alert("Tạo tài khoản thành công! Bạn có thể đăng nhập ngay.");
+                alert("Tạo tài khoản thành công!");
                 document.getElementById('form-register').reset();
                 switchAuthTab('login');
                 document.getElementById('login-mssv').value = mssv;
             } catch (err) {
-                alert("Có lỗi xảy ra kết nối mạng, vui lòng thử lại hoặc liên hệ Nguyễn Duy!");
+                alert("Lỗi kết nối mạng, vui lòng thử lại!");
             } finally {
                 btn.disabled = false;
                 const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
@@ -872,7 +963,7 @@
             const password = document.getElementById('login-password').value;
 
             btn.disabled = true;
-            btn.innerText = "Đang kiểm tra...";
+            btn.innerText = "...";
 
             try {
                 const res = await fetch(SCRIPT_URL + "?action=getUsers");
@@ -880,8 +971,6 @@
                 const user = users.find(u => String(u.mssv).toUpperCase() === mssv && String(u.password) === password);
 
                 if (user) {
-                    alert("Đăng nhập thành công!");
-                    
                     let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
                     let userLocalScores = localUsers[mssv] ? localUsers[mssv].scores : {};
 
@@ -896,7 +985,7 @@
                     alert("MSSV hoặc mật khẩu không chính xác!");
                 }
             } catch (err) {
-                alert("Lỗi kết nối tới cơ sở dữ Máy Chủ,Liên hệ Nguyễn Duy để giải đáp!");
+                alert("Lỗi kết nối tới dữ liệu máy chủ, vui lòng liên hệ Nguyễn Duy!");
             } finally {
                 btn.disabled = false;
                 const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
@@ -928,14 +1017,19 @@
 
         function renderDRLTable() {
             const tbody = document.getElementById('drl-table-body');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
-            drlStructure.forEach(sec => {
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const t = translations[currentLang] || translations.vi;
+            const currentStructure = getLocalizedDrlStructure(currentLang);
+
+            currentStructure.forEach(sec => {
                 const headerRow = document.createElement('tr');
                 headerRow.className = "bg-slate-100/80 font-bold text-slate-800";
                 headerRow.innerHTML = `
                     <td class="py-2.5 px-4" colspan="2">${sec.title}</td>
-                    <td class="py-2.5 px-2 text-center text-xs text-blue-700">Tối đa: ${sec.maxScore}đ</td>
+                    <td class="py-2.5 px-2 text-center text-xs text-blue-700">${t.maxLabel} ${sec.maxScore}đ</td>
                     <td class="py-2.5 px-2 text-center text-blue-700" id="sec-score-${sec.sectionId}">0</td>
                 `;
                 tbody.appendChild(headerRow);
@@ -949,9 +1043,8 @@
                         const isChecked = userScores[item.id] === true ? 'checked' : '';
                         controlHTML = `<input type="checkbox" onchange="handleInputChange('${item.id}', this.checked)" ${isChecked} class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">`;
                     } else if (item.type === 'number') {
-                        const placeholder = item.placeholder ? item.placeholder : 'Nhập điểm';
                         const val = userScores[item.id] !== undefined ? userScores[item.id] : '';
-                        controlHTML = `<input type="number" min="0" max="${item.max}" placeholder="${placeholder}" value="${val}" oninput="handleInputChange('${item.id}', this.value)" class="w-28 px-2 py-1 text-center border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 text-xs">`;
+                        controlHTML = `<input type="number" min="0" max="${item.max}" placeholder="${t.inputPlaceholder}" value="${val}" oninput="handleInputChange('${item.id}', this.value)" class="w-28 px-2 py-1 text-center border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 text-xs">`;
                     } else if (item.type === 'select') {
                         let optsHTML = item.options.map((opt) => {
                             const isSel = userScores[item.id] == opt.score ? 'selected' : '';
@@ -979,7 +1072,10 @@
 
         function calculateTotalHUD() {
             let totalDRL = 0;
-            drlStructure.forEach(sec => {
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const currentStructure = getLocalizedDrlStructure(currentLang);
+
+            currentStructure.forEach(sec => {
                 let sectionTotal = 0;
                 sec.items.forEach(item => {
                     const rawVal = userScores[item.id];
@@ -1016,10 +1112,12 @@
             document.getElementById('hud-total-score').textContent = totalDRL;
             document.getElementById('hud-progress-bar').style.width = `${totalDRL}%`;
 
-            // Cập nhật rating đa ngôn ngữ
+            // Cập nhật rating & đơn vị max score
             const ratingElem = document.getElementById('hud-rating');
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
             const t = translations[currentLang] || translations.vi;
+
+            const maxUnitElem = document.getElementById('hud-max-unit');
+            if (maxUnitElem && t.maxUnit) maxUnitElem.textContent = t.maxUnit;
 
             if (totalDRL >= 90) { ratingElem.textContent = t.rateEx; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
             else if (totalDRL >= 80) { ratingElem.textContent = t.rateGood; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
