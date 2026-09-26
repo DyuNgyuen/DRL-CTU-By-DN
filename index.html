@@ -93,44 +93,44 @@
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-3 overflow-hidden border border-slate-200 shadow">
                     <img src="https://flagcdn.com/w160/fr.png" class="w-full h-full object-cover" alt="Logo">
                 </div>
-                <h1 class="text-2xl font-bold text-slate-800">TÍNH DRL BY N.DUY</h1>
-                <p class="text-slate-500 text-sm mt-1">Thuộc Khoa Ngoại Ngữ, Ngôn Ngữ Pháp A2</p>
+                <h1 class="text-2xl font-bold text-slate-800" data-i18n="authTitle">TÍNH DRL BY N.DUY</h1>
+                <p class="text-slate-500 text-sm mt-1" data-i18n="authSub">Thuộc Khoa Ngoại Ngữ </p>
             </div>
 
             <!-- Tab Switcher -->
             <div class="flex border-b border-slate-200 mb-6">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="w-1/2 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all">Đăng nhập</button>
-                <button id="tab-register" onclick="switchAuthTab('register')" class="w-1/2 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all">Đăng ký</button>
+                <button id="tab-login" onclick="switchAuthTab('login')" class="w-1/2 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all" data-i18n="login">Đăng nhập</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="w-1/2 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all" data-i18n="register">Đăng ký</button>
             </div>
 
             <!-- Form Đăng Nhập -->
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Số Sinh Viên (MSSV)</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="mssv">Mã Số Sinh Viên (MSSV)</label>
                     <input type="text" id="login-mssv" required placeholder="B2001234" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="password">Mật khẩu</label>
                     <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
-                <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition">Đăng Nhập</button>
+                <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="login">Đăng Nhập</button>
             </form>
 
             <!-- Form Đăng Ký -->
             <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Họ và Tên</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="fullname">Họ và Tên</label>
                     <input type="text" id="reg-fullname" required placeholder="Nguyễn Văn A" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Số Sinh Viên (MSSV)</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="mssv">Mã Số Sinh Viên (MSSV)</label>
                     <input type="text" id="reg-mssv" required placeholder="B2001234" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="password">Mật khẩu</label>
                     <input type="password" id="reg-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
-                <button type="submit" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition">Tạo Tài Khoản</button>
+                <button type="submit" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="createAccount">Tạo Tài Khoản</button>
             </form>
         </div>
     </div>
@@ -143,32 +143,84 @@
                 <div class="flex items-center space-x-3">
                     <img src="https://flagcdn.com/w160/fr.png" alt="Cờ Pháp" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200">
                     <div>
-                        <h1 class="font-bold text-slate-800 text-lg leading-tight">Hệ Thống DRL Sinh Viên</h1>
-                        <p class="text-xs text-slate-500">Quản lý & Tự đánh giá điểm rèn luyện</p>
+                        <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL Sinh Viên</h1>
+                        <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý & Tự đánh giá điểm rèn luyện</p>
                     </div>
                 </div>
+                
                 <div class="flex items-center space-x-3">
-                    <div class="text-right hidden sm:block">
-                        <p id="user-display-name" class="font-semibold text-slate-800 text-sm">---</p>
-                        <p id="user-display-mssv" class="text-xs text-slate-500">MSSV: ---</p>
-                    </div>
-                    
                     <!-- Nút Tùy Chỉnh Background -->
                     <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300" title="Đổi hình nền">
                         <i class="fa-solid fa-image text-blue-600"></i>
-                        <span class="hidden sm:inline">Hình nền</span>
+                        <span class="hidden sm:inline" data-i18n="background">Hình nền</span>
                     </button>
 
-                    <!-- Nút Chuyển Mode Sáng/Tối (iOS Toggle Switch) -->
+                    <!-- Nút Chuyển Mode Sáng/Tối -->
                     <button id="theme-toggle-btn" onclick="toggleTheme()" class="relative inline-flex items-center h-8 w-16 rounded-full p-1 transition-colors duration-300 focus:outline-none shadow-inner border border-slate-300/40 cursor-pointer" style="background-color: #FDEEBE;" title="Chuyển chế độ Sáng/Tối">
                         <span id="theme-toggle-thumb" class="inline-flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300 transform translate-x-0 shadow-md" style="background-color: #F1B82D;">
                             <i id="theme-toggle-icon" class="fa-solid fa-sun text-white text-xs theme-thumb-icon"></i>
                         </span>
                     </button>
 
-                    <button onclick="handleLogout()" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 p-2.5 rounded-lg transition border border-slate-300" title="Đăng xuất">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
+                    <!-- CỤM MENU NÂNG CẤP: AVATAR & USER SETTINGS DROPDOWN -->
+                    <div class="relative inline-block text-left" id="user-menu-container">
+                        <button id="user-avatar-btn" onclick="toggleSettingsDropdown(event)" class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 p-1.5 rounded-full border border-slate-300 dark:border-slate-600 transition focus:outline-none shadow-sm">
+                            <img id="nav-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-blue-500">
+                            <span id="user-display-name" class="font-semibold text-slate-700 dark:text-slate-200 text-xs hidden sm:inline px-1">---</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-500 dark:text-slate-400 pr-1.5"></i>
+                        </button>
+
+                        <!-- Bảng Dropdown Settings Popup -->
+                        <div id="settings-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 transition-all duration-200">
+                            <!-- Header thông tin cá nhân trong Menu -->
+                            <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
+                                <div class="relative group">
+                                    <img id="dropdown-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-blue-600">
+                                    <label for="avatar-file-input" class="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-full text-xs cursor-pointer shadow transition" title="Đổi ảnh đại diện">
+                                        <i class="fa-solid fa-camera text-[10px]"></i>
+                                    </label>
+                                    <input type="file" id="avatar-file-input" accept="image/*" onchange="uploadAvatar(event)" class="hidden">
+                                </div>
+                                <div class="overflow-hidden">
+                                    <p id="dropdown-user-name" class="font-bold text-slate-800 dark:text-slate-100 text-sm truncate">---</p>
+                                    <p id="user-display-mssv" class="text-xs text-slate-500 dark:text-slate-400 truncate">MSSV: ---</p>
+                                    <span class="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] rounded-full font-medium mt-0.5" data-i18n="role">Sinh viên CTU</span>
+                                </div>
+                            </div>
+
+                            <!-- Các tùy chọn trong Menu -->
+                            <div class="py-1">
+                                <!-- Đổi Avatar -->
+                                <button onclick="document.getElementById('avatar-file-input').click()" class="w-full text-left px-4 py-2 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2.5 transition">
+                                    <i class="fa-solid fa-image text-blue-500 w-4 text-center"></i>
+                                    <span data-i18n="changeAvatar">Thay đổi ảnh đại diện</span>
+                                </button>
+
+                                <!-- Đổi Ngôn ngữ -->
+                                <div class="px-4 py-2 flex items-center justify-between text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <i class="fa-solid fa-globe text-emerald-500 w-4 text-center"></i>
+                                        <span data-i18n="language">Ngôn ngữ</span>
+                                    </div>
+                                    <select id="language-select" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-xs text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer">
+                                        <option value="vi">🇻🇳 Tiếng Việt</option>
+                                        <option value="en">🇬🇧 English</option>
+                                        <option value="zh">🇨🇳 中文</option>
+                                        <option value="ko">🇰🇷 한국어</option>
+                                        <option value="fr">🇫🇷 Français</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+
+                            <!-- Đăng xuất -->
+                            <button onclick="handleLogout()" class="w-full text-left px-4 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center gap-2.5 font-medium transition">
+                                <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
+                                <span data-i18n="logout">Đăng xuất</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -184,7 +236,7 @@
                     <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
                         <i class="fa-solid fa-award text-9xl"></i>
                     </div>
-                    <h2 class="text-sm font-medium text-blue-200 uppercase tracking-wider mb-1">Tổng Điểm Rèn Luyện</h2>
+                    <h2 class="text-sm font-medium text-blue-200 uppercase tracking-wider mb-1" data-i18n="totalScore">Tổng Điểm Rèn Luyện</h2>
                     <div class="flex items-baseline space-x-2 my-2">
                         <span id="hud-total-score" class="text-5xl font-black tracking-tight">0</span>
                         <span class="text-blue-200 font-medium text-lg">/ 100 điểm</span>
@@ -196,8 +248,8 @@
                     </div>
 
                     <div class="flex justify-between items-center pt-2 border-t border-blue-700/50">
-                        <span class="text-xs text-blue-200">Xếp loại dự kiến:</span>
-                        <span id="hud-rating" class="font-bold text-sm px-3 py-1 bg-white/10 rounded-full border border-white/20">Chưa xếp loại</span>
+                        <span class="text-xs text-blue-200" data-i18n="rating">Xếp loại dự kiến:</span>
+                        <span id="hud-rating" class="font-bold text-sm px-3 py-1 bg-white/10 rounded-full border border-white/20" data-i18n="unrated">Chưa xếp loại</span>
                     </div>
                 </div>
 
@@ -205,12 +257,12 @@
                 <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80">
                     <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center">
                         <i class="fa-solid fa-sliders text-blue-600 mr-2"></i>
-                        1. Nhập Điểm Trực Tiếp (Ghi đè)
+                        <span data-i18n="directInputTitle">1. Nhập Điểm Trực Tiếp (Ghi đè)</span>
                     </h3>
-                    <p class="text-xs text-slate-500 mb-4">Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.</p>
+                    <p class="text-xs text-slate-500 mb-4" data-i18n="directInputDesc">Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.</p>
                     <div class="flex space-x-2">
                         <input type="number" id="direct-score-input" min="0" max="100" placeholder="Nhập 0 - 100" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <button onclick="applyDirectScore()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex-shrink-0">
+                        <button onclick="applyDirectScore()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex-shrink-0" data-i18n="update">
                             Cập nhật
                         </button>
                     </div>
@@ -218,13 +270,13 @@
 
                 <!-- Quick Summary Breakdown -->
                 <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
-                    <h3 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2">Tóm tắt 5 Tiêu chí DRL</h3>
+                    <h3 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2" data-i18n="summaryTitle">Tóm tắt 5 Tiêu chí DRL</h3>
                     <div class="space-y-2 text-xs">
-                        <div class="flex justify-between items-center"><span class="text-slate-600">I. Ý thức học tập:</span> <span id="summary-sec-1" class="font-semibold text-slate-800">0/20</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600">II. Nội quy & Quy chế:</span> <span id="summary-sec-2" class="font-semibold text-slate-800">0/25</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600">III. Hoạt động Phong trào:</span> <span id="summary-sec-3" class="font-semibold text-slate-800">0/20</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600">IV. Quan hệ Cộng đồng:</span> <span id="summary-sec-4" class="font-semibold text-slate-800">0/15</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600">V. Công tác Cán bộ & Khác:</span> <span id="summary-sec-5" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec1">I. Ý thức học tập:</span> <span id="summary-sec-1" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec2">II. Nội quy & Quy chế:</span> <span id="summary-sec-2" class="font-semibold text-slate-800">0/25</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec3">III. Hoạt động Phong trào:</span> <span id="summary-sec-3" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec4">IV. Quan hệ Cộng đồng:</span> <span id="summary-sec-4" class="font-semibold text-slate-800">0/15</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec5">V. Công tác Cán bộ & Khác:</span> <span id="summary-sec-5" class="font-semibold text-slate-800">0/20</span></div>
                     </div>
                 </div>
 
@@ -234,11 +286,11 @@
             <div class="lg:col-span-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 mb-4 gap-2">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
-                        <p class="text-xs text-slate-500">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
+                        <h2 class="text-lg font-bold text-slate-800" data-i18n="tableTitle">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
+                        <p class="text-xs text-slate-500" data-i18n="tableSub">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
                     </div>
                     <button onclick="resetAllScores()" class="text-xs text-rose-600 hover:text-rose-800 font-medium flex items-center gap-1 self-start sm:self-auto bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200 transition">
-                        <i class="fa-solid fa-rotate-left"></i> Đặt lại bảng điểm
+                        <i class="fa-solid fa-rotate-left"></i> <span data-i18n="reset">Đặt lại bảng điểm</span>
                     </button>
                 </div>
 
@@ -247,10 +299,10 @@
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
                             <tr class="bg-slate-100/70 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
-                                <th class="py-3 px-4 w-1/2">Nội dung đánh giá</th>
-                                <th class="py-3 px-2 text-center w-20">Điểm tối đa</th>
-                                <th class="py-3 px-4 text-center w-36">Nhập/Chọn</th>
-                                <th class="py-3 px-2 text-center w-24">Điểm đạt</th>
+                                <th class="py-3 px-4 w-1/2" data-i18n="colContent">Nội dung đánh giá</th>
+                                <th class="py-3 px-2 text-center w-20" data-i18n="colMax">Điểm tối đa</th>
+                                <th class="py-3 px-4 text-center w-36" data-i18n="colInput">Nhập/Chọn</th>
+                                <th class="py-3 px-2 text-center w-24" data-i18n="colEarned">Điểm đạt</th>
                             </tr>
                         </thead>
                         <tbody id="drl-table-body" class="text-sm divide-y divide-slate-100">
@@ -318,6 +370,215 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym2ddo_tffnOvS63KAMpYMxjG3Q4wOsDNxue8z-oRqpIqzoAT1i-pLhQtZ5PyykLZdcA/exec";
+
+        // TỪ ĐIỂN 5 NGÔN NGỮ
+        const translations = {
+            vi: {
+                authTitle: "TÍNH DRL BY N.DUY",
+                authSub: "Thuộc Khoa Ngoại Ngữ, Ngôn Ngữ Pháp A2",
+                login: "Đăng nhập",
+                register: "Đăng ký",
+                mssv: "Mã Số Sinh Viên (MSSV)",
+                password: "Mật khẩu",
+                fullname: "Họ và Tên",
+                createAccount: "Tạo Tài Khoản",
+                sysTitle: "Hệ Thống DRL Sinh Viên",
+                sysSub: "Quản lý & Tự đánh giá điểm rèn luyện",
+                background: "Hình nền",
+                totalScore: "Tổng Điểm Rèn Luyện",
+                rating: "Xếp loại dự kiến:",
+                directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)",
+                directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.",
+                update: "Cập nhật",
+                summaryTitle: "Tóm tắt 5 Tiêu chí DRL",
+                sec1: "I. Ý thức học tập:",
+                sec2: "II. Nội quy & Quy chế:",
+                sec3: "III. Hoạt động Phong trào:",
+                sec4: "IV. Quan hệ Cộng đồng:",
+                sec5: "V. Công tác Cán bộ & Khác:",
+                tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết",
+                tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT",
+                reset: "Đặt lại bảng điểm",
+                colContent: "Nội dung đánh giá",
+                colMax: "Điểm tối đa",
+                colInput: "Nhập/Chọn",
+                colEarned: "Điểm đạt",
+                changeAvatar: "Thay đổi ảnh đại diện",
+                language: "Ngôn ngữ",
+                logout: "Đăng xuất",
+                role: "Sinh viên CTU",
+                unrated: "Chưa xếp loại",
+                rateEx: "Xuất sắc",
+                rateGood: "Tốt",
+                rateFair: "Khá",
+                rateAvg: "Trung bình",
+                rateWeak: "Yếu"
+            },
+            en: {
+                authTitle: "DRL CALCULATOR BY N.DUY",
+                authSub: "Foreign Languages Faculty, French A2",
+                login: "Log In",
+                register: "Register",
+                mssv: "Student ID (MSSV)",
+                password: "Password",
+                fullname: "Full Name",
+                createAccount: "Create Account",
+                sysTitle: "Student DRL System",
+                sysSub: "Manage & Self-evaluate training points",
+                background: "Wallpaper",
+                totalScore: "Total Training Score",
+                rating: "Expected Rating:",
+                directInputTitle: "1. Direct Score Entry (Override)",
+                directInputDesc: "You can directly enter your total score here if you don't want to select individual items.",
+                update: "Update",
+                summaryTitle: "Summary of 5 DRL Criteria",
+                sec1: "I. Academic Attitude:",
+                sec2: "II. Rules & Regulations:",
+                sec3: "III. Activities & Movements:",
+                sec4: "IV. Community Relations:",
+                sec5: "V. Cadre Work & Others:",
+                tableTitle: "2. Detailed Training Scorecard",
+                tableSub: "Select or enter values according to CTU standard criteria",
+                reset: "Reset Scorecard",
+                colContent: "Evaluation Content",
+                colMax: "Max Score",
+                colInput: "Input/Select",
+                colEarned: "Earned Score",
+                changeAvatar: "Change Avatar",
+                language: "Language",
+                logout: "Log Out",
+                role: "CTU Student",
+                unrated: "Unrated",
+                rateEx: "Excellent",
+                rateGood: "Good",
+                rateFair: "Fair",
+                rateAvg: "Average",
+                rateWeak: "Weak"
+            },
+            zh: {
+                authTitle: "N.DUY 操行分计算器",
+                authSub: "外语学院，法语 A2",
+                login: "登录",
+                register: "注册",
+                mssv: "学号 (MSSV)",
+                password: "密码",
+                fullname: "姓名",
+                createAccount: "创建账户",
+                sysTitle: "学生操行分系统",
+                sysSub: "管理与自我评估操行得分",
+                background: "壁纸",
+                totalScore: "操行总得分",
+                rating: "预计评级：",
+                directInputTitle: "1. 直接输入分数（覆盖）",
+                directInputDesc: "如果您不想逐项勾选，可以在此处直接输入总分。",
+                update: "更新",
+                summaryTitle: "5大操行标准摘要",
+                sec1: "I. 学习态度与责任：",
+                sec2: "II. 校规校纪：",
+                sec3: "III. 学生活动与文体：",
+                sec4: "IV. 社区与社会关系：",
+                sec5: "V. 干部工作与奖励：",
+                tableTitle: "2. 详细操行评分表",
+                tableSub: "根据 CTU 标准评估细则勾选或输入相应数值",
+                reset: "重置评分表",
+                colContent: "评估内容",
+                colMax: "最高分",
+                colInput: "输入/选择",
+                colEarned: "得分",
+                changeAvatar: "更换头像",
+                language: "语言",
+                logout: "退出登录",
+                role: "CTU 学生",
+                unrated: "未评级",
+                rateEx: "优秀",
+                rateGood: "良好",
+                rateFair: "中等",
+                rateAvg: "及格",
+                rateWeak: "较差"
+            },
+            ko: {
+                authTitle: "N.DUY DRL 점수 계산기",
+                authSub: "외국어대학 프랑스어과 A2",
+                login: "로그인",
+                register: "회원가입",
+                mssv: "학번 (MSSV)",
+                password: "비밀번호",
+                fullname: "성명",
+                createAccount: "계정 생성",
+                sysTitle: "학생 점수 관리 시스템",
+                sysSub: "점수 관리 및 자가 평가",
+                background: "배경화면",
+                totalScore: "총 점수",
+                rating: "예상 등급:",
+                directInputTitle: "1. 직접 점수 입력 (덮어쓰기)",
+                directInputDesc: "각 항목을 선택하지 않고 직접 총점을 입력할 수 있습니다.",
+                update: "업데이트",
+                summaryTitle: "5가지 평가 기준 요약",
+                sec1: "I. 학습 태도 및 책임:",
+                sec2: "II. 교칙 및 규정:",
+                sec3: "III. 활동 및 운동:",
+                sec4: "IV. 지역사회 관계:",
+                sec5: "V. 간부 활동 및 기타:",
+                tableTitle: "2. 상세 점수 평가표",
+                tableSub: "CTU 표준 기준에 따라 항목을 선택하거나 점수를 입력하세요.",
+                reset: "점수 초기화",
+                colContent: "평가 내용",
+                colMax: "최대 점수",
+                colInput: "입력/선택",
+                colEarned: "취득 점수",
+                changeAvatar: "프로필 사진 변경",
+                language: "언어",
+                logout: "로그아웃",
+                role: "CTU 학생",
+                unrated: "미평가",
+                rateEx: "최우수",
+                rateGood: "우수",
+                rateFair: "보통",
+                rateAvg: "미흡",
+                rateWeak: "부족"
+            },
+            fr: {
+                authTitle: "CALCULATEUR DRL PAR N.DUY",
+                authSub: "Faculté des Langues Étrangères, Langue Française A2",
+                login: "Connexion",
+                register: "Inscription",
+                mssv: "Numéro d'étudiant (MSSV)",
+                password: "Mot de passe",
+                fullname: "Nom et prénom",
+                createAccount: "Créer un compte",
+                sysTitle: "Système DRL Étudiant",
+                sysSub: "Gestion & Auto-évaluation des points",
+                background: "Fond d'écran",
+                totalScore: "Score Total DRL",
+                rating: "Évaluation prévue :",
+                directInputTitle: "1. Saisie Directe du Score",
+                directInputDesc: "Vous pouvez saisir directement le score total ici sans tout cocher.",
+                update: "Mettre à jour",
+                summaryTitle: "Résumé des 5 Critères DRL",
+                sec1: "I. Attitude académique :",
+                sec2: "II. Règlements & Discipline :",
+                sec3: "III. Activités & Mouvements :",
+                sec4: "IV. Relations Communautaires :",
+                sec5: "V. Responsabilités & Distinctions :",
+                tableTitle: "2. Grille d'Évaluation Détaillée",
+                tableSub: "Cochez ou saisissez selon les critères standards de l'Université CTU",
+                reset: "Réinitialiser",
+                colContent: "Contenu d'évaluation",
+                colMax: "Score Max",
+                colInput: "Saisie/Choix",
+                colEarned: "Points acquis",
+                changeAvatar: "Changer d'avatar",
+                language: "Langue",
+                logout: "Déconnexion",
+                role: "Étudiant CTU",
+                unrated: "Non évalué",
+                rateEx: "Excellent",
+                rateGood: "Très Bien",
+                rateFair: "Bien",
+                rateAvg: "Moyen",
+                rateWeak: "Insuffisant"
+            }
+        };
 
         const drlStructure = [
             {
@@ -390,16 +651,79 @@
         let currentUser = null;
         let userScores = {};
 
-        // App Init, Load Saved Theme & Saved Background
+        // App Init, Load Saved Theme, Background, Language & Avatar
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedTheme();
             loadSavedBg();
+            loadSavedAvatar();
+            
+            const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            changeLanguage(savedLang);
+
             const savedUser = localStorage.getItem('drl_current_user_api');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 showDashboard();
             }
         });
+
+        /* ================= USER SETTINGS & AVATAR & LANGUAGE LOGIC ================= */
+        function toggleSettingsDropdown(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('settings-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        window.addEventListener('click', (e) => {
+            const container = document.getElementById('user-menu-container');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('settings-dropdown').classList.add('hidden');
+            }
+        });
+
+        function uploadAvatar(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const avatarUrl = evt.target.result;
+                    setAvatar(avatarUrl);
+                    localStorage.setItem('drl_user_avatar', avatarUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setAvatar(url) {
+            const navAvatar = document.getElementById('nav-user-avatar');
+            const dropAvatar = document.getElementById('dropdown-user-avatar');
+            if (navAvatar) navAvatar.src = url;
+            if (dropAvatar) dropAvatar.src = url;
+        }
+
+        function loadSavedAvatar() {
+            const savedAvatar = localStorage.getItem('drl_user_avatar');
+            if (savedAvatar) {
+                setAvatar(savedAvatar);
+            }
+        }
+
+        function changeLanguage(lang) {
+            localStorage.setItem('drl_selected_lang', lang);
+            const t = translations[lang] || translations.vi;
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    el.textContent = t[key];
+                }
+            });
+
+            const langSelect = document.getElementById('language-select');
+            if (langSelect) langSelect.value = lang;
+
+            calculateTotalHUD();
+        }
 
         /* ================= THEME TOGGLE LOGIC ================= */
         function toggleTheme() {
@@ -416,14 +740,14 @@
             if (!btn || !thumb || !icon) return;
 
             if (isDark) {
-                btn.style.backgroundColor = '#0B192C'; // Navy tối
-                thumb.style.backgroundColor = '#2CB5F6'; // Xanh lam sáng
+                btn.style.backgroundColor = '#0B192C';
+                thumb.style.backgroundColor = '#2CB5F6';
                 thumb.classList.remove('translate-x-0');
                 thumb.classList.add('translate-x-8');
                 icon.className = 'fa-solid fa-moon text-white text-xs theme-thumb-icon';
             } else {
-                btn.style.backgroundColor = '#FDEEBE'; // Vàng nhạt
-                thumb.style.backgroundColor = '#F1B82D'; // Vàng rực
+                btn.style.backgroundColor = '#FDEEBE';
+                thumb.style.backgroundColor = '#F1B82D';
                 thumb.classList.remove('translate-x-8');
                 thumb.classList.add('translate-x-0');
                 icon.className = 'fa-solid fa-sun text-white text-xs theme-thumb-icon';
@@ -533,10 +857,11 @@
                 switchAuthTab('login');
                 document.getElementById('login-mssv').value = mssv;
             } catch (err) {
-                alert("Có lỗi xảy ra kết nối mạng, vui lòng thử lại!");
+                alert("Có lỗi xảy ra kết nối mạng, vui lòng thử lại hoặc liên hệ Nguyễn Duy!");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Tạo Tài Khoản";
+                const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
+                btn.innerText = translations[savedLang].createAccount;
             }
         }
 
@@ -571,16 +896,18 @@
                     alert("MSSV hoặc mật khẩu không chính xác!");
                 }
             } catch (err) {
-                alert("Lỗi kết nối tới cơ sở dữ liệu Google Sheet!");
+                alert("Lỗi kết nối tới cơ sở dữ Máy Chủ,Liên hệ Nguyễn Duy để giải đáp!");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Đăng Nhập";
+                const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
+                btn.innerText = translations[savedLang].login;
             }
         }
 
         function handleLogout() {
             localStorage.removeItem('drl_current_user_api');
             currentUser = null;
+            document.getElementById('settings-dropdown').classList.add('hidden');
             document.getElementById('dashboard-section').classList.add('hidden');
             document.getElementById('auth-section').classList.remove('hidden');
             document.getElementById('login-password').value = '';
@@ -591,6 +918,7 @@
             document.getElementById('dashboard-section').classList.remove('hidden');
             
             document.getElementById('user-display-name').textContent = currentUser.fullname;
+            document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
             document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
 
             userScores = currentUser.scores || {};
@@ -688,12 +1016,16 @@
             document.getElementById('hud-total-score').textContent = totalDRL;
             document.getElementById('hud-progress-bar').style.width = `${totalDRL}%`;
 
+            // Cập nhật rating đa ngôn ngữ
             const ratingElem = document.getElementById('hud-rating');
-            if (totalDRL >= 90) { ratingElem.textContent = "Xuất sắc"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
-            else if (totalDRL >= 80) { ratingElem.textContent = "Tốt"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
-            else if (totalDRL >= 65) { ratingElem.textContent = "Khá"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
-            else if (totalDRL >= 50) { ratingElem.textContent = "Trung bình"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
-            else { ratingElem.textContent = "Yếu"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const t = translations[currentLang] || translations.vi;
+
+            if (totalDRL >= 90) { ratingElem.textContent = t.rateEx; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
+            else if (totalDRL >= 80) { ratingElem.textContent = t.rateGood; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
+            else if (totalDRL >= 65) { ratingElem.textContent = t.rateFair; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
+            else if (totalDRL >= 50) { ratingElem.textContent = t.rateAvg; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
+            else { ratingElem.textContent = t.rateWeak; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
         }
 
         function applyDirectScore() {
@@ -708,11 +1040,14 @@
             document.getElementById('hud-progress-bar').style.width = `${score}%`;
             
             const ratingElem = document.getElementById('hud-rating');
-            if (score >= 90) { ratingElem.textContent = "Xuất sắc"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
-            else if (score >= 80) { ratingElem.textContent = "Tốt"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
-            else if (score >= 65) { ratingElem.textContent = "Khá"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
-            else if (score >= 50) { ratingElem.textContent = "Trung bình"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
-            else { ratingElem.textContent = "Yếu"; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const t = translations[currentLang] || translations.vi;
+
+            if (score >= 90) { ratingElem.textContent = t.rateEx; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
+            else if (score >= 80) { ratingElem.textContent = t.rateGood; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
+            else if (score >= 65) { ratingElem.textContent = t.rateFair; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
+            else if (score >= 50) { ratingElem.textContent = t.rateAvg; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
+            else { ratingElem.textContent = t.rateWeak; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
         }
 
         function resetAllScores() {
