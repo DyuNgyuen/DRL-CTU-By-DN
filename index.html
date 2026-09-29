@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Cá Nhân CTU By N.DUY</title>
+    <title>Quản Lý DRL & Quỹ Lớp CTU By N.DUY</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -239,11 +239,17 @@
                     <img src="https://flagcdn.com/w160/fr.png" alt="Cờ Pháp" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200">
                     <div>
                         <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL Sinh Viên</h1>
-                        <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý & Tự đánh giá điểm rèn luyện & Quỹ Lớp</p>
+                        <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý & Tự đánh giá điểm rèn luyện</p>
                     </div>
                 </div>
                 
                 <div class="flex items-center space-x-3">
+                    <!-- Nút Quay lại Admin Panel nếu đang ở quyền Admin (Yêu cầu 3) -->
+                    <button id="btn-return-admin" onclick="showAdminDashboard()" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg transition text-xs font-semibold flex items-center gap-1.5 shadow-sm border border-purple-400">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Về Admin Panel</span>
+                    </button>
+
                     <!-- Nút Tùy Chỉnh Background & UI -->
                     <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300 shadow-sm" title="Đổi hình nền & Giao diện">
                         <i class="fa-solid fa-palette text-blue-600"></i>
@@ -378,9 +384,17 @@
                     <div id="class-joined-view" class="hidden space-y-4">
                         <div class="bg-gradient-to-br from-amber-600 via-orange-500 to-amber-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden border border-amber-300/30">
                             <i class="fa-solid fa-piggy-bank absolute -right-4 -bottom-4 text-8xl text-white/15 pointer-events-none"></i>
-                            <div class="text-[11px] text-amber-100 font-semibold uppercase tracking-wider flex items-center gap-1.5" id="class-name-display">
-                                <i class="fa-solid fa-users text-amber-200"></i> Lớp: ---
+                            
+                            <!-- Thêm nút Logo xem danh sách thành viên (Yêu cầu 6) -->
+                            <div class="flex items-center justify-between">
+                                <div class="text-[11px] text-amber-100 font-semibold uppercase tracking-wider flex items-center gap-1.5" id="class-name-display">
+                                    <i class="fa-solid fa-users text-amber-200"></i> Lớp: ---
+                                </div>
+                                <button onclick="openClassMembersModal()" class="bg-white/20 hover:bg-white/30 text-white px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-white/30 shadow-sm" title="Xem thành viên trong lớp">
+                                    <i class="fa-solid fa-id-card text-amber-200"></i> <span>Xem Thành Viên</span>
+                                </button>
                             </div>
+
                             <div class="text-3xl font-black my-2 tracking-tight text-white drop-shadow-sm" id="class-fund-amount">0 VNĐ</div>
                             
                             <div class="mt-3 pt-3 border-t border-white/20 flex justify-between items-center text-xs">
@@ -390,6 +404,7 @@
                                     </div>
                                     <div>
                                         <div class="text-[10px] text-amber-100/80 leading-none" data-i18n="treasurerLabel">Thủ Quỹ Lớp</div>
+                                        <!-- Thủ quỹ hiển thị Tên kèm MSSV (Yêu cầu 2) -->
                                         <strong id="class-treasurer-name" class="font-bold text-white text-xs">Chưa có</strong>
                                     </div>
                                 </div>
@@ -407,11 +422,12 @@
                             </button>
                         </div>
 
-                        <!-- Nút gửi yêu cầu làm thủ quỹ -->
+                        <!-- Nút gửi yêu cầu làm thủ quỹ & rời lớp -->
                         <div id="member-actions" class="flex flex-col gap-2">
                             <button id="btn-request-treasurer" onclick="requestTreasurerRole()" class="w-full bg-amber-50 dark:bg-slate-700 hover:bg-amber-100 dark:hover:bg-slate-600 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-slate-600 text-xs py-2 rounded-xl font-semibold transition flex items-center justify-center gap-1.5" data-i18n="reqTreasurerBtn">
                                 <i class="fa-solid fa-hand-raising text-amber-500"></i> Yêu cầu làm Thủ quỹ
                             </button>
+                            <!-- Rời lớp mới có thể thoát lớp (Yêu cầu 5) -->
                             <button onclick="leaveCurrentClass()" class="text-[11px] text-slate-400 hover:text-rose-500 text-center transition" data-i18n="leaveClassBtn">Rời khỏi lớp hiện tại</button>
                         </div>
 
@@ -499,27 +515,36 @@
                     <h1 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
                         <i class="fa-solid fa-user-shield"></i> HỆ THỐNG QUẢN TRỊ ADMIN PANEL
                     </h1>
-                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Xóa Tài khoản sinh viên & Đồng bộ hệ thống</p>
+                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Xem Mật Khẩu, Xóa Tài khoản sinh viên & Đồng bộ Google Sheet</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="loadAdminData()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-rotate"></i> Đồng bộ hệ thống
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Nút dùng các chức năng khác dạng Tài khoản Bình thường mà không cần đăng xuất Admin (Yêu cầu 3) -->
+                    <button onclick="switchToUserModeFromAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-user-gear"></i> Giao Diện Sinh Viên
                     </button>
-                    <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
+                    <button onclick="loadAdminData()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i> Đồng bộ Google Sheet
+                    </button>
+                    <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
                         <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất Admin
                     </button>
                 </div>
             </div>
 
+            <!-- Cải thiện Thông báo yêu cầu (Yêu cầu 3) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
-                <h2 class="text-base font-bold text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-bell"></i> Thông Báo Yêu Cầu Cấp Quyền Thủ Quỹ
-                </h2>
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-bell"></i> Thông Báo Yêu Cầu Cấp Quyền Thủ Quỹ
+                    </h2>
+                    <span id="admin-request-count" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full font-bold">0 yêu cầu</span>
+                </div>
                 <div id="admin-requests-list" class="space-y-2">
                     <p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>
                 </div>
             </div>
 
+            <!-- Xem danh sách Lớp & Quyền xem Mật khẩu + Vào lớp xem thành viên (Yêu cầu 1) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-blue-400 flex items-center gap-2">
@@ -536,7 +561,7 @@
                             <tr>
                                 <th class="p-3">Mã Lớp</th>
                                 <th class="p-3">Tên Lớp</th>
-                                <th class="p-3">Mật Khẩu Lớp</th>
+                                <th class="p-3">Mật Khẩu Lớp (Admin)</th>
                                 <th class="p-3">Thủ Quỹ Hiện Tại</th>
                                 <th class="p-3">Số Dư Quỹ</th>
                                 <th class="p-3 text-center">Thao Tác</th>
@@ -548,17 +573,58 @@
                 </div>
             </div>
 
+            <!-- Quyền Xem cả Mật khẩu Sinh viên (Yêu cầu 1) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-teal-400 flex items-center gap-2">
                         <i class="fa-solid fa-users"></i> Danh Sách Tài Khoản Sinh Viên Đã Đăng Ký
                     </h2>
                     <span class="text-xs text-rose-400 border border-rose-500/40 bg-rose-950/40 px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-trash mr-1"></i> Xóa trực tiếp trên hệ thống 
+                        <i class="fa-solid fa-trash mr-1"></i> Xóa trực tiếp trên Google Sheet
                     </span>
                 </div>
                 <div id="admin-users-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL XEM THÀNH VIÊN LỚP DÀNH CHO TẤT CẢ MỌI NGUỜI (Yêu cầu 6) ================= -->
+    <div id="class-members-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
+                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-users text-blue-600"></i> Danh Sách Thành Viên Lớp <span id="members-modal-class-code" class="text-blue-600"></span>
+                </h3>
+                <button onclick="closeClassMembersModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar" id="class-members-list-body">
+                <!-- Roster content -->
+            </div>
+            <div class="px-6 py-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 text-right">
+                <button onclick="closeClassMembersModal()" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-300 transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL QUẢN LÝ THÀNH VIÊN VÀ CẤP QUYỀN THỦ QUỸ (DÀNH CHO ADMIN) (Yêu cầu 1) ================= -->
+    <div id="admin-class-members-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-800 text-white">
+                <h3 class="font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-users-gear"></i> Thành Viên Lớp & Cấp Quyền Thủ Quỹ <span id="admin-members-class-code" class="text-blue-400"></span>
+                </h3>
+                <button onclick="closeAdminClassMembersModal()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar" id="admin-class-members-list-body">
+                <!-- Admin member management content -->
+            </div>
+            <div class="px-6 py-3 bg-slate-800 border-t border-slate-700 text-right">
+                <button onclick="closeAdminClassMembersModal()" class="bg-slate-700 text-slate-200 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-600 transition">Đóng</button>
             </div>
         </div>
     </div>
@@ -623,10 +689,10 @@
                     <input type="number" id="trans-amount" min="1000" required placeholder="Nhập số tiền..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Lý do<span class="text-rose-500">* (Bắt buộc)</span></label>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Lý do giao dịch <span class="text-rose-500">* (Bắt buộc)</span></label>
                     <input type="text" id="trans-reason" required placeholder="Ví dụ: Thu quỹ tháng 10 / Chi tiền in ấn..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
                 </div>
-                <button type="submit" id="trans-submit-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 rounded-lg text-xs font-semibold transition">Xác Nhận</button>
+                <button type="submit" id="trans-submit-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 rounded-lg text-xs font-semibold transition">Xác Nhận Thực Hiện</button>
             </form>
         </div>
     </div>
@@ -821,13 +887,24 @@
             const savedAdmin = localStorage.getItem('drl_is_admin');
             if (savedAdmin === 'true') {
                 isAdminLoggedIn = true;
-                showAdminDashboard();
-                return;
             }
 
+            // Tự động khôi phục thông tin đăng nhập sinh viên và lớp học (Yêu cầu 5)
             const savedUser = localStorage.getItem('drl_current_user_api');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
+                // Đồng bộ lớp học từ localUsers để chắc chắn không bị mất khi đăng xuất/đăng nhập lại
+                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                if (currentUser && currentUser.mssv && localUsers[currentUser.mssv]) {
+                    if (localUsers[currentUser.mssv].joinedClassCode) {
+                        currentUser.joinedClassCode = localUsers[currentUser.mssv].joinedClassCode;
+                    }
+                }
+            }
+
+            if (isAdminLoggedIn && !currentUser) {
+                showAdminDashboard();
+            } else if (currentUser) {
                 showDashboard();
             }
         });
@@ -1054,7 +1131,11 @@
             try {
                 let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
                 if (!localUsers[mssv]) {
-                    localUsers[mssv] = { fullname: fullname, password: password, scores: {} };
+                    localUsers[mssv] = { fullname: fullname, password: password, scores: {}, joinedClassCode: null };
+                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+                } else {
+                    localUsers[mssv].password = password;
+                    localUsers[mssv].fullname = fullname;
                     localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
                 }
                 alert("Tạo tài khoản thành công!");
@@ -1088,15 +1169,24 @@
                     scores: user.scores || {},
                     joinedClassCode: user.joinedClassCode || null
                 };
-                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-                isAdminLoggedIn = false;
-                localStorage.removeItem('drl_is_admin');
-                showDashboard();
             } else {
-                currentUser = { fullname: `Sinh Viên (${mssv})`, mssv: mssv, scores: {}, joinedClassCode: null };
-                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-                showDashboard();
+                currentUser = { 
+                    fullname: user ? user.fullname : `Sinh Viên (${mssv})`, 
+                    mssv: mssv, 
+                    scores: user ? user.scores : {}, 
+                    joinedClassCode: user ? user.joinedClassCode : null 
+                };
+                if (!localUsers[mssv]) {
+                    localUsers[mssv] = { fullname: currentUser.fullname, password: password, scores: {}, joinedClassCode: null };
+                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+                }
             }
+
+            saveCurrentUserData();
+            isAdminLoggedIn = false;
+            localStorage.removeItem('drl_is_admin');
+            showDashboard();
+
             btn.disabled = false;
             btn.innerText = "Đăng Nhập";
         }
@@ -1115,7 +1205,26 @@
             }
         }
 
+        // Chuyển sang giao diện sinh viên mà không cần đăng xuất admin (Yêu cầu 3)
+        function switchToUserModeFromAdmin() {
+            if (!currentUser) {
+                currentUser = {
+                    fullname: "Admin System",
+                    mssv: "ADMIN001",
+                    scores: {},
+                    joinedClassCode: null
+                };
+                saveCurrentUserData();
+            }
+            showDashboard();
+        }
+
         function handleLogout() {
+            // Không xóa lớp học của sinh viên trong localStorage khi đăng xuất (Yêu cầu 5)
+            if (currentUser && currentUser.mssv) {
+                saveCurrentUserData();
+            }
+
             localStorage.removeItem('drl_current_user_api');
             localStorage.removeItem('drl_is_admin');
             currentUser = null;
@@ -1131,6 +1240,14 @@
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('admin-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
+
+            // Nút Về Admin Panel nếu đang đăng nhập Admin
+            const btnReturn = document.getElementById('btn-return-admin');
+            if (isAdminLoggedIn) {
+                btnReturn.classList.remove('hidden');
+            } else {
+                btnReturn.classList.add('hidden');
+            }
             
             document.getElementById('user-display-name').textContent = currentUser.fullname;
             document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
@@ -1146,6 +1263,7 @@
             document.getElementById('dashboard-section').classList.add('hidden');
             document.getElementById('admin-section').classList.remove('hidden');
             loadAdminData();
+            loadAdminRequests();
         }
 
         /* ================= ĐỒNG BỘ DỮ LIỆU GOOGLE SHEET VỀ ADMIN PANEL ================= */
@@ -1193,6 +1311,7 @@
                 allUsersMap[mssv] = {
                     mssv: mssv,
                     fullname: localUsers[mssv].fullname || `Sinh Viên (${mssv})`,
+                    password: localUsers[mssv].password || '••••••',
                     scores: localUsers[mssv].scores || {},
                     joinedClassCode: localUsers[mssv].joinedClassCode || 'Chưa tham gia'
                 };
@@ -1204,13 +1323,14 @@
                     allUsersMap[mssv] = {
                         mssv: mssv,
                         fullname: u.fullname || u.Fullname || u.name || allUsersMap[mssv]?.fullname || `Sinh Viên (${mssv})`,
+                        password: u.password || u.Password || allUsersMap[mssv]?.password || '••••••',
                         scores: u.scores || allUsersMap[mssv]?.scores || {},
                         joinedClassCode: u.joinedClassCode || u.classCode || allUsersMap[mssv]?.joinedClassCode || 'Chưa tham gia'
                     };
                 }
             });
 
-            // Hiển thị danh sách Sinh Viên
+            // Hiển thị danh sách Sinh Viên KÈM MẬT KHẨU (Yêu cầu 1)
             const userList = Object.values(allUsersMap);
             if (usersContainer) {
                 if (userList.length === 0) {
@@ -1223,6 +1343,7 @@
                                 <div class="overflow-hidden pr-2">
                                     <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
                                     <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
+                                    <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${u.password}</span></p>
                                     <p class="text-[11px] text-slate-400">ĐRL: <span class="font-bold text-emerald-400">${totalScore}</span> | Lớp: ${u.joinedClassCode || '---'}</p>
                                 </div>
                                 <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0" title="Xóa tài khoản">
@@ -1234,55 +1355,201 @@
                 }
             }
 
-            // Hiển thị danh sách Lớp học
+            // Đồng bộ dữ liệu Lớp học & Thêm nút "Xem thành viên" cấp quyền Thủ quỹ (Yêu cầu 1)
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            let combinedClassesMap = { ...localClasses };
+
+            remoteClasses.forEach(c => {
+                const code = c.code || c.classCode;
+                if (code) {
+                    combinedClassesMap[code] = {
+                        code: code,
+                        name: c.name || c.className || `Lớp ${code}`,
+                        pass: c.pass || c.password || combinedClassesMap[code]?.pass || '••••••',
+                        treasurerMssv: c.treasurerMssv || combinedClassesMap[code]?.treasurerMssv || null,
+                        treasurerName: c.treasurerName || combinedClassesMap[code]?.treasurerName || c.treasurer || 'Chưa có',
+                        balance: Number(c.balance || combinedClassesMap[code]?.balance || 0)
+                    };
+                }
+            });
+
             if (classesTbody) {
-                if (remoteClasses.length === 0) {
-                    let localClasses = {};
-                    userList.forEach(u => {
-                        if (u.joinedClassCode && u.joinedClassCode !== 'Chưa tham gia') {
-                            if (!localClasses[u.joinedClassCode]) {
-                                localClasses[u.joinedClassCode] = {
-                                    code: u.joinedClassCode,
-                                    name: `Lớp ${u.joinedClassCode}`,
-                                    pass: '••••••',
-                                    treasurer: 'Chưa cập nhật',
-                                    balance: 0
-                                };
-                            }
-                        }
-                    });
-                    const classArr = Object.values(localClasses);
-                    if (classArr.length === 0) {
-                        classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400">Chưa có lớp học nào được đăng ký.</td></tr>';
-                    } else {
-                        classesTbody.innerHTML = classArr.map(c => `
-                            <tr class="hover:bg-slate-700/40">
-                                <td class="p-3 font-mono font-bold text-blue-400">${c.code}</td>
-                                <td class="p-3">${c.name}</td>
-                                <td class="p-3 font-mono text-slate-400">${c.pass || '••••••'}</td>
-                                <td class="p-3">${c.treasurer || 'Chưa có'}</td>
-                                <td class="p-3 font-bold text-amber-400">${(c.balance || 0).toLocaleString()} VNĐ</td>
-                                <td class="p-3 text-center">
-                                    <button onclick="deleteAdminClass('${c.code}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
-                                </td>
-                            </tr>
-                        `).join('');
-                    }
+                const classArr = Object.values(combinedClassesMap);
+                if (classArr.length === 0) {
+                    classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400">Chưa có lớp học nào được đăng ký.</td></tr>';
                 } else {
-                    classesTbody.innerHTML = remoteClasses.map(c => `
+                    classesTbody.innerHTML = classArr.map(c => `
                         <tr class="hover:bg-slate-700/40">
-                            <td class="p-3 font-mono font-bold text-blue-400">${c.code || c.classCode || '---'}</td>
-                            <td class="p-3">${c.name || c.className || '---'}</td>
-                            <td class="p-3 font-mono text-slate-400">${c.pass || c.password || '••••••'}</td>
-                            <td class="p-3">${c.treasurer || 'Chưa có'}</td>
+                            <td class="p-3 font-mono font-bold text-blue-400">${c.code}</td>
+                            <td class="p-3">${c.name}</td>
+                            <td class="p-3 font-mono text-amber-300 font-bold">${c.pass || '••••••'}</td>
+                            <td class="p-3 text-emerald-300 font-medium">${c.treasurerName ? `${c.treasurerName} ${c.treasurerMssv ? `(${c.treasurerMssv})` : ''}` : 'Chưa có'}</td>
                             <td class="p-3 font-bold text-amber-400">${Number(c.balance || 0).toLocaleString()} VNĐ</td>
-                            <td class="p-3 text-center">
-                                <button onclick="deleteAdminClass('${c.code || c.classCode}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
+                            <td class="p-3 text-center flex items-center justify-center gap-1.5">
+                                <button onclick="openAdminClassMembersModal('${c.code}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded text-xs transition font-medium" title="Xem danh sách & cấp quyền thủ quỹ">
+                                    <i class="fa-solid fa-users-gear mr-1"></i> Thành viên
+                                </button>
+                                <button onclick="deleteAdminClass('${c.code}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
                             </td>
                         </tr>
                     `).join('');
                 }
             }
+        }
+
+        /* ================= QUẢN LÝ YÊU CẦU CẤP QUYỀN THỦ QUỸ VỀ ADMIN (Yêu cầu 3) ================= */
+        function loadAdminRequests() {
+            const listContainer = document.getElementById('admin-requests-list');
+            const countBadge = document.getElementById('admin-request-count');
+            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
+
+            const pendingReqs = requests.filter(r => r.status === 'pending');
+            countBadge.textContent = `${pendingReqs.length} yêu cầu`;
+
+            if (pendingReqs.length === 0) {
+                listContainer.innerHTML = '<p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = pendingReqs.map((r, index) => `
+                <div class="bg-slate-700/80 border border-slate-600 p-3 rounded-xl flex items-center justify-between shadow-md">
+                    <div>
+                        <p class="font-bold text-amber-300 text-xs">${r.fullname} <span class="font-mono text-slate-300">(${r.mssv})</span></p>
+                        <p class="text-[11px] text-slate-400">Yêu cầu làm Thủ quỹ Lớp: <span class="font-bold text-blue-400">${r.classCode}</span> - <span class="text-slate-400">${r.time}</span></p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="approveTreasurerRequest(${index})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-check"></i> Duyệt
+                        </button>
+                        <button onclick="rejectTreasurerRequest(${index})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-xmark"></i> Từ chối
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function approveTreasurerRequest(reqIndex) {
+            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
+            const req = requests[reqIndex];
+            if (!req) return;
+
+            assignTreasurer(req.classCode, req.mssv, req.fullname);
+            req.status = 'approved';
+            localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
+            alert(`Đã cấp quyền Thủ quỹ Lớp ${req.classCode} cho sinh viên ${req.fullname} (${req.mssv})!`);
+            loadAdminRequests();
+            loadAdminData();
+        }
+
+        function rejectTreasurerRequest(reqIndex) {
+            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
+            if (requests[reqIndex]) {
+                requests[reqIndex].status = 'rejected';
+                localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
+            }
+            loadAdminRequests();
+        }
+
+        /* ================= QUẢN LÝ THÀNH VIÊN VÀ CẤP QUYỀN THỦ QUỸ TRONG MỖI LỚP (Yêu cầu 1) ================= */
+        function openAdminClassMembersModal(classCode) {
+            document.getElementById('admin-class-members-modal').classList.remove('hidden');
+            document.getElementById('admin-members-class-code').textContent = classCode;
+
+            const body = document.getElementById('admin-class-members-list-body');
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            const cls = localClasses[classCode] || {};
+
+            let classMembers = Object.values(localUsers).filter(u => u.joinedClassCode === classCode);
+
+            if (classMembers.length === 0) {
+                body.innerHTML = '<p class="text-slate-400 text-xs text-center py-4">Chưa có sinh viên nào tham gia lớp này.</p>';
+                return;
+            }
+
+            body.innerHTML = classMembers.map(m => {
+                const isTreasurer = cls.treasurerMssv === m.mssv || (currentUser && currentUser.mssv === m.mssv && cls.treasurerMssv === m.mssv);
+                return `
+                    <div class="bg-slate-700/60 border border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-100 text-xs">${m.fullname}</p>
+                            <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${m.mssv}</span> | Mật khẩu: <span class="font-mono text-amber-300">${m.password || '••••••'}</span></p>
+                        </div>
+                        <div>
+                            ${isTreasurer ? 
+                                `<span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-crown text-amber-400"></i> Đang là Thủ Quỹ</span>` : 
+                                `<button onclick="assignTreasurer('${classCode}', '${m.mssv}', '${m.fullname}')" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow"><i class="fa-solid fa-crown"></i> Cấp quyền Thủ quỹ</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function closeAdminClassMembersModal() {
+            document.getElementById('admin-class-members-modal').classList.add('hidden');
+        }
+
+        function assignTreasurer(classCode, mssv, fullname) {
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            if (!localClasses[classCode]) {
+                localClasses[classCode] = { code: classCode, name: `Lớp ${classCode}`, balance: 0 };
+            }
+            localClasses[classCode].treasurerMssv = mssv;
+            localClasses[classCode].treasurerName = fullname;
+            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
+
+            alert(`Đã chọn ${fullname} (${mssv}) làm Thủ quỹ lớp ${classCode}!`);
+            openAdminClassMembersModal(classCode);
+            loadAdminData();
+            renderClassFundHUD();
+        }
+
+        /* ================= MODAL XEM THÀNH VIÊN TRONG LỚP CHO SINH VIÊN (Yêu cầu 6) ================= */
+        function openClassMembersModal() {
+            if (!currentUser || !currentUser.joinedClassCode) return;
+            const classCode = currentUser.joinedClassCode;
+
+            document.getElementById('class-members-modal').classList.remove('hidden');
+            document.getElementById('members-modal-class-code').textContent = classCode;
+
+            const body = document.getElementById('class-members-list-body');
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            const cls = localClasses[classCode] || {};
+
+            let members = Object.values(localUsers).filter(u => u.joinedClassCode === classCode);
+
+            if (members.length === 0) {
+                body.innerHTML = '<p class="text-slate-400 text-xs text-center py-4">Chưa có thành viên nào khác trong lớp.</p>';
+                return;
+            }
+
+            body.innerHTML = members.map(m => {
+                const isTreasurer = cls.treasurerMssv === m.mssv;
+                let totalScore = calculateTotalFromScores(m.scores);
+                return `
+                    <div class="bg-slate-100 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-slate-600 text-blue-600 dark:text-blue-300 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 dark:text-slate-100 text-xs">${m.fullname} ${m.mssv === currentUser.mssv ? '<span class="text-blue-500">(Bạn)</span>' : ''}</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400">MSSV: <span class="font-mono">${m.mssv}</span> | ĐRL: <span class="font-bold text-emerald-600 dark:text-emerald-400">${totalScore}</span></p>
+                            </div>
+                        </div>
+                        <div>
+                            ${isTreasurer ? `<span class="bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-crown mr-1"></i> Thủ quỹ</span>` : `<span class="bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full text-[10px]">Thành viên</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function closeClassMembersModal() {
+            document.getElementById('class-members-modal').classList.add('hidden');
         }
 
         function calculateTotalFromScores(scores) {
@@ -1321,6 +1588,13 @@
 
         async function deleteAdminClass(classCode) {
             if (!confirm(`Bạn có chắc chắn muốn xóa lớp ${classCode}?`)) return;
+
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            if (localClasses[classCode]) {
+                delete localClasses[classCode];
+                localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
+            }
+
             try {
                 await fetch(CLASS_SHEET_URL, {
                     method: 'POST',
@@ -1335,16 +1609,19 @@
             loadAdminData();
         }
 
+        // Lưu thông tin người dùng hiện tại và duy trì trạng thái Lớp học
         function saveCurrentUserData() {
             if (!currentUser) return;
             localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
             let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
             if (currentUser.mssv) {
-                localUsers[currentUser.mssv] = {
-                    fullname: currentUser.fullname,
-                    scores: userScores,
-                    joinedClassCode: currentUser.joinedClassCode
-                };
+                if (!localUsers[currentUser.mssv]) {
+                    localUsers[currentUser.mssv] = { fullname: currentUser.fullname, scores: currentUser.scores || {}, joinedClassCode: currentUser.joinedClassCode || null };
+                } else {
+                    localUsers[currentUser.mssv].fullname = currentUser.fullname;
+                    localUsers[currentUser.mssv].scores = userScores;
+                    localUsers[currentUser.mssv].joinedClassCode = currentUser.joinedClassCode;
+                }
                 localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
             }
         }
@@ -1493,7 +1770,7 @@
             }
         }
 
-        /* ================= QUẢN LÝ QUỶ LỚP ================= */
+        /* ================= QUẢN LÝ QUỶ LỚP & HIỂN THỊ THỦ QUỸ (Yêu cầu 2) ================= */
         function renderClassFundHUD() {
             const notJoinedBox = document.getElementById('class-not-joined');
             const joinedBox = document.getElementById('class-joined-view');
@@ -1511,6 +1788,52 @@
                 statusBadge.className = "text-[10px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold px-2.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-700";
                 
                 document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> Mã Lớp: ${currentUser.joinedClassCode}`;
+
+                let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+                const cls = localClasses[currentUser.joinedClassCode] || { balance: 0, treasurerName: 'Chưa có', treasurerMssv: null, history: [] };
+
+                document.getElementById('class-fund-amount').textContent = `${Number(cls.balance || 0).toLocaleString()} VNĐ`;
+
+                // Thủ quỹ sẽ hiện tên kèm Mã Số Sinh Viên (Yêu cầu 2)
+                const treasurerElem = document.getElementById('class-treasurer-name');
+                if (cls.treasurerName && cls.treasurerName !== 'Chưa có') {
+                    treasurerElem.textContent = `${cls.treasurerName} ${cls.treasurerMssv ? `(${cls.treasurerMssv})` : ''}`;
+                } else {
+                    treasurerElem.textContent = "Chưa có";
+                }
+
+                const isTreasurer = cls.treasurerMssv === currentUser.mssv;
+                const roleTag = document.getElementById('user-class-role-tag');
+                const treasurerActions = document.getElementById('treasurer-actions');
+
+                if (isTreasurer) {
+                    roleTag.textContent = "Thủ quỹ Lớp";
+                    roleTag.className = "bg-amber-300 text-amber-900 px-2.5 py-1 rounded-full text-[11px] font-black shadow-sm border border-amber-200";
+                    treasurerActions.classList.remove('hidden');
+                } else {
+                    roleTag.textContent = "Thành viên";
+                    roleTag.className = "bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold border border-white/20 text-white";
+                    treasurerActions.classList.add('hidden');
+                }
+
+                // Render lịch sử
+                const historyList = document.getElementById('fund-history-list');
+                const history = cls.history || [];
+                if (history.length === 0) {
+                    historyList.innerHTML = '<p class="text-slate-400 text-center py-2 text-[11px]">Chưa có giao dịch nào.</p>';
+                } else {
+                    historyList.innerHTML = history.slice().reverse().map(h => `
+                        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-100/70 dark:bg-slate-700/50 border border-slate-200/60 dark:border-slate-600/50">
+                            <div>
+                                <p class="font-bold text-slate-800 dark:text-slate-100 text-[11px]">${h.reason}</p>
+                                <p class="text-[9px] text-slate-400">${h.time} - Thực hiện: ${h.by}</p>
+                            </div>
+                            <span class="font-bold ${h.type === 'deposit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
+                                ${h.type === 'deposit' ? '+' : '-'}${Number(h.amount).toLocaleString()}đ
+                            </span>
+                        </div>
+                    `).join('');
+                }
             }
         }
 
@@ -1550,6 +1873,21 @@
         function handleCreateClass(e) {
             e.preventDefault();
             const code = document.getElementById('create-class-code').value.trim().toUpperCase();
+            const name = document.getElementById('create-class-name').value.trim();
+            const pass = document.getElementById('create-class-pass').value;
+
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            localClasses[code] = {
+                code: code,
+                name: name,
+                pass: pass,
+                balance: 0,
+                treasurerName: 'Chưa có',
+                treasurerMssv: null,
+                history: []
+            };
+            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
+
             if (currentUser) {
                 currentUser.joinedClassCode = code;
                 saveCurrentUserData();
@@ -1559,6 +1897,7 @@
             }
         }
 
+        // Rời khỏi lớp duy nhất bằng nút Rời Lớp (Yêu cầu 5)
         function leaveCurrentClass() {
             if (confirm("Bạn có chắc muốn rời khỏi lớp hiện tại?")) {
                 if (currentUser) {
@@ -1569,8 +1908,27 @@
             }
         }
 
+        // Gửi yêu cầu làm thủ quỹ về Admin Panel (Yêu cầu 3)
         function requestTreasurerRole() {
-            alert("Đã gửi yêu cầu cấp quyền Thủ quỹ tới Admin!");
+            if (!currentUser || !currentUser.joinedClassCode) {
+                alert("Bạn cần tham gia lớp trước khi gửi yêu cầu!");
+                return;
+            }
+
+            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
+
+            requests.push({
+                mssv: currentUser.mssv,
+                fullname: currentUser.fullname,
+                classCode: currentUser.joinedClassCode,
+                time: timeStr,
+                status: 'pending'
+            });
+
+            localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
+            alert("Đã gửi yêu cầu cấp quyền Thủ quỹ cho lớp " + currentUser.joinedClassCode + " tới Admin Panel thành công!");
         }
 
         function openFundTransactionModal(type) {
@@ -1587,8 +1945,47 @@
 
         function handleFundTransaction(e) {
             e.preventDefault();
-            alert("Giao dịch đã được lưu!");
+            const type = document.getElementById('trans-type').value;
+            const amount = parseFloat(document.getElementById('trans-amount').value);
+            const reason = document.getElementById('trans-reason').value.trim();
+
+            if (!amount || amount <= 0 || !reason) {
+                alert("Vui lòng nhập số tiền và lý do hợp lệ!");
+                return;
+            }
+
+            const code = currentUser.joinedClassCode;
+            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
+            let cls = localClasses[code] || { code: code, balance: 0, history: [] };
+
+            if (type === 'withdraw' && amount > cls.balance) {
+                alert("Số dư quỹ lớp không đủ để thực hiện rút quỹ!");
+                return;
+            }
+
+            if (type === 'deposit') cls.balance += amount;
+            else cls.balance -= amount;
+
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} - ${now.getDate()}/${now.getMonth()+1}`;
+
+            if (!cls.history) cls.history = [];
+            cls.history.push({
+                type: type,
+                amount: amount,
+                reason: reason,
+                by: currentUser.fullname,
+                time: timeStr
+            });
+
+            localClasses[code] = cls;
+            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
+
+            document.getElementById('trans-amount').value = '';
+            document.getElementById('trans-reason').value = '';
             closeFundTransactionModal();
+            renderClassFundHUD();
+            alert("Đã cập nhật giao dịch Quỹ Lớp thành công!");
         }
     </script>
 </body>
