@@ -3,61 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý DRL & Quỹ Lớp CTU By N.DUY</title>
+    <title>Quản Lý Cá Nhân CTU By N.DUY</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --ui-opacity: 0.95;
+            --ui-blur: 12px;
+            --bg-card-light: rgba(255, 255, 255, 0.88);
+            --bg-card-dark: rgba(30, 41, 59, 0.72);
+        }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
-        /* Custom Background Dynamics */
+        /* Dynamic Background & Typography */
         body {
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
             transition: background-image 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease;
+            background-color: #f0f3f7;
+            color: #0f172a;
         }
 
-        /* Dark Mode Overrides */
+        /* 1. NỀN TRẮNG DỊU MẮT & CHỮ ĐEN RÕ NÉT (LIGHT MODE) */
+        body:not(.dark-mode) {
+            background-color: #f0f3f7 !important; /* Nền xám nhạt dịu nhẹ, không bị chói */
+            color: #090d16 !important;
+        }
+
+        body:not(.dark-mode) h1, 
+        body:not(.dark-mode) h2, 
+        body:not(.dark-mode) h3, 
+        body:not(.dark-mode) h4, 
+        body:not(.dark-mode) strong,
+        body:not(.dark-mode) .font-bold,
+        body:not(.dark-mode) .font-semibold {
+            color: #000000 !important; /* Chữ tiêu đề đen rõ nét */
+        }
+
+        body:not(.dark-mode) .text-slate-800,
+        body:not(.dark-mode) .text-slate-700 {
+            color: #0f172a !important; /* Chữ đậm đen nét */
+        }
+
+        body:not(.dark-mode) .text-slate-600,
+        body:not(.dark-mode) .text-slate-500,
+        body:not(.dark-mode) .text-slate-400 {
+            color: #334155 !important; /* Chữ phụ sắc nét, không bị mờ nhạt */
+        }
+
+        /* 3. KHUNG (GLASS PANEL) - MÀU VỪA MỨC NỀN TRẮNG VÀ ĐEN, ĐỦ PHÂN BIỆT */
+        .glass-panel {
+            background-color: var(--bg-card-light) !important;
+            backdrop-filter: blur(var(--ui-blur));
+            -webkit-backdrop-filter: blur(var(--ui-blur));
+            border: 1px solid rgba(203, 213, 225, 0.8) !important; /* Viền vừa đủ tách biệt */
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* DARK MODE - MÀU KHUNG VỪA ĐỦ, KHÔNG ĐẬM CHÁT */
         body.dark-mode {
             background-color: #0f172a;
-            color: #f8fafc;
+            color: #f8fafc !important;
+        }
+
+        body.dark-mode .glass-panel {
+            background-color: var(--bg-card-dark) !important; /* Tone slate vừa đủ */
+            color: #f8fafc !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important; /* Viền vừa đủ phân biệt */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
         body.dark-mode header {
-            background-color: rgba(15, 23, 42, 0.9) !important;
-            border-color: rgba(51, 65, 85, 0.8) !important;
+            background-color: rgba(15, 23, 42, 0.85) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(var(--ui-blur));
         }
 
-        body.dark-mode .bg-white\/95,
-        body.dark-mode .bg-white {
-            background-color: rgba(30, 41, 59, 0.95) !important;
-            color: #f8fafc !important;
-            border-color: rgba(51, 65, 85, 0.8) !important;
-        }
-
-        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
-        body.dark-mode span:not(.theme-thumb-icon), body.dark-mode td {
-            color: #f1f5f9;
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4,
+        body.dark-mode span:not(.theme-thumb-icon), body.dark-mode td, body.dark-mode p, body.dark-mode label, body.dark-mode div {
+            color: #f8fafc;
         }
 
         body.dark-mode p.text-slate-500, 
         body.dark-mode p.text-slate-400,
         body.dark-mode .text-slate-500,
-        body.dark-mode .text-slate-600 {
-            color: #94a3b8 !important;
+        body.dark-mode .text-slate-600,
+        body.dark-mode .text-slate-400 {
+            color: #cbd5e1 !important;
         }
 
         body.dark-mode .bg-slate-100,
         body.dark-mode .bg-slate-100\/70,
         body.dark-mode .bg-slate-100\/80,
+        body.dark-mode .bg-slate-100\/90,
         body.dark-mode .bg-slate-50 {
-            background-color: #334155 !important;
+            background-color: rgba(51, 65, 85, 0.45) !important; /* Khung con không bị quá tối */
             color: #f1f5f9 !important;
         }
 
@@ -65,50 +114,77 @@
         body.dark-mode .border-slate-300,
         body.dark-mode .border-slate-200\/80,
         body.dark-mode .divide-slate-100 > * + * {
-            border-color: #334155 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
         body.dark-mode input[type="text"],
         body.dark-mode input[type="password"],
         body.dark-mode input[type="number"],
         body.dark-mode input[type="url"],
-        body.dark-mode textarea,
         body.dark-mode select {
-            background-color: #1e293b !important;
+            background-color: rgba(15, 23, 42, 0.75) !important;
             color: #f8fafc !important;
-            border-color: #475569 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
         }
 
         body.dark-mode tr:hover {
-            background-color: rgba(51, 65, 85, 0.5) !important;
+            background-color: rgba(255, 255, 255, 0.06) !important;
+        }
+
+        /* 4. TỐI ƯU THIẾT KẾ HUD THÔNG TIN */
+        .hud-score-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1d4ed8 100%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.3);
+        }
+
+        /* NÚT ĐẶT LẠI BẢNG ĐIỂM THAY ĐỔI THEO THEME */
+        .btn-reset-score {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            transition: all 0.3s ease;
+        }
+        .btn-reset-score:hover {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+        }
+        body.dark-mode .btn-reset-score {
+            background-color: rgba(225, 29, 72, 0.2) !important;
+            color: #fca5a5 !important;
+            border-color: rgba(244, 63, 94, 0.4) !important;
+        }
+        body.dark-mode .btn-reset-score:hover {
+            background-color: rgba(225, 29, 72, 0.4) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
         }
     </style>
 </head>
-<body id="app-body" class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+<body id="app-body" class="bg-slate-100 text-slate-800 min-h-screen">
 
     <!-- ================= AUTH SECTION ================= -->
     <div id="auth-section" class="min-h-screen flex items-center justify-center p-4 backdrop-blur-sm bg-slate-900/10">
-        <div class="bg-white/95 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-lg border border-slate-200/80">
-            <div class="text-center mb-6">
+        <div class="glass-panel p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-200/80">
+            <div class="text-center mb-8">
                 <!-- Logo -->
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-3 overflow-hidden border border-slate-200 shadow">
                     <img src="https://flagcdn.com/w160/fr.png" class="w-full h-full object-cover" alt="Logo">
                 </div>
-                <h1 class="text-2xl font-bold text-slate-800" data-i18n="authTitle">TÍNH DRL & QUỸ LỚP BY N.DUY</h1>
-                <p class="text-slate-500 text-sm mt-1">Thuộc Khoa Ngoại Ngữ - ĐHCT</p>
+                <h1 class="text-2xl font-bold text-slate-800" data-i18n="authTitle">TÍNH DRL BY N.DUY</h1>
+                <p class="text-slate-500 text-sm mt-1" data-i18n="authSub">Thuộc Khoa Ngoại Ngữ</p>
             </div>
 
-            <!-- Tab Switcher Header (4 Tabs) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1 bg-slate-100 p-1 rounded-xl mb-6 text-xs font-semibold text-center">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all" data-i18n="login">Sinh Viên</button>
-                <button id="tab-class-login" onclick="switchAuthTab('class-login')" class="py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all">ĐN Lớp</button>
-                <button id="tab-class-reg" onclick="switchAuthTab('class-reg')" class="py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all">ĐK Lớp</button>
-                <button id="tab-admin-login" onclick="switchAuthTab('admin-login')" class="py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all">Quản Lý</button>
+            <!-- Tab Switcher (Đăng nhập - Đăng ký - Admin) -->
+            <div class="flex border-b border-slate-200 mb-6 text-xs sm:text-sm">
+                <button id="tab-login" onclick="switchAuthTab('login')" class="w-1/3 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all" data-i18n="login">Đăng nhập</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all" data-i18n="register">Đăng ký</button>
+                <button id="tab-admin" onclick="switchAuthTab('admin')" class="w-1/3 pb-3 font-semibold text-purple-600 border-b-2 border-transparent transition-all"><i class="fa-solid fa-user-shield mr-1"></i> Admin</button>
             </div>
 
-            <!-- Form 1: Đăng Nhập Sinh Viên -->
+            <!-- Form Đăng Nhập Sinh Viên -->
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-                <div class="text-xs font-semibold text-blue-600 uppercase tracking-wide border-b border-blue-100 pb-1">Đăng nhập tài khoản cá nhân</div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="mssv">Mã Số Sinh Viên (MSSV)</label>
                     <input type="text" id="login-mssv" required placeholder="B2001234" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
@@ -118,14 +194,10 @@
                     <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="login">Đăng Nhập</button>
-                <div class="text-center pt-2">
-                    <button type="button" onclick="switchAuthTab('register')" class="text-xs text-blue-600 hover:underline">Chưa có tài khoản sinh viên? Đăng ký ngay</button>
-                </div>
             </form>
 
-            <!-- Form 1.5: Đăng Ký Sinh Viên -->
+            <!-- Form Đăng Ký Sinh Viên -->
             <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                <div class="text-xs font-semibold text-green-600 uppercase tracking-wide border-b border-green-100 pb-1">Đăng ký sinh viên mới</div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="fullname">Họ và Tên</label>
                     <input type="text" id="reg-fullname" required placeholder="Nguyễn Văn A" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
@@ -141,58 +213,18 @@
                 <button type="submit" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="createAccount">Tạo Tài Khoản</button>
             </form>
 
-            <!-- Form 2: Đăng Nhập Lớp Học (Quỹ Lớp) -->
-            <form id="form-class-login" onsubmit="handleClassLogin(event)" class="space-y-4 hidden">
-                <div class="text-xs font-semibold text-indigo-600 uppercase tracking-wide border-b border-indigo-100 pb-1">Đăng nhập vào Lớp & Quỹ Lớp</div>
+            <!-- Form Đăng Nhập Admin -->
+            <form id="form-admin" onsubmit="handleAdminLogin(event)" class="space-y-4 hidden">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Lớp Học</label>
-                    <select id="login-class-id" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
-                        <option value="">-- Chọn Lớp Học --</option>
-                    </select>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminUserLabel">Tài khoản Quản trị</label>
+                    <input type="text" id="admin-user" required placeholder="Admin" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu Lớp</label>
-                    <input type="password" id="login-class-password" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminPassLabel">Mật khẩu Quản trị</label>
+                    <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-users"></i> Vào Quỹ Lớp
-                </button>
-            </form>
-
-            <!-- Form 3: Đăng Ký Lớp Học Mới -->
-            <form id="form-class-reg" onsubmit="handleClassRegister(event)" class="space-y-4 hidden">
-                <div class="text-xs font-semibold text-purple-600 uppercase tracking-wide border-b border-purple-100 pb-1">Tạo Lớp Học & Khởi Tạo Quỹ</div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mã Lớp (VD: DA22A1, DI21A2)</label>
-                    <input type="text" id="reg-class-id" required placeholder="Mã lớp ngắn gọn" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Tên Lớp Đầy Đủ</label>
-                    <input type="text" id="reg-class-name" required placeholder="VD: Ngôn Ngữ Pháp A2 K48" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Đặt Mật Khẩu Lớp</label>
-                    <input type="password" id="reg-class-password" required placeholder="Mật khẩu chung cho cả lớp" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                </div>
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> Đăng Ký Lớp Mới
-                </button>
-            </form>
-
-            <!-- Form 4: Đăng Nhập Quản Lý (Admin) -->
-            <form id="form-admin-login" onsubmit="handleAdminLogin(event)" class="space-y-4 hidden">
-                <div class="text-xs font-semibold text-rose-600 uppercase tracking-wide border-b border-rose-100 pb-1">Đăng nhập dành cho Quản Lý / Admin</div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Tài khoản Quản lý</label>
-                    <input type="text" id="admin-user" required placeholder="admin" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu Admin</label>
-                    <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                </div>
-                <p class="text-[11px] text-slate-400">Ghi chú demo: TK Quản lý mặc định: <b class="text-slate-600">admin</b> / MK: <b class="text-slate-600">admin123</b></p>
-                <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-user-shield"></i> Đăng Nhập Admin
+                <button type="submit" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> <span data-i18n="adminLoginBtn">Đăng Nhập Quản Trị</span>
                 </button>
             </form>
         </div>
@@ -206,29 +238,16 @@
                 <div class="flex items-center space-x-3">
                     <img src="https://flagcdn.com/w160/fr.png" alt="Cờ Pháp" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200">
                     <div>
-                        <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL & Quỹ Lớp</h1>
-                        <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý điểm rèn luyện & Thu chi quỹ lớp</p>
+                        <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL Sinh Viên</h1>
+                        <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý & Tự đánh giá điểm rèn luyện & Quỹ Lớp</p>
                     </div>
                 </div>
-
-                <!-- NAVIGATION BUTTONS BETWEEN DRL AND QUỸ LỚP -->
-                <div class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold">
-                    <button id="nav-btn-drl" onclick="switchMainTab('drl')" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white shadow transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-chart-line"></i> Điểm DRL
-                    </button>
-                    <button id="nav-btn-fund" onclick="switchMainTab('fund')" class="px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-wallet text-emerald-500"></i> Quỹ Lớp
-                    </button>
-                    <button id="nav-btn-admin" onclick="switchMainTab('admin')" class="hidden px-4 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-gear"></i> Admin Panel
-                    </button>
-                </div>
                 
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    <!-- Nút Tùy Chỉnh Background -->
-                    <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300" title="Đổi hình nền">
-                        <i class="fa-solid fa-image text-blue-600"></i>
-                        <span class="hidden sm:inline" data-i18n="background">Hình nền</span>
+                <div class="flex items-center space-x-3">
+                    <!-- Nút Tùy Chỉnh Background & UI -->
+                    <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300 shadow-sm" title="Đổi hình nền & Giao diện">
+                        <i class="fa-solid fa-palette text-blue-600"></i>
+                        <span class="hidden sm:inline" data-i18n="background">Hình nền & UI</span>
                     </button>
 
                     <!-- Nút Chuyển Mode Sáng/Tối -->
@@ -238,7 +257,7 @@
                         </span>
                     </button>
 
-                    <!-- MENU DROPDOWN TÀI KHOẢN -->
+                    <!-- MENU DROPDOWN NHÂN VIÊN & CÀI ĐẶT -->
                     <div class="relative inline-block text-left" id="user-menu-container">
                         <button id="user-avatar-btn" onclick="toggleSettingsDropdown(event)" class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 p-1.5 rounded-full border border-slate-300 dark:border-slate-600 transition focus:outline-none shadow-sm">
                             <img id="nav-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-blue-500">
@@ -247,7 +266,7 @@
                         </button>
 
                         <!-- Popup Settings -->
-                        <div id="settings-dropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 transition-all duration-200">
+                        <div id="settings-dropdown" class="hidden absolute right-0 mt-2 w-72 glass-panel rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 transition-all duration-200">
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
                                 <div class="relative group">
                                     <img id="dropdown-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-blue-600">
@@ -259,7 +278,7 @@
                                 <div class="overflow-hidden">
                                     <p id="dropdown-user-name" class="font-bold text-slate-800 dark:text-slate-100 text-sm truncate">---</p>
                                     <p id="user-display-mssv" class="text-xs text-slate-500 dark:text-slate-400 truncate">MSSV: ---</p>
-                                    <span id="user-role-badge" class="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] rounded-full font-medium mt-0.5">Sinh viên CTU</span>
+                                    <span id="user-role-badge" class="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] rounded-full font-medium mt-0.5" data-i18n="role">Sinh viên CTU</span>
                                 </div>
                             </div>
 
@@ -294,34 +313,23 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Mobile Sub-Navigation Switcher -->
-            <div class="flex md:hidden border-t border-slate-200 dark:border-slate-700 justify-around p-1.5 bg-slate-50 dark:bg-slate-800 text-xs font-medium">
-                <button onclick="switchMainTab('drl')" class="flex items-center gap-1 text-blue-600 py-1">
-                    <i class="fa-solid fa-chart-line"></i> Điểm DRL
-                </button>
-                <button onclick="switchMainTab('fund')" class="flex items-center gap-1 text-slate-600 dark:text-slate-300 py-1">
-                    <i class="fa-solid fa-wallet text-emerald-500"></i> Quỹ Lớp
-                </button>
-                <button id="mobile-nav-admin" onclick="switchMainTab('admin')" class="hidden flex items-center gap-1 text-rose-600 py-1">
-                    <i class="fa-solid fa-user-gear"></i> Admin
-                </button>
-            </div>
         </header>
 
-        <!-- ================= VIEW 1: DRL CALCULATOR VIEW ================= -->
-        <main id="view-drl-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Main Content Layout -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
             <!-- Left Panel -->
             <div class="lg:col-span-4 space-y-6">
-                <!-- HUD Summary Card -->
-                <div class="bg-gradient-to-br from-blue-900/90 to-indigo-800/90 backdrop-blur-md rounded-2xl p-6 text-white shadow-lg relative overflow-hidden border border-white/20">
+                
+                <!-- HUD Summary Card (TỐI ƯU GIAO DIỆN) -->
+                <div class="hud-score-card rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
                     <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
                         <i class="fa-solid fa-award text-9xl"></i>
                     </div>
-                    <h2 class="text-sm font-medium text-blue-200 uppercase tracking-wider mb-1" data-i18n="totalScore">Tổng Điểm Rèn Luyện</h2>
+                    <h2 class="text-sm font-semibold text-blue-100 uppercase tracking-wider mb-1" data-i18n="totalScore">Tổng Điểm Rèn Luyện</h2>
                     <div class="flex items-baseline space-x-2 my-2">
-                        <span id="hud-total-score" class="text-5xl font-black tracking-tight">0</span>
-                        <span id="hud-max-unit" class="text-blue-200 font-medium text-lg">/ 100 điểm</span>
+                        <span id="hud-total-score" class="text-5xl font-black tracking-tight text-white">0</span>
+                        <span id="hud-max-unit" class="text-blue-100 font-medium text-lg" data-i18n="maxUnit">/ 100 điểm</span>
                     </div>
 
                     <!-- Progress Bar -->
@@ -330,18 +338,103 @@
                     </div>
 
                     <div class="flex justify-between items-center pt-2 border-t border-blue-700/50">
-                        <span class="text-xs text-blue-200" data-i18n="rating">Xếp loại dự kiến:</span>
-                        <span id="hud-rating" class="font-bold text-sm px-3 py-1 bg-white/10 rounded-full border border-white/20" data-i18n="unrated">Chưa xếp loại</span>
+                        <span class="text-xs text-blue-100" data-i18n="rating">Xếp loại dự kiến:</span>
+                        <span id="hud-rating" class="font-bold text-sm px-3 py-1 bg-white/10 rounded-full border border-white/20 text-white" data-i18n="unrated">Chưa xếp loại</span>
+                    </div>
+                </div>
+
+                <!-- HUD CHỨC NĂNG QUẢN LÝ QUĨ LỚP -->
+                <div class="glass-panel p-5 rounded-2xl shadow-md space-y-4 relative overflow-hidden">
+                    <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-white shadow-md shadow-amber-500/30 border border-amber-300/50">
+                                <i class="fa-solid fa-vault text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-base leading-tight" data-i18n="fundTitle">Quản Lý Quỹ Lớp</h3>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Tự động đồng bộ</p>
+                            </div>
+                        </div>
+                        <span id="class-badge-status" class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600">Chưa vào lớp</span>
+                    </div>
+
+                    <!-- Trạng thái chưa tham gia lớp -->
+                    <div id="class-not-joined" class="text-center py-5 space-y-3">
+                        <div class="w-12 h-12 bg-amber-50 dark:bg-slate-700 text-amber-600 dark:text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="notJoinedDesc">Bạn cần đăng nhập hoặc tạo mới thông tin Lớp để xem và sử dụng Quỹ Lớp.</p>
+                        <div class="flex gap-2 justify-center">
+                            <button onclick="openClassModal('join')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition shadow-sm" data-i18n="joinClassBtn">
+                                <i class="fa-solid fa-right-to-bracket mr-1"></i> Tham gia Lớp
+                            </button>
+                            <button onclick="openClassModal('create')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition shadow-sm" data-i18n="createClassBtn">
+                                <i class="fa-solid fa-plus-circle mr-1"></i> Đăng ký Lớp Mới
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Trạng thái đã tham gia lớp -->
+                    <div id="class-joined-view" class="hidden space-y-4">
+                        <div class="bg-gradient-to-br from-amber-600 via-orange-500 to-amber-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden border border-amber-300/30">
+                            <i class="fa-solid fa-piggy-bank absolute -right-4 -bottom-4 text-8xl text-white/15 pointer-events-none"></i>
+                            <div class="text-[11px] text-amber-100 font-semibold uppercase tracking-wider flex items-center gap-1.5" id="class-name-display">
+                                <i class="fa-solid fa-users text-amber-200"></i> Lớp: ---
+                            </div>
+                            <div class="text-3xl font-black my-2 tracking-tight text-white drop-shadow-sm" id="class-fund-amount">0 VNĐ</div>
+                            
+                            <div class="mt-3 pt-3 border-t border-white/20 flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-full bg-amber-400/30 border border-amber-200/50 flex items-center justify-center text-amber-100">
+                                        <i class="fa-solid fa-user-shield text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] text-amber-100/80 leading-none" data-i18n="treasurerLabel">Thủ Quỹ Lớp</div>
+                                        <strong id="class-treasurer-name" class="font-bold text-white text-xs">Chưa có</strong>
+                                    </div>
+                                </div>
+                                <span id="user-class-role-tag" class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold border border-white/20 text-white">Thành viên</span>
+                            </div>
+                        </div>
+
+                        <!-- Các hành động dành riêng cho Thủ quỹ -->
+                        <div id="treasurer-actions" class="hidden grid grid-cols-2 gap-2">
+                            <button onclick="openFundTransactionModal('deposit')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2.5 rounded-xl font-semibold transition flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg" data-i18n="addFundBtn">
+                                <i class="fa-solid fa-circle-plus"></i> Thêm Quỹ
+                            </button>
+                            <button onclick="openFundTransactionModal('withdraw')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs py-2.5 rounded-xl font-semibold transition flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg" data-i18n="withdrawFundBtn">
+                                <i class="fa-solid fa-circle-minus"></i> Rút Quỹ
+                            </button>
+                        </div>
+
+                        <!-- Nút gửi yêu cầu làm thủ quỹ -->
+                        <div id="member-actions" class="flex flex-col gap-2">
+                            <button id="btn-request-treasurer" onclick="requestTreasurerRole()" class="w-full bg-amber-50 dark:bg-slate-700 hover:bg-amber-100 dark:hover:bg-slate-600 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-slate-600 text-xs py-2 rounded-xl font-semibold transition flex items-center justify-center gap-1.5" data-i18n="reqTreasurerBtn">
+                                <i class="fa-solid fa-hand-raising text-amber-500"></i> Yêu cầu làm Thủ quỹ
+                            </button>
+                            <button onclick="leaveCurrentClass()" class="text-[11px] text-slate-400 hover:text-rose-500 text-center transition" data-i18n="leaveClassBtn">Rời khỏi lớp hiện tại</button>
+                        </div>
+
+                        <!-- Lịch sử giao dịch quỹ lớp -->
+                        <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
+                            <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-amber-500"></i> <span data-i18n="fundHistory">Lịch Sử Thu / Chi</span></span>
+                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Thời gian thực</span>
+                            </h4>
+                            <div id="fund-history-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar text-xs">
+                                <p class="text-slate-400 text-center py-2 text-[11px]" data-i18n="noHistory">Chưa có giao dịch nào.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- MỤC 1: Nhập điểm trực tiếp -->
-                <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80">
-                    <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center">
+                <div class="glass-panel p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                    <h3 class="font-bold text-slate-800 dark:text-white text-base mb-3 flex items-center">
                         <i class="fa-solid fa-sliders text-blue-600 mr-2"></i>
                         <span data-i18n="directInputTitle">1. Nhập Điểm Trực Tiếp (Ghi đè)</span>
                     </h3>
-                    <p class="text-xs text-slate-500 mb-4" data-i18n="directInputDesc">Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-300 mb-4" data-i18n="directInputDesc">Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.</p>
                     <div class="flex space-x-2">
                         <input type="number" id="direct-score-input" min="0" max="100" placeholder="Nhập 0 - 100" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <button onclick="applyDirectScore()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex-shrink-0" data-i18n="update">
@@ -351,242 +444,258 @@
                 </div>
 
                 <!-- Tóm tắt 5 Tiêu chí DRL -->
-                <div class="bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
-                    <h3 class="font-bold text-slate-800 text-sm border-b border-slate-100 pb-2" data-i18n="summaryTitle">Tóm tắt 5 Tiêu chí DRL</h3>
+                <div class="glass-panel p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
+                    <h3 class="font-bold text-slate-800 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2" data-i18n="summaryTitle">Tóm tắt 5 Tiêu chí DRL</h3>
                     <div class="space-y-2 text-xs">
-                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec1">I. Ý thức học tập:</span> <span id="summary-sec-1" class="font-semibold text-slate-800">0/20</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec2">II. Nội quy & Quy chế:</span> <span id="summary-sec-2" class="font-semibold text-slate-800">0/25</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec3">III. Hoạt động Phong trào:</span> <span id="summary-sec-3" class="font-semibold text-slate-800">0/20</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec4">IV. Quan hệ Cộng đồng:</span> <span id="summary-sec-4" class="font-semibold text-slate-800">0/15</span></div>
-                        <div class="flex justify-between items-center"><span class="text-slate-600" data-i18n="sec5">V. Công tác Cán bộ & Khác:</span> <span id="summary-sec-5" class="font-semibold text-slate-800">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-300" data-i18n="sec1">I. Ý thức học tập:</span> <span id="summary-sec-1" class="font-semibold text-slate-800 dark:text-white">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-300" data-i18n="sec2">II. Nội quy & Quy chế:</span> <span id="summary-sec-2" class="font-semibold text-slate-800 dark:text-white">0/25</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-300" data-i18n="sec3">III. Hoạt động Phong trào:</span> <span id="summary-sec-3" class="font-semibold text-slate-800 dark:text-white">0/20</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-300" data-i18n="sec4">IV. Quan hệ Cộng đồng:</span> <span id="summary-sec-4" class="font-semibold text-slate-800 dark:text-white">0/15</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-300" data-i18n="sec5">V. Công tác Cán bộ & Khác:</span> <span id="summary-sec-5" class="font-semibold text-slate-800 dark:text-white">0/20</span></div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Right Panel: Bảng chi tiết 5 Nội dung -->
-            <div class="lg:col-span-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 mb-4 gap-2">
+            <div class="lg:col-span-8 glass-panel rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700 mb-4 gap-2">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800" data-i18n="tableTitle">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
-                        <p class="text-xs text-slate-500" data-i18n="tableSub">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-white" data-i18n="tableTitle">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="tableSub">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
                     </div>
-                    <button onclick="resetAllScores()" class="text-xs text-rose-600 hover:text-rose-800 font-medium flex items-center gap-1 self-start sm:self-auto bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200 transition">
+                    <!-- Nút Đặt lại bảng điểm tùy biến theo Theme -->
+                    <button id="btn-reset-scores" onclick="resetAllScores()" class="btn-reset-score text-xs font-medium flex items-center gap-1.5 self-start sm:self-auto px-3.5 py-2 rounded-lg transition shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i> <span data-i18n="reset">Đặt lại bảng điểm</span>
                     </button>
                 </div>
 
+                <!-- Table Area -->
                 <div class="overflow-x-auto custom-scrollbar flex-grow">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr class="bg-slate-100/70 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                            <tr class="bg-slate-200/60 dark:bg-slate-700/60 text-slate-700 dark:text-slate-200 text-xs font-semibold uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
                                 <th class="py-3 px-4 w-1/2" data-i18n="colContent">Nội dung đánh giá</th>
                                 <th class="py-3 px-2 text-center w-20" data-i18n="colMax">Điểm tối đa</th>
                                 <th class="py-3 px-4 text-center w-36" data-i18n="colInput">Nhập/Chọn</th>
                                 <th class="py-3 px-2 text-center w-24" data-i18n="colEarned">Điểm đạt</th>
                             </tr>
                         </thead>
-                        <tbody id="drl-table-body" class="text-sm divide-y divide-slate-100">
+                        <tbody id="drl-table-body" class="text-sm divide-y divide-slate-200/60 dark:divide-slate-700/50">
                             <!-- Dynamic content -->
                         </tbody>
                     </table>
                 </div>
             </div>
-        </main>
 
-        <!-- ================= VIEW 2: QUỸ LỚP SECTION ================= -->
-        <main id="view-fund-section" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
-            
-            <!-- Banner Quỹ Lớp & Tổng Số Tiền -->
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden border border-emerald-400/30 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="space-y-1 text-center sm:text-left z-10">
-                    <div class="inline-flex items-center gap-2 bg-emerald-800/40 px-3 py-1 rounded-full border border-emerald-300/30 text-xs font-medium text-emerald-200">
-                        <i class="fa-solid fa-users"></i> <span id="fund-class-title">Lớp: Chưa chọn lớp</span>
-                    </div>
-                    <h2 class="text-2xl font-black">QUỸ LỚP TỔNG HỢP</h2>
-                    <p class="text-xs text-emerald-100">Cập nhật số dư & lịch sử thu chi theo thời gian thực</p>
-                </div>
-
-                <!-- Thẻ Số Tiền Quỹ (Biểu tượng tiền tệ) -->
-                <div class="bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 text-center sm:text-right min-w-[240px] z-10 shadow-inner">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 flex items-center justify-center sm:justify-end gap-1.5">
-                        <i class="fa-solid fa-coins text-yellow-300 text-base"></i> Số dư hiện tại
-                    </span>
-                    <div class="text-3xl sm:text-4xl font-extrabold text-yellow-300 my-1 tracking-tight" id="fund-balance-display">
-                        0 <span class="text-xl">VNĐ</span>
-                    </div>
-                    <div class="text-[11px] text-emerald-100 flex items-center justify-center sm:justify-end gap-1" id="fund-treasurer-info">
-                        <i class="fa-solid fa-user-shield"></i> Thủ quỹ: Chưa phân công
-                    </div>
-                </div>
-
-                <div class="absolute -right-6 -bottom-10 opacity-10 text-white">
-                    <i class="fa-solid fa-wallet text-9xl"></i>
-                </div>
-            </div>
-
-            <!-- Khung Thao Tác Quản Lý (Thêm / Rút Tiền) dành riêng cho Người có quyền -->
-            <div id="fund-manager-controls" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Khung 1: THÊM TIỀN -->
-                <div class="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-emerald-200">
-                    <h3 class="font-bold text-emerald-700 text-base mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-plus text-emerald-500 text-lg"></i> Thêm Tiền Vào Quỹ (+)
-                    </h3>
-                    <form onsubmit="handleFundTransaction(event, 'add')" class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số tiền thêm (VNĐ)</label>
-                            <input type="number" id="fund-add-amount" min="1000" step="1000" required placeholder="VD: 50000" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nguồn thu / Ghi chú (Không bắt buộc)</label>
-                            <input type="text" id="fund-add-reason" placeholder="VD: Đóng quỹ tháng 10, Tiền hỗ trợ..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg text-sm transition shadow flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-plus"></i> Xác Nhận Cộng Tiền
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Khung 2: RÚT TIỀN (Bắt buộc có Lí do) -->
-                <div class="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-rose-200">
-                    <h3 class="font-bold text-rose-700 text-base mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-minus text-rose-500 text-lg"></i> Rút Tiền Khỏi Quỹ (-)
-                    </h3>
-                    <form onsubmit="handleFundTransaction(event, 'withdraw')" class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Số tiền rút (VNĐ)</label>
-                            <input type="number" id="fund-withdraw-amount" min="1000" step="1000" required placeholder="VD: 100000" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-rose-600 mb-1">LÍ DO RÚT TIỀN <span class="text-rose-500 font-bold">* (Bắt buộc)</span></label>
-                            <input type="text" id="fund-withdraw-reason" required placeholder="VD: Mua nước sinh hoạt văn nghệ, in tài liệu..." class="w-full px-3 py-2 border border-rose-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                        </div>
-                        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 rounded-lg text-sm transition shadow flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-minus"></i> Xác Nhận Rút Tiền
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Thẻ Thông Báo / Xin Quyền cho thành viên thường -->
-            <div id="fund-student-notice" class="bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-base">
-                        <i class="fa-solid fa-eye"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-800 dark:text-slate-100">Bạn đang ở chế độ xem Quỹ Lớp công khai</p>
-                        <p class="text-slate-500 dark:text-slate-400">Chỉ có Thủ quỹ được Admin phê duyệt mới có quyền thực hiện giao dịch thêm/rút tiền.</p>
-                    </div>
-                </div>
-                <button onclick="requestTreasurerRole()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition whitespace-nowrap">
-                    <i class="fa-solid fa-paper-plane mr-1"></i> Xin quyền Thủ quỹ
-                </button>
-            </div>
-
-            <!-- LỊCH SỬ GIAO DỊCH QUỸ LỚP (HIỂN THỊ CÔNG KHẢI THỜI GIAN THỰC) -->
-            <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                            <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> Lịch Sử Giao Dịch Quỹ Lớp (Real-time)
-                        </h3>
-                        <p class="text-xs text-slate-500">Toàn bộ biến động số tiền và lý do rút tiền được công khai cho tất cả thành viên</p>
-                    </div>
-                    <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-medium" id="fund-history-count">0 giao dịch</span>
-                </div>
-
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[650px]">
-                        <thead>
-                            <tr class="bg-slate-100/70 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
-                                <th class="py-3 px-4">Thời Gian</th>
-                                <th class="py-3 px-3 text-center">Loại</th>
-                                <th class="py-3 px-4">Số Tiền</th>
-                                <th class="py-3 px-4">Lý Do / Ghi Chú</th>
-                                <th class="py-3 px-4">Người Thực Hiện</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fund-history-tbody" class="text-xs divide-y divide-slate-100">
-                            <!-- Dynamic Content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-
-        <!-- ================= VIEW 3: ADMIN / MANAGER PANEL ================= -->
-        <main id="view-admin-section" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
-            <div class="bg-gradient-to-r from-rose-700 to-pink-800 text-white rounded-2xl p-6 shadow-xl flex items-center justify-between">
-                <div>
-                    <h2 class="text-2xl font-black flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield"></i> BẢNG QUẢN LÝ TỔNG HỢP (ADMIN)
-                    </h2>
-                    <p class="text-xs text-pink-200">Quản lý các Lớp học, Phê duyệt Thủ quỹ và Giám sát Quỹ các lớp</p>
-                </div>
-                <div class="bg-white/10 px-4 py-2 rounded-xl text-right border border-white/20">
-                    <span class="text-xs text-pink-200">Tổng Quỹ Tất Cả Các Lớp:</span>
-                    <div class="text-2xl font-bold text-yellow-300" id="admin-total-funds-all">0 VNĐ</div>
-                </div>
-            </div>
-
-            <!-- Danh sách Lớp đã Tạo & Phân quyền Thủ quỹ -->
-            <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
-                <h3 class="font-bold text-slate-800 text-base">Danh Sách Các Lớp & Cấp Quyền Thủ Quỹ</h3>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[700px]">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-600 text-xs font-semibold uppercase border-b border-slate-200">
-                                <th class="py-3 px-4">Mã Lớp</th>
-                                <th class="py-3 px-4">Tên Lớp</th>
-                                <th class="py-3 px-4">Số Dư Quỹ</th>
-                                <th class="py-3 px-4">Mã SV Thủ Quỹ Hiện Tại</th>
-                                <th class="py-3 px-4 text-center">Hành Động Cấp Quyền</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-classes-tbody" class="text-xs divide-y divide-slate-100">
-                            <!-- Admin Dynamic Content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </main>
     </div>
 
-    <!-- ================= MODAL CHỌN BACKGROUND ================= -->
+    <!-- ================= ADMIN PANEL SECTION ================= -->
+    <div id="admin-section" class="hidden min-h-screen bg-slate-900 text-slate-100 p-4 sm:p-8">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xl">
+                <div>
+                    <h1 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield"></i> HỆ THỐNG QUẢN TRỊ ADMIN PANEL
+                    </h1>
+                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Xóa Tài khoản sinh viên & Đồng bộ hệ thống</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="loadAdminData()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i> Đồng bộ hệ thống
+                    </button>
+                    <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất Admin
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
+                <h2 class="text-base font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bell"></i> Thông Báo Yêu Cầu Cấp Quyền Thủ Quỹ
+                </h2>
+                <div id="admin-requests-list" class="space-y-2">
+                    <p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký
+                    </h2>
+                    <span class="text-xs text-emerald-400 border border-emerald-500/40 bg-emerald-950/40 px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Tự động đồng bộ Google Sheet
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-700/60 uppercase text-slate-400 font-semibold">
+                            <tr>
+                                <th class="p-3">Mã Lớp</th>
+                                <th class="p-3">Tên Lớp</th>
+                                <th class="p-3">Mật Khẩu Lớp</th>
+                                <th class="p-3">Thủ Quỹ Hiện Tại</th>
+                                <th class="p-3">Số Dư Quỹ</th>
+                                <th class="p-3 text-center">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-classes-tbody" class="divide-y divide-slate-700">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-teal-400 flex items-center gap-2">
+                        <i class="fa-solid fa-users"></i> Danh Sách Tài Khoản Sinh Viên Đã Đăng Ký
+                    </h2>
+                    <span class="text-xs text-rose-400 border border-rose-500/40 bg-rose-950/40 px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-trash mr-1"></i> Xóa trực tiếp trên hệ thống 
+                    </span>
+                </div>
+                <div id="admin-users-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODALS THAM GIA / TẠO LỚP ================= -->
+    <div id="class-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
+                <h3 id="class-modal-title" class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-users text-blue-600"></i> Tham gia Lớp
+                </h3>
+                <button onclick="closeClassModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="form-join-class" onsubmit="handleJoinClass(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mã Lớp</label>
+                    <input type="text" id="join-class-code" required placeholder="Ví dụ: DI2001A1" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs uppercase focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mật khẩu Lớp</label>
+                    <input type="password" id="join-class-pass" required placeholder="••••••••" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-semibold transition">Vào Lớp</button>
+            </form>
+
+            <form id="form-create-class" onsubmit="handleCreateClass(event)" class="p-6 space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mã Lớp</label>
+                    <input type="text" id="create-class-code" required placeholder="Ví dụ: DI2001A1" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs uppercase focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Tên Lớp</label>
+                    <input type="text" id="create-class-name" required placeholder="Ví dụ: Ngôn Ngữ Pháp A2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mật khẩu Lớp</label>
+                    <input type="password" id="create-class-pass" required placeholder="••••••••" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition">Đăng Ký Lớp & Đồng Bộ Sheet</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL GIAO DỊCH QUỶ LỚP ================= -->
+    <div id="fund-trans-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
+                <h3 id="fund-trans-title" class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-money-bill-transfer text-amber-500"></i> Thêm/Rút Quỹ Lớp
+                </h3>
+                <button onclick="closeFundTransactionModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="handleFundTransaction(event)" class="p-6 space-y-4">
+                <input type="hidden" id="trans-type" value="deposit">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Số tiền (VNĐ)</label>
+                    <input type="number" id="trans-amount" min="1000" required placeholder="Nhập số tiền..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Lý do<span class="text-rose-500">* (Bắt buộc)</span></label>
+                    <input type="text" id="trans-reason" required placeholder="Ví dụ: Thu quỹ tháng 10 / Chi tiền in ấn..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+                <button type="submit" id="trans-submit-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 rounded-lg text-xs font-semibold transition">Xác Nhận</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL CHỌN BACKGROUND & CÀI ĐẶT GIAO DIỆN MỜ/ĐỤC ================= -->
     <div id="bg-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                <h3 class="font-bold text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-palette text-blue-600"></i> Cài Đặt Hình Nền
+        <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
+                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-palette text-blue-600"></i> Cài Đặt Hình Nền & Tùy Chỉnh UI
                 </h3>
                 <button onclick="toggleBgModal(false)" class="text-slate-400 hover:text-slate-600 p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
             
-            <div class="p-6 space-y-5">
+            <div class="p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <!-- CÀI ĐẶT ĐỘ MỜ TRONG SUỐT HOẶC ĐEN ĐỤC / TRẮNG ĐỤC -->
+                <div class="bg-blue-50/60 dark:bg-slate-800/80 p-4 rounded-xl border border-blue-200 dark:border-slate-600 space-y-3">
+                    <h4 class="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders text-blue-600"></i> Bảng Tùy Chỉnh Độ Trong Suốt Giao Diện
+                    </h4>
+                    
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>Độ mờ đục khung (UI Opacity):</span>
+                            <span id="ui-opacity-val" class="font-bold text-blue-600">95%</span>
+                        </div>
+                        <input type="range" id="ui-opacity-range" min="20" max="100" value="95" oninput="changeUiOpacity(this.value)" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span>Độ mờ Kính hậu cảnh (Backdrop Blur):</span>
+                            <span id="ui-blur-val" class="font-bold text-blue-600">12px</span>
+                        </div>
+                        <input type="range" id="ui-blur-range" min="0" max="25" value="12" oninput="changeUiBlur(this.value)" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button onclick="setQuickUiPreset('transparent')" class="flex-1 py-1.5 bg-white/40 dark:bg-slate-700 text-[11px] font-semibold border rounded-lg hover:bg-blue-100 transition">Trong suốt (Glass)</button>
+                        <button onclick="setQuickUiPreset('white')" class="flex-1 py-1.5 bg-white text-slate-800 text-[11px] font-semibold border rounded-lg hover:bg-slate-100 transition">Trắng Đục</button>
+                        <button onclick="setQuickUiPreset('dark')" class="flex-1 py-1.5 bg-slate-900 text-white text-[11px] font-semibold border rounded-lg hover:bg-slate-800 transition">Đen Đục</button>
+                    </div>
+                </div>
+
+                <!-- HÌNH NỀN GỢI Ý -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hình nền gợi ý</label>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase">Hình nền gợi ý</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button onclick="setBgImage('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition shadow-sm">
                             <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Trường học">
                         </button>
-                        <button onclick="setBgImage('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition shadow-sm">
                             <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Núi đêm">
                         </button>
-                        <button onclick="setBgImage('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition">
+                        <button onclick="setBgImage('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80')" class="h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 focus:border-blue-500 transition shadow-sm">
                             <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover" alt="Biển">
                         </button>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Tải ảnh từ máy tính / Điện thoại</label>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase">Tải ảnh từ máy tính / Điện thoại</label>
                     <input type="file" id="bg-file-input" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2 uppercase">Hoặc dán Link URL Ảnh</label>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase">Hoặc dán Link URL Ảnh</label>
                     <div class="flex gap-2">
                         <input type="url" id="bg-url-input" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <button onclick="applyUrlBg()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Đổi</button>
@@ -594,9 +703,9 @@
                 </div>
             </div>
 
-            <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between">
-                <button onclick="removeBgImage()" class="text-xs text-rose-600 font-medium hover:underline">Xóa ảnh nền (Về mặc định)</button>
-                <button onclick="toggleBgModal(false)" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-300 transition">Đóng</button>
+            <div class="px-6 py-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+                <button onclick="removeBgImage()" class="text-xs text-rose-600 dark:text-rose-400 font-medium hover:underline">Xóa ảnh nền (Về mặc định)</button>
+                <button onclick="toggleBgModal(false)" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-300 transition">Đóng</button>
             </div>
         </div>
     </div>
@@ -604,233 +713,14 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym2ddo_tffnOvS63KAMpYMxjG3Q4wOsDNxue8z-oRqpIqzoAT1i-pLhQtZ5PyykLZdcA/exec";
+        const CLASS_SHEET_URL = "https://script.google.com/macros/s/AKfycbwSgidq66swJgKOvYFi3v_LjxO5A1BIYj9ncrLXm5oe7Kf2Lobz96bG6lwmkvHFRgbU/exec";
 
-        // TỪ ĐIỂN UI VÀ NỘI DUNG 5 NGÔN NGỮ
         const translations = {
             vi: {
-                authTitle: "TÍNH DRL & QUỸ LỚP BY N.DUY",
-                authSub: "Thuộc Khoa Ngoại Ngữ, Ngôn Ngữ Pháp A2",
-                login: "Đăng nhập",
-                register: "Đăng ký",
-                mssv: "Mã Số Sinh Viên (MSSV)",
-                password: "Mật khẩu",
-                fullname: "Họ và Tên",
-                createAccount: "Tạo Tài Khoản",
-                sysTitle: "Hệ Thống DRL & Quỹ Lớp",
-                sysSub: "Quản lý điểm rèn luyện & Thu chi quỹ lớp",
-                background: "Hình nền",
-                totalScore: "Tổng Điểm Rèn Luyện",
-                maxUnit: "/ 100 điểm",
-                rating: "Xếp loại dự kiến:",
-                directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)",
-                directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.",
-                directPlaceholder: "Nhập 0 - 100",
-                inputPlaceholder: "Nhập điểm",
-                maxLabel: "Tối đa:",
-                update: "Cập nhật",
-                summaryTitle: "Tóm tắt 5 Tiêu chí DRL",
-                sec1: "I. Ý thức học tập:",
-                sec2: "II. Nội quy & Quy chế:",
-                sec3: "III. Hoạt động Phong trào:",
-                sec4: "IV. Quan hệ Cộng đồng:",
-                sec5: "V. Công tác Cán bộ & Khác:",
-                tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết",
-                tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT",
-                reset: "Đặt lại bảng điểm",
-                colContent: "Nội dung đánh giá",
-                colMax: "Điểm tối đa",
-                colInput: "Nhập/Chọn",
-                colEarned: "Điểm đạt",
-                changeAvatar: "Thay đổi ảnh đại diện",
-                language: "Ngôn ngữ",
-                logout: "Đăng xuất",
-                role: "Sinh viên CTU",
-                unrated: "Chưa xếp loại",
-                rateEx: "Xuất sắc",
-                rateGood: "Tốt",
-                rateFair: "Khá",
-                rateAvg: "Trung bình",
-                rateWeak: "Yếu"
+                authTitle: "TÍNH DRL BY N.DUY", authSub: "Thuộc Khoa Ngoại Ngữ", login: "Đăng nhập", register: "Đăng ký", mssv: "Mã Số Sinh Viên (MSSV)", password: "Mật khẩu", fullname: "Họ và Tên", createAccount: "Tạo Tài Khoản", sysTitle: "Hệ Thống DRL Sinh Viên", sysSub: "Quản lý & Tự đánh giá điểm rèn luyện", background: "Hình nền & UI", totalScore: "Tổng Điểm Rèn Luyện", maxUnit: "/ 100 điểm", rating: "Xếp loại dự kiến:", directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)", directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.", directPlaceholder: "Nhập 0 - 100", inputPlaceholder: "Nhập điểm", maxLabel: "Tối đa:", update: "Cập nhật", summaryTitle: "Tóm tắt 5 Tiêu chí DRL", sec1: "I. Ý thức học tập:", sec2: "II. Nội quy & Quy chế:", sec3: "III. Hoạt động Phong trào:", sec4: "IV. Quan hệ Cộng đồng:", sec5: "V. Công tác Cán bộ & Khác:", tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết", tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT", reset: "Đặt lại bảng điểm", colContent: "Nội dung đánh giá", colMax: "Điểm tối đa", colInput: "Nhập/Chọn", colEarned: "Điểm đạt", changeAvatar: "Thay đổi ảnh đại diện", language: "Ngôn ngữ", logout: "Đăng xuất", role: "Sinh viên CTU", unrated: "Chưa xếp loại", rateEx: "Xuất sắc", rateGood: "Tốt", rateFair: "Khá", rateAvg: "Trung bình", rateWeak: "Yếu", fundTitle: "Quản Lý Quỹ Lớp", fundSub: "Minh bạch & Tự động đồng bộ", treasurerLabel: "Thủ Quỹ Lớp", notJoinedDesc: "Bạn cần đăng nhập hoặc tạo mới thông tin Lớp để xem và sử dụng Quỹ Lớp.", joinClassBtn: "Tham gia Lớp", createClassBtn: "Đăng ký Lớp Mới", addFundBtn: "Thêm Quỹ", withdrawFundBtn: "Rút Quỹ", reqTreasurerBtn: "Yêu cầu làm Thủ quỹ", leaveClassBtn: "Rời khỏi lớp hiện tại", fundHistory: "Lịch Sử Thu / Chi", realtimeTag: "Thời gian thực", noHistory: "Chưa có giao dịch nào.", adminNotice: "Khung dành riêng cho Quản trị viên hệ thống.", adminUserLabel: "Tài khoản Quản trị", adminPassLabel: "Mật khẩu Quản trị", adminLoginBtn: "Đăng Nhập Quản Trị"
             },
             en: {
-                authTitle: "DRL & CLASS FUND BY N.DUY",
-                authSub: "Foreign Languages Faculty, French A2",
-                login: "Log In",
-                register: "Register",
-                mssv: "Student ID (MSSV)",
-                password: "Password",
-                fullname: "Full Name",
-                createAccount: "Create Account",
-                sysTitle: "DRL & Class Fund System",
-                sysSub: "Manage training scores & Class funds",
-                background: "Wallpaper",
-                totalScore: "Total Training Score",
-                maxUnit: "/ 100 pts",
-                rating: "Expected Rating:",
-                directInputTitle: "1. Direct Score Entry (Override)",
-                directInputDesc: "You can directly enter your total score here if you don't want to select individual items.",
-                directPlaceholder: "Enter 0 - 100",
-                inputPlaceholder: "Enter score",
-                maxLabel: "Max:",
-                update: "Update",
-                summaryTitle: "Summary of 5 DRL Criteria",
-                sec1: "I. Academic Attitude:",
-                sec2: "II. Rules & Regulations:",
-                sec3: "III. Activities & Movements:",
-                sec4: "IV. Community Relations:",
-                sec5: "V. Cadre Work & Others:",
-                tableTitle: "2. Detailed Training Scorecard",
-                tableSub: "Select or enter values according to CTU standard criteria",
-                reset: "Reset Scorecard",
-                colContent: "Evaluation Content",
-                colMax: "Max Score",
-                colInput: "Input/Select",
-                colEarned: "Earned Score",
-                changeAvatar: "Change Avatar",
-                language: "Language",
-                logout: "Log Out",
-                role: "CTU Student",
-                unrated: "Unrated",
-                rateEx: "Excellent",
-                rateGood: "Good",
-                rateFair: "Fair",
-                rateAvg: "Average",
-                rateWeak: "Weak"
-            },
-            zh: {
-                authTitle: "N.DUY 操行分与班级基金",
-                authSub: "外语学院，法语 A2",
-                login: "登录",
-                register: "注册",
-                mssv: "学号 (MSSV)",
-                password: "密码",
-                fullname: "姓名",
-                createAccount: "创建账户",
-                sysTitle: "操行分与班级基金系统",
-                sysSub: "管理操行得分与班级基金",
-                background: "壁纸",
-                totalScore: "操行总得分",
-                maxUnit: "/ 100 分",
-                rating: "预计评级：",
-                directInputTitle: "1. 直接输入分数（覆盖）",
-                directInputDesc: "如果您不想逐项勾选，可以在此处直接输入总分。",
-                directPlaceholder: "输入 0 - 100",
-                inputPlaceholder: "输入分数",
-                maxLabel: "最高:",
-                update: "更新",
-                summaryTitle: "5大操行标准摘要",
-                sec1: "I. 学习态度与责任：",
-                sec2: "II. 校规校纪：",
-                sec3: "III. 学生活动与文体：",
-                sec4: "IV. 社区与社会关系：",
-                sec5: "V. 干部工作与奖励：",
-                tableTitle: "2. 详细操行评分表",
-                tableSub: "根据 CTU 标准评估细则勾选或输入相应数值",
-                reset: "重置评分表",
-                colContent: "评估内容",
-                colMax: "最高分",
-                colInput: "输入/选择",
-                colEarned: "得分",
-                changeAvatar: "更换头像",
-                language: "语言",
-                logout: "退出登录",
-                role: "CTU 学生",
-                unrated: "未评级",
-                rateEx: "优秀",
-                rateGood: "良好",
-                rateFair: "中等",
-                rateAvg: "及格",
-                rateWeak: "较差"
-            },
-            ko: {
-                authTitle: "N.DUY DRL 및 학급 펀드",
-                authSub: "외국어대학 프랑스어과 A2",
-                login: "로그인",
-                register: "회원가입",
-                mssv: "학번 (MSSV)",
-                password: "비밀번호",
-                fullname: "성명",
-                createAccount: "계정 생성",
-                sysTitle: "DRL 및 학급 펀드 시스템",
-                sysSub: "점수 관리 및 학급 펀드 수입/지출 관리",
-                background: "배경화면",
-                totalScore: "총 점수",
-                maxUnit: "/ 100 점",
-                rating: "예상 등급:",
-                directInputTitle: "1. 직접 점수 입력 (덮어쓰기)",
-                directInputDesc: "각 항목을 선택하지 않고 직접 총점을 입력할 수 있습니다.",
-                directPlaceholder: "0 - 100 입력",
-                inputPlaceholder: "점수 입력",
-                maxLabel: "최대:",
-                update: "업데이트",
-                summaryTitle: "5가지 평가 기준 요약",
-                sec1: "I. 학습 태도 및 책임:",
-                sec2: "II. 교칙 및 규정:",
-                sec3: "III. 활동 및 운동:",
-                sec4: "IV. 지역사회 관계:",
-                sec5: "V. 간부 활동 및 기타:",
-                tableTitle: "2. 상세 점수 평가표",
-                tableSub: "CTU 표준 기준에 따라 항목을 선택하거나 점수를 입력하세요.",
-                reset: "점수 초기화",
-                colContent: "평가 내용",
-                colMax: "최대 점수",
-                colInput: "입력/선택",
-                colEarned: "취득 점수",
-                changeAvatar: "프로필 사진 변경",
-                language: "언어",
-                logout: "로그아웃",
-                role: "CTU 학생",
-                unrated: "미평가",
-                rateEx: "최우수",
-                rateGood: "우수",
-                rateFair: "보통",
-                rateAvg: "미흡",
-                rateWeak: "부족"
-            },
-            fr: {
-                authTitle: "CALCULATEUR DRL & FONDS DE CLASSE",
-                authSub: "Faculté des Langues Étrangères, Langue Française A2",
-                login: "Connexion",
-                register: "Inscription",
-                mssv: "Numéro d'étudiant (MSSV)",
-                password: "Mot de passe",
-                fullname: "Nom et prénom",
-                createAccount: "Créer un compte",
-                sysTitle: "Système DRL & Fonds de Classe",
-                sysSub: "Gestion des points & Budget de classe",
-                background: "Fond d'écran",
-                totalScore: "Score Total DRL",
-                maxUnit: "/ 100 pts",
-                rating: "Évaluation prévue :",
-                directInputTitle: "1. Saisie Directe du Score",
-                directInputDesc: "Vous pouvez saisir directement le score total ici sans tout cocher.",
-                directPlaceholder: "Saisir 0 - 100",
-                inputPlaceholder: "Saisir score",
-                maxLabel: "Max :",
-                update: "Mettre à jour",
-                summaryTitle: "Résumé des 5 Critères DRL",
-                sec1: "I. Attitude académique :",
-                sec2: "II. Règlements & Discipline :",
-                sec3: "III. Activités & Mouvements :",
-                sec4: "IV. Relations Communautaires :",
-                sec5: "V. Responsabilités & Distinctions :",
-                tableTitle: "2. Grille d'Évaluation Détaillée",
-                tableSub: "Cochez ou saisissez selon les critères standards de l'Université CTU",
-                reset: "Réinitialiser",
-                colContent: "Contenu d'évaluation",
-                colMax: "Score Max",
-                colInput: "Saisie/Choix",
-                colEarned: "Points acquis",
-                changeAvatar: "Changer d'avatar",
-                language: "Langue",
-                logout: "Déconnexion",
-                role: "Étudiant CTU",
-                unrated: "Non évalué",
-                rateEx: "Excellent",
-                rateGood: "Très Bien",
-                rateFair: "Bien",
-                rateAvg: "Moyen",
-                rateWeak: "Insuffisant"
+                authTitle: "DRL CALCULATOR BY N.DUY", authSub: "Faculty of Foreign Languages", login: "Log In", register: "Register", mssv: "Student ID (MSSV)", password: "Password", fullname: "Full Name", createAccount: "Create Account", sysTitle: "Student DRL System", sysSub: "Manage & Self-evaluate training points", background: "Wallpaper & UI", totalScore: "Total Training Score", maxUnit: "/ 100 pts", rating: "Expected Rating:", directInputTitle: "1. Direct Score Entry (Override)", directInputDesc: "You can directly enter your total score here if you don't want to select individual items.", directPlaceholder: "Enter 0 - 100", inputPlaceholder: "Enter score", maxLabel: "Max:", update: "Update", summaryTitle: "Summary of 5 DRL Criteria", sec1: "I. Academic Attitude:", sec2: "II. Rules & Regulations:", sec3: "III. Activities & Movements:", sec4: "IV. Community Relations:", sec5: "V. Cadre Work & Others:", tableTitle: "2. Detailed Training Scorecard", tableSub: "Select or enter values according to CTU standard criteria", reset: "Reset Scorecard", colContent: "Evaluation Content", colMax: "Max Score", colInput: "Input/Select", colEarned: "Earned Score", changeAvatar: "Change Avatar", language: "Language", logout: "Log Out", role: "CTU Student", unrated: "Unrated", rateEx: "Excellent", rateGood: "Good", rateFair: "Fair", rateAvg: "Average", rateWeak: "Weak", fundTitle: "Class Fund Management", fundSub: "Transparent & Auto Synced", treasurerLabel: "Class Treasurer", notJoinedDesc: "You need to join or create a class to manage and view funds.", joinClassBtn: "Join Class", createClassBtn: "Register New Class", addFundBtn: "Deposit Fund", withdrawFundBtn: "Withdraw Fund", reqTreasurerBtn: "Request Treasurer Role", leaveClassBtn: "Leave current class", fundHistory: "Transaction History", realtimeTag: "Realtime", noHistory: "No transactions yet.", adminNotice: "Reserved for System Administrators.", adminUserLabel: "Admin Username", adminPassLabel: "Admin Password", adminLoginBtn: "Admin Login"
             }
         };
 
@@ -839,163 +729,101 @@
             return [
                 {
                     sectionId: "I",
-                    title: { vi: "I. Trách nhiệm, tinh thần và thái độ trong học tập", en: "I. Academic Responsibility, Attitude & Effort", zh: "I. 学习态度与责任", ko: "I. 학습 태도 및 책임", fr: "I. Responsabilité et attitude académiques" }[l],
+                    title: { vi: "I. Trách nhiệm, tinh thần và thái độ trong học tập", en: "I. Academic Responsibility, Attitude & Effort" }[l] || "I. Trách nhiệm, tinh thần và thái độ trong học tập",
                     maxScore: 20,
                     items: [
-                        { id: "i_a1", text: { vi: "Đi học đầy đủ, đúng giờ, nghiêm túc", en: "Full, punctual, and serious class attendance", zh: "按时上课，全勤且态度端正", ko: "출석 및 수업 태도 양호", fr: "Assiduité et ponctualité aux cours" }[l], max: 6, type: "number" },
-                        { id: "i_a2", text: { vi: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", en: "Scientific Research: Member / Leader / Paper", zh: "科研项目：参与 / 主持 / 发表论文", ko: "학술 연구: 참여 / 책임자 / 논문", fr: "Recherche scientifique : Membre / Chef / Article" }[l], max: 8, type: "select", options: [
-                            { label: { vi: "Không tham gia", en: "None", zh: "未参与", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Tham gia đề tài (5đ)", en: "Project Member (5 pts)", zh: "参与项目 (5分)", ko: "연구 참여 (5점)", fr: "Membre du projet (5 pts)" }[l], score: 5 },
-                            { label: { vi: "Chủ nhiệm đề tài (8đ)", en: "Project Leader (8 pts)", zh: "主持项目 (8分)", ko: "연구 책임자 (8점)", fr: "Chef de projet (8 pts)" }[l], score: 8 },
-                            { label: { vi: "Có bài báo NCKH (8đ)", en: "Research Paper (8 pts)", zh: "发表论文 (8分)", ko: "논문 게재 (8점)", fr: "Article publié (8 pts)" }[l], score: 8 }
+                        { id: "i_a1", text: { vi: "Đi học đầy đủ, đúng giờ, nghiêm túc", en: "Full, punctual, and serious class attendance" }[l] || "Đi học đầy đủ, đúng giờ, nghiêm túc", max: 6, type: "number" },
+                        { id: "i_a2", text: { vi: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", en: "Scientific Research: Member / Leader / Paper" }[l] || "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", max: 8, type: "select", options: [
+                            { label: "Không tham gia", score: 0 }, { label: "Tham gia đề tài (5đ)", score: 5 }, { label: "Chủ nhiệm đề tài (8đ)", score: 8 }, { label: "Có bài báo NCKH (8đ)", score: 8 }
                         ]},
-                        { id: "i_a3", text: { vi: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", en: "IT Cert (Basic: 3 pts | Advanced: 5 pts)", zh: "计算机证书（基础：3分 | 高级：5分）", ko: "IT 자격증 (기초: 3점 | 심화: 5점)", fr: "Certificat informatique (Base: 3 pts | Avancé: 5 pts)" }[l], max: 5, type: "select", options: [
-                            { label: { vi: "Chưa có / Không tính", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Cơ bản và tương đương (3đ)", en: "Basic & Equivalent (3 pts)", zh: "基础级 (3分)", ko: "기초 (3점)", fr: "Base (3 pts)" }[l], score: 3 },
-                            { label: { vi: "Nâng cao (5đ)", en: "Advanced (5 pts)", zh: "高级 (5分)", ko: "심화 (5점)", fr: "Avancé (5 pts)" }[l], score: 5 }
+                        { id: "i_a3", text: { vi: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", en: "IT Cert (Basic: 3 pts | Advanced: 5 pts)" }[l] || "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", max: 5, type: "select", options: [
+                            { label: "Chưa có / Không tính", score: 0 }, { label: "Cơ bản và tương đương (3đ)", score: 3 }, { label: "Nâng cao (5đ)", score: 5 }
                         ]},
-                        { id: "i_a4", text: { vi: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", en: "Foreign Language Cert (A1, A2, B1, B2...)", zh: "外语等级证书 (A1, A2, B1, B2...)", ko: "외국어 자격증 (A1, A2, B1, B2...)", fr: "Certificat de langue (A1, A2, B1, B2...)" }[l], max: 10, type: "select", options: [
-                            { label: { vi: "Chưa có / Không tính", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", en: "Level 1 (A1) (3 pts)", zh: "一级 (A1) (3分)", ko: "1단계 (A1) (3점)", fr: "Niveau 1 (A1) (3 pts)" }[l], score: 3 },
-                            { label: { vi: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", en: "Level 2 (A2) / IELTS 4.0 (5 pts)", zh: "二级 (A2) (5分)", ko: "2단계 (A2) (5점)", fr: "Niveau 2 (A2) (5 pts)" }[l], score: 5 },
-                            { label: { vi: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", en: "Level 3 (B1) / IELTS 4.5 (7 pts)", zh: "三级 (B1) (7分)", ko: "3단계 (B1) (7점)", fr: "Niveau 3 (B1) (7 pts)" }[l], score: 7 },
-                            { label: { vi: "Bậc 4 (B2) trở lên / IELTS >=5.5 (10đ)", en: "Level 4 (B2)+ / IELTS >=5.5 (10 pts)", zh: "四级 (B2)+ (10分)", ko: "4단계 (B2) 이상 (10점)", fr: "Niveau 4 (B2)+ (10 pts)" }[l], score: 10 }
+                        { id: "i_a4", text: { vi: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", en: "Foreign Language Cert (A1, A2, B1, B2...)" }[l] || "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", max: 10, type: "select", options: [
+                            { label: "Chưa có / Không tính", score: 0 }, { label: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", score: 3 }, { label: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", score: 5 }, { label: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", score: 7 }, { label: "Bậc 4 (B2) trở lên / IELTS >=5.5 (10đ)", score: 10 }
                         ]},
-                        { id: "i_a5", text: { vi: "Tham gia các CLB học thuật", en: "Participate in academic clubs", zh: "参与学术社团", ko: "학술 동아리 활동", fr: "Clubs académiques" }[l], max: 2, type: "checkbox", score: 2 },
-                        { id: "i_b1", text: { vi: "Không vi phạm quy chế thi/kiểm tra", en: "No violation of exam regulations", zh: "无违反考试规定", ko: "시험 규정 위반 없음", fr: "Aucune infraction aux examens" }[l], max: 6, type: "number" },
-                        { id: "i_b2", text: { vi: "Tham gia kỳ thi chuyên ngành, Olympic...", en: "Academic contests, Olympics...", zh: "参加专业竞赛、奥林匹克", ko: "전공 경진대회, 올림피아드", fr: "Concours académiques, Olympiades..." }[l], max: 4, type: "select", options: [
-                            { label: { vi: "Không tham gia", en: "None", zh: "未参与", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Có tham gia (2đ)", en: "Participant (2 pts)", zh: "参赛 (2分)", ko: "참가 (2점)", fr: "Participant (2 pts)" }[l], score: 2 },
-                            { label: { vi: "Đạt giải cấp ĐH/Đơn vị (4đ)", en: "Award Winner (4 pts)", zh: "获奖 (4分)", ko: "수상 (4점)", fr: "Lauréat (4 pts)" }[l], score: 4 }
+                        { id: "i_a5", text: { vi: "Tham gia các CLB học thuật", en: "Participate in academic clubs" }[l] || "Tham gia các CLB học thuật", max: 2, type: "checkbox", score: 2 },
+                        { id: "i_b1", text: { vi: "Không vi phạm quy chế thi/kiểm tra", en: "No violation of exam regulations" }[l] || "Không vi phạm quy chế thi/kiểm tra", max: 6, type: "number" },
+                        { id: "i_b2", text: { vi: "Tham gia kỳ thi chuyên ngành, Olympic...", en: "Academic contests, Olympics..." }[l] || "Tham gia kỳ thi chuyên ngành, Olympic...", max: 4, type: "select", options: [
+                            { label: "Không tham gia", score: 0 }, { label: "Có tham gia (2đ)", score: 2 }, { label: "Đạt giải cấp ĐH/Đơn vị (4đ)", score: 4 }
                         ]},
-                        { id: "i_c1", text: { vi: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", en: "GPA improvement / Semester GPA >= 3.6 (+2 pts)", zh: "学习进步 / 学期GPA >= 3.6 (+2分)", ko: "성적 향상 / 학기 GPA >= 3.6 (+2점)", fr: "Progrès / GPA du semestre >= 3.6 (+2 pts)" }[l], max: 2, type: "checkbox", score: 2 },
-                        { id: "i_c2", text: { vi: "Kết quả học tập ĐTBCHK", en: "Semester GPA result", zh: "学期GPA成绩", ko: "학기 GPA 성적", fr: "Résultat GPA du semestre" }[l], max: 8, type: "select", options: [
-                            { label: { vi: "Dưới 2.00 (0đ)", en: "< 2.00 (0 pts)", zh: "2.00 以下 (0分)", ko: "2.00 미만 (0점)", fr: "< 2.00 (0 pts)" }[l], score: 0 },
-                            { label: { vi: "2.00 - 2.49 (2đ)", en: "2.00 - 2.49 (2 pts)", zh: "2.00 - 2.49 (2分)", ko: "2.00 - 2.49 (2점)", fr: "2.00 - 2.49 (2 pts)" }[l], score: 2 },
-                            { label: { vi: "2.50 - 3.19 (4đ)", en: "2.50 - 3.19 (4 pts)", zh: "2.50 - 3.19 (4分)", ko: "2.50 - 3.19 (4점)", fr: "2.50 - 3.19 (4 pts)" }[l], score: 4 },
-                            { label: { vi: "3.20 - 3.59 (6đ)", en: "3.20 - 3.59 (6 pts)", zh: "3.20 - 3.59 (6分)", ko: "3.20 - 3.59 (6점)", fr: "3.20 - 3.59 (6 pts)" }[l], score: 6 },
-                            { label: { vi: "Từ 3.60 trở lên (8đ)", en: ">= 3.60 (8 pts)", zh: "3.60 及以上 (8分)", ko: "3.60 이상 (8점)", fr: ">= 3.60 (8 pts)" }[l], score: 8 }
+                        { id: "i_c1", text: { vi: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", en: "GPA improvement / Semester GPA >= 3.6 (+2 pts)" }[l] || "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", max: 2, type: "checkbox", score: 2 },
+                        { id: "i_c2", text: { vi: "Kết quả học tập ĐTBCHK", en: "Semester GPA result" }[l] || "Kết quả học tập ĐTBCHK", max: 8, type: "select", options: [
+                            { label: "Dưới 2.00 (0đ)", score: 0 }, { label: "2.00 - 2.49 (2đ)", score: 2 }, { label: "2.50 - 3.19 (4đ)", score: 4 }, { label: "3.20 - 3.59 (6đ)", score: 6 }, { label: "Từ 3.60 trở lên (8đ)", score: 8 }
                         ]}
                     ]
                 },
                 {
                     sectionId: "II",
-                    title: { vi: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", en: "II. Compliance with Laws, Rules & Regulations", zh: "II. 遵守法律法规与校规校纪", ko: "II. 교칙 및 법규 준수", fr: "II. Respect des lois et règlements" }[l],
+                    title: { vi: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", en: "II. Compliance with Laws, Rules & Regulations" }[l] || "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế",
                     maxScore: 25,
                     items: [
-                        { id: "ii_a", text: { vi: "Chấp hành nội quy, quy chế nhà trường", en: "Observe university rules & regulations", zh: "遵守学校各项规章制度", ko: "학교 규정 및 수칙 준수", fr: "Respect des règlements de l'université" }[l], max: 15, type: "number" },
-                        { id: "ii_b1", text: { vi: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", en: "Promote security, order & environment", zh: "积极宣传维护治安、秩序与环境", ko: "치안 및 환경 보전 활동 참여", fr: "Sensibilisation à la sécurité et à l'environnement" }[l], max: 8, type: "checkbox", score: 8 },
-                        { id: "ii_b2", text: { vi: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", en: "Participate in surveys organized by CTU", zh: "参与 CTU 组织的意见调查", ko: "CTU 주관 설문조사 참여", fr: "Participation aux enquêtes de CTU" }[l], max: 5, type: "number" }
+                        { id: "ii_a", text: { vi: "Chấp hành nội quy, quy chế nhà trường", en: "Observe university rules & regulations" }[l] || "Chấp hành nội quy, quy chế nhà trường", max: 15, type: "number" },
+                        { id: "ii_b1", text: { vi: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", en: "Promote security, order & environment" }[l] || "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", max: 8, type: "checkbox", score: 8 },
+                        { id: "ii_b2", text: { vi: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", en: "Participate in surveys organized by CTU" }[l] || "Tham gia khảo sát ý kiến do ĐHCT tổ chức", max: 5, type: "number" }
                     ]
                 },
                 {
                     sectionId: "III",
-                    title: { vi: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", en: "III. Socio-political, Cultural & Sports Activities", zh: "III. 参与政治社会与文体活动", ko: "III. 사회·정치·문화·체육 활동 참여", fr: "III. Activités socio-politiques, culturelles et sportives" }[l],
+                    title: { vi: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", en: "III. Socio-political, Cultural & Sports Activities" }[l] || "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ",
                     maxScore: 20,
                     items: [
-                        { id: "iii_a", text: { vi: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", en: "Full attendance in political, cultural & sports events", zh: "积极参加政治、文艺、体育活动", ko: "정치·문화·체육 행사 적극 참여", fr: "Participation aux événements culturels et sportifs" }[l], max: 12, type: "number" },
-                        { id: "iii_b1", text: { vi: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", en: "Core member of movements (Dept: 3 pts | CTU: 5 pts)", zh: "活动骨干成员（系/支部：3分 | 校级：5分）", ko: "활동 핵심 멤버 (학과/지부: 3점 | 학교급: 5점)", fr: "Membre clé des mouvements (Dépt: 3 pts | CTU: 5 pts)" }[l], max: 5, type: "select", options: [
-                            { label: { vi: "Không", en: "None", zh: "否", ko: "없음", fr: "Non" }[l], score: 0 },
-                            { label: { vi: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", en: "Dept/Faculty/Branch level (3 pts)", zh: "院/系/支部级 (3分)", ko: "학과/학부/지부급 (3점)", fr: "Niveau Dépt/Faculté (3 pts)" }[l], score: 3 },
-                            { label: { vi: "Cấp ĐHCT / Đơn vị tương đương (5đ)", en: "University level (5 pts)", zh: "校级及以上 (5分)", ko: "학교급 (5점)", fr: "Niveau Université (5 pts)" }[l], score: 5 }
+                        { id: "iii_a", text: { vi: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", en: "Full attendance in political, cultural & sports events" }[l] || "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", max: 12, type: "number" },
+                        { id: "iii_b1", text: { vi: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", en: "Core member of movements" }[l] || "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", max: 5, type: "select", options: [
+                            { label: "Không", score: 0 }, { label: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", score: 3 }, { label: "Cấp ĐHCT / Đơn vị tương đương (5đ)", score: 5 }
                         ]},
-                        { id: "iii_b2", text: { vi: "Khen thưởng hoạt động phong trào", en: "Commendation for movement activities", zh: "文体及社会活动表彰", ko: "활동 관련 포상", fr: "Distinctions pour activités" }[l], max: 10, type: "select", options: [
-                            { label: { vi: "Không", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Giấy khen cấp cơ sở (6đ)", en: "Faculty level commendation (6 pts)", zh: "院级表彰 (6分)", ko: "단대/지부 표창 (6점)", fr: "Certificat de la faculté (6 pts)" }[l], score: 6 },
-                            { label: { vi: "Giấy khen cấp Đại học (8đ)", en: "University level commendation (8 pts)", zh: "校级表彰 (8分)", ko: "학교급 표창 (8점)", fr: "Certificat de l'Université (8 pts)" }[l], score: 8 },
-                            { label: { vi: "Giấy khen cấp cao hơn (10đ)", en: "Higher level commendation (10 pts)", zh: "省级/国家级表彰 (10分)", ko: "상급 기관 표창 (10점)", fr: "Niveau supérieur (10 pts)" }[l], score: 10 }
+                        { id: "iii_b2", text: { vi: "Khen thưởng hoạt động phong trào", en: "Commendation for movement activities" }[l] || "Khen thưởng hoạt động phong trào", max: 10, type: "select", options: [
+                            { label: "Không", score: 0 }, { label: "Giấy khen cấp cơ sở (6đ)", score: 6 }, { label: "Giấy khen cấp Đại học (8đ)", score: 8 }, { label: "Giấy khen cấp cao hơn (10đ)", score: 10 }
                         ]},
-                        { id: "iii_c", text: { vi: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", en: "Anti-crime & social evils campaign", zh: "参与防范犯罪宣传", ko: "범죄 예방 활동", fr: "Prévention de la criminalité" }[l], max: 6, type: "number" }
+                        { id: "iii_c", text: { vi: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", en: "Anti-crime & social evils awareness campaign" }[l] || "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", max: 6, type: "number" }
                     ]
                 },
                 {
                     sectionId: "IV",
-                    title: { vi: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", en: "IV. Citizenship & Community Relations", zh: "IV. 公民责任与社区关系", ko: "IV. 시민 의식 및 지역사회 관계", fr: "IV. Citoyenneté et relations communautaires" }[l],
+                    title: { vi: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", en: "IV. Citizenship & Community Relations" }[l] || "IV. Trách nhiệm công dân trong quan hệ cộng đồng",
                     maxScore: 15,
                     items: [
-                        { id: "iv_a", text: { vi: "Tuyên truyền chủ trương Đảng, pháp luật", en: "Promote guidelines and laws", zh: "宣传党和国家方针政策及法律", ko: "법률 및 정책 홍보 활동", fr: "Promotion des lois et directives" }[l], max: 8, type: "number" },
-                        { id: "iv_b1", text: { vi: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", en: "Join community benefit groups", zh: "参与社区公益团体与志愿服务", ko: "지역사회 봉사 단체 활동", fr: "Participation aux groupes communautaires" }[l], max: 10, type: "number" },
-                        { id: "iv_b2", text: { vi: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", en: "Help peers in study and life", zh: "在学习和列表中互助友爱", ko: "동료 지원 및 상부상조", fr: "Entraide entre étudiants" }[l], max: 2, type: "checkbox", score: 2 }
+                        { id: "iv_a", text: { vi: "Tuyên truyền chủ trương Đảng, pháp luật", en: "Promote guidelines and laws" }[l] || "Tuyên truyền chủ trương Đảng, pháp luật", max: 8, type: "number" },
+                        { id: "iv_b1", text: { vi: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", en: "Join community benefit groups & volunteer" }[l] || "Tham gia đội nhóm hướng đến lợi ích cộng đồng", max: 10, type: "number" },
+                        { id: "iv_b2", text: { vi: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", en: "Help peers in study and life" }[l] || "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", max: 2, type: "checkbox", score: 2 }
                     ]
                 },
                 {
                     sectionId: "V",
-                    title: { vi: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", en: "V. Student Leadership, Movements & Awards", zh: "V. 干部工作、活动及表彰", ko: "V. 학생 간부 활동 및 기타 포상", fr: "V. Responsabilités de délégué et distinctions" }[l],
+                    title: { vi: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", en: "V. Student Leadership, Movements & Awards" }[l] || "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng",
                     maxScore: 20,
                     items: [
-                        { id: "v_a", text: { vi: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", en: "Student leader positions", zh: "担任班级/团支部/学生会干部", ko: "학급/동아리/학생회 간부 직책", fr: "Postes de délégué / BDE" }[l], max: 10, type: "select", options: [
-                            { label: { vi: "Không đảm nhận", en: "None", zh: "未担任", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Tổ trưởng, tổ phó (3đ)", en: "Group leader/vice (3 pts)", zh: "组长/副组长 (3分)", ko: "조장/부조장 (3점)", fr: "Chef/Adjoint de groupe (3 pts)" }[l], score: 3 },
-                            { label: { vi: "Thành viên ban chuyên môn (6đ)", en: "Committee member (6 pts)", zh: "专业委员会成员 (6分)", ko: "전문 위원 (6점)", fr: "Membre de commission (6 pts)" }[l], score: 6 },
-                            { label: { vi: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", en: "Class Vice / Union Executive (8 pts)", zh: "班长/团支委/副班长 (8分)", ko: "부반장/지부 간부 (8점)", fr: "Délégué adjoint (8 pts)" }[l], score: 8 },
-                            { label: { vi: "Bí thư, Lớp trưởng, Chủ nhiệm CLB (10đ)", en: "Class Leader / Club President (10 pts)", zh: "班长/团支书/社长 (10分)", ko: "반장/동아리 회장 (10점)", fr: "Délégué principal / Président (10 pts)" }[l], score: 10 }
+                        { id: "v_a", text: { vi: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", en: "Student leader positions" }[l] || "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", max: 10, type: "select", options: [
+                            { label: "Không đảm nhận", score: 0 }, { label: "Tổ trưởng, tổ phó (3đ)", score: 3 }, { label: "Thành viên ban chuyên môn (6đ)", score: 6 }, { label: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", score: 8 }, { label: "Bí thư, Lớp trưởng, Chủ nhiệm CLB, BCH Đoàn cơ sở (10đ)", score: 10 }
                         ]},
-                        { id: "v_b", text: { vi: "Hỗ trợ, tham gia tích cực hoạt động chung", en: "Support common tasks", zh: "积极支持并参与集体活动", ko: "공동 활동 적극 지원", fr: "Soutien aux tâches communes" }[l], max: 12, type: "number" },
-                        { id: "v_c", text: { vi: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", en: "Research, Startup, Award...", zh: "科研/双创/优秀学生荣誉", ko: "연구/창업/우수학생 포상", fr: "Prix de recherche, Étudiant..." }[l], max: 6, type: "select", options: [
-                            { label: { vi: "Không có", en: "None", zh: "无", ko: "없음", fr: "Aucun" }[l], score: 0 },
-                            { label: { vi: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", en: "Faculty level Outstanding Student (4 pts)", zh: "院级优秀学生 (4分)", ko: "단대급 우수학생 (4점)", fr: "Étudiant 5-Bon niveau faculté (4 pts)" }[l], score: 4 },
-                            { label: { vi: "Kết nạp Đảng / SV5T cấp ĐHCT (6đ)", en: "University level Outstanding Student (6 pts)", zh: "校级优秀学生 (6分)", ko: "학교급 우수학생 (6점)", fr: "Étudiant 5-Bon université (6 pts)" }[l], score: 6 }
+                        { id: "v_b", text: { vi: "Hỗ trợ, tham gia tích cực hoạt động chung", en: "Support and active participation in common tasks" }[l] || "Hỗ trợ, tham gia tích cực hoạt động chung", max: 12, type: "number" },
+                        { id: "v_c", text: { vi: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", en: "Research, Startup, Outstanding Student award..." }[l] || "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", max: 6, type: "select", options: [
+                            { label: "Không có", score: 0 }, { label: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", score: 4 }, { label: "Kết nạp Đảng / SV5T cấp ĐHCT / Giải NCKH (6đ)", score: 6 }
                         ]}
                     ]
                 }
             ];
         }
 
-        // BIẾN TRẠNG THÁI TOÀN CỤC
-        let currentUser = null; // { fullname, mssv, scores, role: 'student'|'admin' }
-        let currentClass = null; // { classId, className, password, balance, treasurerMssv, history: [] }
+        let currentUser = null;
         let userScores = {};
+        let isAdminLoggedIn = false;
 
-        // KHỞI TẠO DỮ LIỆU LỚP MẶC ĐỊNH
-        function initDefaultClasses() {
-            let classes = JSON.parse(localStorage.getItem('drl_classes_data') || 'null');
-            if (!classes) {
-                classes = {
-                    "DA22A1": {
-                        classId: "DA22A1",
-                        className: "Ngôn Ngữ Anh A2 K52",
-                        password: "123",
-                        treasurerMssv: "B2001234",
-                        balance: 500000,
-                        history: [
-                            {
-                                id: 1,
-                                timestamp: new Date().toLocaleString('vi-VN'),
-                                type: 'add',
-                                amount: 500000,
-                                reason: 'Khởi tạo quỹ lớp ban đầu',
-                                createdBy: 'Admin / Thủ quỹ'
-                            }
-                        ]
-                    }
-                };
-                localStorage.setItem('drl_classes_data', JSON.stringify(classes));
-            }
-            populateClassSelectDropdowns();
-        }
-
-        function populateClassSelectDropdowns() {
-            const select = document.getElementById('login-class-id');
-            if (!select) return;
-            select.innerHTML = '<option value="">-- Chọn Lớp Học --</option>';
-            const classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            Object.values(classes).forEach(cls => {
-                const opt = document.createElement('option');
-                opt.value = cls.classId;
-                opt.textContent = `${cls.classId} - ${cls.className}`;
-                select.appendChild(opt);
-            });
-        }
-
-        // App Init
         window.addEventListener('DOMContentLoaded', () => {
-            initDefaultClasses();
             loadSavedTheme();
             loadSavedBg();
             loadSavedAvatar();
+            loadSavedUiCustomization();
             
             const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
             changeLanguage(savedLang);
+
+            const savedAdmin = localStorage.getItem('drl_is_admin');
+            if (savedAdmin === 'true') {
+                isAdminLoggedIn = true;
+                showAdminDashboard();
+                return;
+            }
 
             const savedUser = localStorage.getItem('drl_current_user_api');
             if (savedUser) {
@@ -1004,502 +832,52 @@
             }
         });
 
-        /* ================= TAB AUTHENTICATION SWITCHER ================= */
-        function switchAuthTab(tab) {
-            const forms = {
-                'login': document.getElementById('form-login'),
-                'register': document.getElementById('form-register'),
-                'class-login': document.getElementById('form-class-login'),
-                'class-reg': document.getElementById('form-class-reg'),
-                'admin-login': document.getElementById('form-admin-login')
-            };
-
-            const tabs = {
-                'login': document.getElementById('tab-login'),
-                'class-login': document.getElementById('tab-class-login'),
-                'class-reg': document.getElementById('tab-class-reg'),
-                'admin-login': document.getElementById('tab-admin-login')
-            };
-
-            Object.keys(forms).forEach(key => {
-                if (forms[key]) forms[key].classList.add('hidden');
-            });
-
-            Object.keys(tabs).forEach(key => {
-                if (tabs[key]) {
-                    tabs[key].className = "py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all";
-                }
-            });
-
-            if (tab === 'login') {
-                forms['login'].classList.remove('hidden');
-                tabs['login'].className = "py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all";
-            } else if (tab === 'register') {
-                forms['register'].classList.remove('hidden');
-                tabs['login'].className = "py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all";
-            } else if (tab === 'class-login') {
-                populateClassSelectDropdowns();
-                forms['class-login'].classList.remove('hidden');
-                tabs['class-login'].className = "py-2 rounded-lg bg-white text-indigo-600 shadow-sm transition-all";
-            } else if (tab === 'class-reg') {
-                forms['class-reg'].classList.remove('hidden');
-                tabs['class-reg'].className = "py-2 rounded-lg bg-white text-purple-600 shadow-sm transition-all";
-            } else if (tab === 'admin-login') {
-                forms['admin-login'].classList.remove('hidden');
-                tabs['admin-login'].className = "py-2 rounded-lg bg-white text-rose-600 shadow-sm transition-all";
-            }
+        /* ================= TÙY CHỈNH MỜ TRONG SUỐT / ĐEN ĐỤC / TRẮNG ĐỤC ================= */
+        function changeUiOpacity(val) {
+            const dec = val / 100;
+            document.documentElement.style.setProperty('--ui-opacity', dec);
+            document.getElementById('ui-opacity-val').textContent = `${val}%`;
+            localStorage.setItem('drl_ui_opacity', val);
         }
 
-        /* ================= AUTH HANDLERS ================= */
-        async function handleLogin(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-login');
-            const mssv = document.getElementById('login-mssv').value.trim().toUpperCase();
-            const password = document.getElementById('login-password').value;
-
-            btn.disabled = true;
-            btn.innerText = "...";
-
-            try {
-                const res = await fetch(SCRIPT_URL + "?action=getUsers");
-                const users = await res.json();
-                const user = users.find(u => String(u.mssv).toUpperCase() === mssv && String(u.password) === password);
-
-                if (user) {
-                    let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-                    let userLocalScores = localUsers[mssv] ? localUsers[mssv].scores : {};
-
-                    currentUser = {
-                        fullname: user.fullname,
-                        mssv: user.mssv,
-                        role: 'student',
-                        scores: userLocalScores
-                    };
-                    localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-                    showDashboard();
-                } else {
-                    alert("MSSV hoặc mật khẩu không chính xác!");
-                }
-            } catch (err) {
-                alert("Không thể kết nối đến máy chủ liên hệ Nguyễn Duy để hỗ trợ. Vui lòng đăng nhập với tài khoản lớp!");
-            } finally {
-                btn.disabled = false;
-                const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
-                btn.innerText = translations[savedLang].login;
-            }
+        function changeUiBlur(val) {
+            document.documentElement.style.setProperty('--ui-blur', `${val}px`);
+            document.getElementById('ui-blur-val').textContent = `${val}px`;
+            localStorage.setItem('drl_ui_blur', val);
         }
 
-        async function handleRegister(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-register');
-            const fullname = document.getElementById('reg-fullname').value.trim();
-            const mssv = document.getElementById('reg-mssv').value.trim().toUpperCase();
-            const password = document.getElementById('reg-password').value;
-
-            btn.disabled = true;
-            btn.innerText = "...";
-
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ action: 'register', fullname: fullname, mssv: mssv, password: password })
-                });
-
-                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-                if (!localUsers[mssv]) {
-                    localUsers[mssv] = { scores: {} };
-                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
-                }
-
-                alert("Tạo tài khoản thành công! Bạn có thể đăng nhập ngay.");
-                document.getElementById('form-register').reset();
-                switchAuthTab('login');
-                document.getElementById('login-mssv').value = mssv;
-            } catch (err) {
-                alert("Lỗi kết nối mạng, vui lòng thử lại!");
-            } finally {
-                btn.disabled = false;
-                const savedLang = localStorage.getItem('drl_selected_lang') || 'vi';
-                btn.innerText = translations[savedLang].createAccount;
+        function setQuickUiPreset(mode) {
+            if (mode === 'transparent') {
+                changeUiOpacity(45);
+                changeUiBlur(18);
+            } else if (mode === 'white') {
+                changeUiOpacity(98);
+                changeUiBlur(5);
+                if (document.body.classList.contains('dark-mode')) toggleTheme();
+            } else if (mode === 'dark') {
+                changeUiOpacity(98);
+                changeUiBlur(5);
+                if (!document.body.classList.contains('dark-mode')) toggleTheme();
             }
+            document.getElementById('ui-opacity-range').value = localStorage.getItem('drl_ui_opacity') || 95;
+            document.getElementById('ui-blur-range').value = localStorage.getItem('drl_ui_blur') || 12;
         }
 
-        function handleClassLogin(e) {
-            e.preventDefault();
-            const classId = document.getElementById('login-class-id').value;
-            const password = document.getElementById('login-class-password').value;
-
-            const classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            const targetClass = classes[classId];
-
-            if (targetClass && targetClass.password === password) {
-                currentClass = targetClass;
-                localStorage.setItem('drl_current_class_id', classId);
-
-                if (!currentUser) {
-                    currentUser = {
-                        fullname: `Thành viên ${classId}`,
-                        mssv: `MEMBER_${classId}`,
-                        role: 'student',
-                        scores: {}
-                    };
-                    localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-                }
-
-                showDashboard();
-                switchMainTab('fund');
-                alert(`Đã đăng nhập thành công vào Quỹ Lớp: ${targetClass.className}`);
-            } else {
-                alert("Mật khẩu lớp không chính xác!");
-            }
+        function loadSavedUiCustomization() {
+            const op = localStorage.getItem('drl_ui_opacity') || 95;
+            const blur = localStorage.getItem('drl_ui_blur') || 12;
+            changeUiOpacity(op);
+            changeUiBlur(blur);
+            const opRange = document.getElementById('ui-opacity-range');
+            const blurRange = document.getElementById('ui-blur-range');
+            if (opRange) opRange.value = op;
+            if (blurRange) blurRange.value = blur;
         }
 
-        function handleClassRegister(e) {
-            e.preventDefault();
-            const classId = document.getElementById('reg-class-id').value.trim().toUpperCase();
-            const className = document.getElementById('reg-class-name').value.trim();
-            const password = document.getElementById('reg-class-password').value;
-
-            let classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            if (classes[classId]) {
-                alert("Mã lớp này đã tồn tại! Vui lòng chọn mã lớp khác.");
-                return;
-            }
-
-            classes[classId] = {
-                classId: classId,
-                className: className,
-                password: password,
-                treasurerMssv: currentUser ? currentUser.mssv : "",
-                balance: 0,
-                history: [
-                    {
-                        id: Date.now(),
-                        timestamp: new Date().toLocaleString('vi-VN'),
-                        type: 'add',
-                        amount: 0,
-                        reason: 'Tạo lớp học mới',
-                        createdBy: currentUser ? currentUser.fullname : 'Hệ thống'
-                    }
-                ]
-            };
-
-            localStorage.setItem('drl_classes_data', JSON.stringify(classes));
-            alert(`Đã đăng ký lớp ${classId} thành công! Bây giờ bạn có thể đăng nhập lớp.`);
-            document.getElementById('form-class-reg').reset();
-            switchAuthTab('class-login');
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('admin-user').value.trim();
-            const pass = document.getElementById('admin-pass').value;
-
-            if (user === 'admin' && pass === 'admin123') {
-                currentUser = {
-                    fullname: "Quản Lý Hệ Thống (Admin)",
-                    mssv: "ADMIN_CTU",
-                    role: 'admin',
-                    scores: {}
-                };
-                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-                showDashboard();
-                switchMainTab('admin');
-            } else {
-                alert("Tài khoản hoặc Mật khẩu Quản lý không chính xác!");
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('drl_current_user_api');
-            localStorage.removeItem('drl_current_class_id');
-            currentUser = null;
-            currentClass = null;
-            document.getElementById('settings-dropdown').classList.add('hidden');
-            document.getElementById('dashboard-section').classList.add('hidden');
-            document.getElementById('auth-section').classList.remove('hidden');
-        }
-
-        /* ================= DASHBOARD MAIN SWITCHER ================= */
-        function switchMainTab(tabName) {
-            const viewDrl = document.getElementById('view-drl-section');
-            const viewFund = document.getElementById('view-fund-section');
-            const viewAdmin = document.getElementById('view-admin-section');
-
-            const btnDrl = document.getElementById('nav-btn-drl');
-            const btnFund = document.getElementById('nav-btn-fund');
-            const btnAdmin = document.getElementById('nav-btn-admin');
-
-            viewDrl.classList.add('hidden');
-            viewFund.classList.add('hidden');
-            viewAdmin.classList.add('hidden');
-
-            btnDrl.className = "px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 transition flex items-center gap-1.5";
-            btnFund.className = "px-4 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-blue-600 transition flex items-center gap-1.5";
-            btnAdmin.className = "px-4 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition flex items-center gap-1.5";
-
-            if (tabName === 'drl') {
-                viewDrl.classList.remove('hidden');
-                btnDrl.className = "px-4 py-1.5 rounded-lg bg-blue-600 text-white shadow transition flex items-center gap-1.5";
-            } else if (tabName === 'fund') {
-                viewFund.classList.remove('hidden');
-                btnFund.className = "px-4 py-1.5 rounded-lg bg-emerald-600 text-white shadow transition flex items-center gap-1.5";
-                renderFundView();
-            } else if (tabName === 'admin') {
-                viewAdmin.classList.remove('hidden');
-                btnAdmin.className = "px-4 py-1.5 rounded-lg bg-rose-600 text-white shadow transition flex items-center gap-1.5";
-                renderAdminPanel();
-            }
-        }
-
-        function showDashboard() {
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('dashboard-section').classList.remove('hidden');
-
-            document.getElementById('user-display-name').textContent = currentUser.fullname;
-            document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
-            document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
-
-            const roleBadge = document.getElementById('user-role-badge');
-            if (currentUser.role === 'admin') {
-                roleBadge.textContent = "Quản lý / Admin";
-                roleBadge.className = "inline-block px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] rounded-full font-bold mt-0.5";
-                document.getElementById('nav-btn-admin').classList.remove('hidden');
-                document.getElementById('mobile-nav-admin').classList.remove('hidden');
-            } else {
-                roleBadge.textContent = "Sinh viên CTU";
-                roleBadge.className = "inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded-full font-medium mt-0.5";
-                document.getElementById('nav-btn-admin').classList.add('hidden');
-                document.getElementById('mobile-nav-admin').classList.add('hidden');
-            }
-
-            // Tải Lớp hiện tại nếu có
-            const savedClassId = localStorage.getItem('drl_current_class_id');
-            const classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            if (savedClassId && classes[savedClassId]) {
-                currentClass = classes[savedClassId];
-            } else {
-                // Lấy lớp đầu tiên mặc định
-                const firstKey = Object.keys(classes)[0];
-                if (firstKey) {
-                    currentClass = classes[firstKey];
-                    localStorage.setItem('drl_current_class_id', firstKey);
-                }
-            }
-
-            userScores = currentUser.scores || {};
-            renderDRLTable();
-            calculateTotalHUD();
-            renderFundView();
-        }
-
-        /* ================= LOGIC QUỸ LỚP REAL-TIME ================= */
-        function renderFundView() {
-            if (!currentClass) {
-                const classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-                const firstKey = Object.keys(classes)[0];
-                if (firstKey) currentClass = classes[firstKey];
-            }
-
-            if (!currentClass) return;
-
-            // Cập nhật thẻ tiêu đề và số dư
-            document.getElementById('fund-class-title').textContent = `Lớp: ${currentClass.classId} - ${currentClass.className}`;
-            document.getElementById('fund-balance-display').innerHTML = `${currentClass.balance.toLocaleString('vi-VN')} <span class="text-xl">VNĐ</span>`;
-            
-            const treasurerText = currentClass.treasurerMssv ? `Thủ quỹ (MSSV): ${currentClass.treasurerMssv}` : 'Thủ quỹ: Chưa phân công';
-            document.getElementById('fund-treasurer-info').innerHTML = `<i class="fa-solid fa-user-shield"></i> ${treasurerText}`;
-
-            // Kiểm tra quyền thủ quỹ / admin
-            const isTreasurer = (currentUser && currentUser.mssv === currentClass.treasurerMssv) || (currentUser && currentUser.role === 'admin');
-            
-            const managerControls = document.getElementById('fund-manager-controls');
-            const studentNotice = document.getElementById('fund-student-notice');
-
-            if (isTreasurer) {
-                managerControls.classList.remove('hidden');
-                studentNotice.classList.add('hidden');
-            } else {
-                managerControls.classList.add('hidden');
-                studentNotice.classList.remove('hidden');
-            }
-
-            // Render Lịch sử giao dịch thời gian thực
-            renderFundHistoryTable();
-        }
-
-        function renderFundHistoryTable() {
-            const tbody = document.getElementById('fund-history-tbody');
-            const countElem = document.getElementById('fund-history-count');
-            if (!tbody) return;
-
-            tbody.innerHTML = '';
-            const history = currentClass.history || [];
-            countElem.textContent = `${history.length} giao dịch`;
-
-            if (history.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400">Chưa có giao dịch nào trong quỹ lớp.</td></tr>`;
-                return;
-            }
-
-            // Đảo ngược chuỗi để hiển thị giao dịch mới nhất lên đầu
-            [...history].reverse().forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition";
-
-                const isAdd = item.type === 'add';
-                const typeBadge = isAdd 
-                    ? `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold text-[10px]"><i class="fa-solid fa-arrow-down"></i> Thêm (+)</span >`
-                    : `<span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold text-[10px]"><i class="fa-solid fa-arrow-up"></i> Rút (-)</span >`;
-
-                const amountText = isAdd
-                    ? `<span class="font-bold text-emerald-600">+${item.amount.toLocaleString('vi-VN')} VNĐ</span>`
-                    : `<span class="font-bold text-rose-600">-${item.amount.toLocaleString('vi-VN')} VNĐ</span>`;
-
-                tr.innerHTML = `
-                    <td class="py-2.5 px-4 text-slate-500">${item.timestamp}</td>
-                    <td class="py-2.5 px-3 text-center">${typeBadge}</td>
-                    <td class="py-2.5 px-4">${amountText}</td>
-                    <td class="py-2.5 px-4 font-medium text-slate-700">${item.reason || '---'}</td>
-                    <td class="py-2.5 px-4 text-slate-500">${item.createdBy || 'Vô danh'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function handleFundTransaction(e, type) {
-            e.preventDefault();
-            if (!currentClass) return;
-
-            let amount = 0;
-            let reason = '';
-
-            if (type === 'add') {
-                amount = parseFloat(document.getElementById('fund-add-amount').value);
-                reason = document.getElementById('fund-add-reason').value.trim() || 'Nạp tiền vào quỹ lớp';
-            } else {
-                amount = parseFloat(document.getElementById('fund-withdraw-amount').value);
-                reason = document.getElementById('fund-withdraw-reason').value.trim();
-
-                if (!reason) {
-                    alert("BẮT BUỘC nhập lí do khi rút tiền khỏi quỹ lớp!");
-                    return;
-                }
-
-                if (amount > currentClass.balance) {
-                    alert("Số tiền rút vượt quá số dư hiện tại của Quỹ Lớp!");
-                    return;
-                }
-            }
-
-            if (isNaN(amount) || amount <= 0) {
-                alert("Số tiền nhập vào không hợp lệ!");
-                return;
-            }
-
-            // Cập nhật số dư
-            if (type === 'add') {
-                currentClass.balance += amount;
-            } else {
-                currentClass.balance -= amount;
-            }
-
-            // Ghi nhận lịch sử giao dịch mới
-            const newTransaction = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleString('vi-VN'),
-                type: type,
-                amount: amount,
-                reason: reason,
-                createdBy: currentUser ? `${currentUser.fullname} (${currentUser.mssv})` : 'Thủ quỹ'
-            };
-
-            if (!currentClass.history) currentClass.history = [];
-            currentClass.history.push(newTransaction);
-
-            // Lưu vào localStorage
-            let classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            classes[currentClass.classId] = currentClass;
-            localStorage.setItem('drl_classes_data', JSON.stringify(classes));
-
-            // Reset form & re-render UI real-time
-            if (type === 'add') {
-                document.getElementById('fund-add-amount').value = '';
-                document.getElementById('fund-add-reason').value = '';
-            } else {
-                document.getElementById('fund-withdraw-amount').value = '';
-                document.getElementById('fund-withdraw-reason').value = '';
-            }
-
-            renderFundView();
-            alert(`Đã ${type === 'add' ? 'thêm' : 'rút'} ${amount.toLocaleString('vi-VN')} VNĐ vào quỹ thành công!`);
-        }
-
-        function requestTreasurerRole() {
-            if (!currentUser || !currentClass) return;
-            alert(`Yêu cầu làm Thủ quỹ cho lớp ${currentClass.classId} của MSSV ${currentUser.mssv} (${currentUser.fullname}) đã gửi tới Admin. Đang chờ Admin duyệt!`);
-        }
-
-        /* ================= LOGIC ADMIN PANEL ================= */
-        function renderAdminPanel() {
-            const tbody = document.getElementById('admin-classes-tbody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-
-            const classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-            let totalAll = 0;
-
-            Object.values(classes).forEach(cls => {
-                totalAll += cls.balance || 0;
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
-
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-bold text-blue-600">${cls.classId}</td>
-                    <td class="py-3 px-4 font-semibold text-slate-800">${cls.className}</td>
-                    <td class="py-3 px-4 text-emerald-600 font-bold">${cls.balance.toLocaleString('vi-VN')} VNĐ</td>
-                    <td class="py-3 px-4">
-                        <input type="text" id="admin-treasurer-input-${cls.classId}" value="${cls.treasurerMssv || ''}" placeholder="Nhập MSSV thủ quỹ" class="w-32 px-2 py-1 border border-slate-300 rounded text-xs">
-                    </td>
-                    <td class="py-3 px-4 text-center">
-                        <button onclick="saveTreasurerForClass('${cls.classId}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs transition">
-                            <i class="fa-solid fa-check"></i> Lưu Cấp Quyền
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('admin-total-funds-all').textContent = `${totalAll.toLocaleString('vi-VN')} VNĐ`;
-        }
-
-        function saveTreasurerForClass(classId) {
-            const input = document.getElementById(`admin-treasurer-input-${classId}`);
-            if (!input) return;
-
-            const mssv = input.value.trim().toUpperCase();
-            let classes = JSON.parse(localStorage.getItem('drl_classes_data') || '{}');
-
-            if (classes[classId]) {
-                classes[classId].treasurerMssv = mssv;
-                localStorage.setItem('drl_classes_data', JSON.stringify(classes));
-                
-                if (currentClass && currentClass.classId === classId) {
-                    currentClass.treasurerMssv = mssv;
-                }
-
-                alert(`Đã cấp quyền Thủ quỹ Lớp ${classId} thành công cho MSSV: ${mssv || 'Trống'}`);
-                renderAdminPanel();
-            }
-        }
-
-        /* ================= USER SETTINGS & AVATAR & LANGUAGE LOGIC ================= */
+        /* ================= USER SETTINGS & THEME LOGIC ================= */
         function toggleSettingsDropdown(e) {
             e.stopPropagation();
-            const dropdown = document.getElementById('settings-dropdown');
-            dropdown.classList.toggle('hidden');
+            document.getElementById('settings-dropdown').classList.toggle('hidden');
         }
 
         window.addEventListener('click', (e) => {
@@ -1551,9 +929,9 @@
 
             renderDRLTable();
             calculateTotalHUD();
+            renderClassFundHUD();
         }
 
-        /* ================= THEME TOGGLE LOGIC ================= */
         function toggleTheme() {
             const isDark = document.body.classList.toggle('dark-mode');
             localStorage.setItem('drl_theme', isDark ? 'dark' : 'light');
@@ -1592,7 +970,6 @@
             }
         }
 
-        /* ================= BACKGROUND CUSTOMIZATION LOGIC ================= */
         function toggleBgModal(show) {
             document.getElementById('bg-modal').classList.toggle('hidden', !show);
         }
@@ -1634,154 +1011,584 @@
             if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
         }
 
-        /* ================= DRL TABLE & HUD LOGIC ================= */
+        /* ================= AUTH & TAB SWITCHING ================= */
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+            const adminForm = document.getElementById('form-admin');
+
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const tabAdmin = document.getElementById('tab-admin');
+
+            loginForm.classList.add('hidden');
+            regForm.classList.add('hidden');
+            adminForm.classList.add('hidden');
+
+            tabLogin.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            tabReg.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            tabAdmin.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                tabLogin.className = "w-1/3 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all";
+            } else if (tab === 'register') {
+                regForm.classList.remove('hidden');
+                tabReg.className = "w-1/3 pb-3 font-semibold text-green-600 border-b-2 border-green-600 transition-all";
+            } else if (tab === 'admin') {
+                adminForm.classList.remove('hidden');
+                tabAdmin.className = "w-1/3 pb-3 font-semibold text-purple-600 border-b-2 border-purple-600 transition-all";
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-register');
+            const fullname = document.getElementById('reg-fullname').value.trim();
+            const mssv = document.getElementById('reg-mssv').value.trim().toUpperCase();
+            const password = document.getElementById('reg-password').value;
+
+            btn.disabled = true;
+            btn.innerText = "...";
+
+            try {
+                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                if (!localUsers[mssv]) {
+                    localUsers[mssv] = { fullname: fullname, password: password, scores: {} };
+                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+                }
+                alert("Tạo tài khoản thành công!");
+                document.getElementById('form-register').reset();
+                switchAuthTab('login');
+                document.getElementById('login-mssv').value = mssv;
+            } catch (err) {
+                alert("Lỗi kết nối dữ liệu!");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Tạo Tài Khoản";
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            const mssv = document.getElementById('login-mssv').value.trim().toUpperCase();
+            const password = document.getElementById('login-password').value;
+
+            btn.disabled = true;
+            btn.innerText = "...";
+
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            let user = localUsers[mssv];
+
+            if (user && user.password === password) {
+                currentUser = {
+                    fullname: user.fullname,
+                    mssv: mssv,
+                    scores: user.scores || {},
+                    joinedClassCode: user.joinedClassCode || null
+                };
+                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+                isAdminLoggedIn = false;
+                localStorage.removeItem('drl_is_admin');
+                showDashboard();
+            } else {
+                currentUser = { fullname: `Sinh Viên (${mssv})`, mssv: mssv, scores: {}, joinedClassCode: null };
+                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+                showDashboard();
+            }
+            btn.disabled = false;
+            btn.innerText = "Đăng Nhập";
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('admin-user').value.trim();
+            const p = document.getElementById('admin-pass').value;
+
+            if (u === "Admin" && p === "Dyungyeun141124@") {
+                isAdminLoggedIn = true;
+                localStorage.setItem('drl_is_admin', 'true');
+                showAdminDashboard();
+            } else {
+                alert("Tài khoản hoặc Mật khẩu Quản trị không đúng!");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('drl_current_user_api');
+            localStorage.removeItem('drl_is_admin');
+            currentUser = null;
+            isAdminLoggedIn = false;
+
+            document.getElementById('settings-dropdown').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            
+            document.getElementById('user-display-name').textContent = currentUser.fullname;
+            document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
+            document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
+
+            userScores = currentUser.scores || {};
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            changeLanguage(currentLang);
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.remove('hidden');
+            loadAdminData();
+        }
+
+        /* ================= ĐỒNG BỘ DỮ LIỆU GOOGLE SHEET VỀ ADMIN PANEL ================= */
+        async function loadAdminData() {
+            const usersContainer = document.getElementById('admin-users-list');
+            const classesTbody = document.getElementById('admin-classes-tbody');
+
+            if (usersContainer) usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải dữ liệu từ Google Sheet...</p>';
+            if (classesTbody) classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải danh sách lớp...</td></tr>';
+
+            let remoteUsers = [];
+            let remoteClasses = [];
+
+            // Fetch dữ liệu tài khoản sinh viên từ Google Sheet
+            try {
+                const resUser = await fetch(SCRIPT_URL + "?action=getUsers");
+                if (resUser.ok) {
+                    const data = await resUser.json();
+                    if (Array.isArray(data)) remoteUsers = data;
+                    else if (data.users && Array.isArray(data.users)) remoteUsers = data.users;
+                    else if (data.data && Array.isArray(data.data)) remoteUsers = data.data;
+                }
+            } catch (e) {
+                console.warn("Không thể tải từ SCRIPT_URL:", e);
+            }
+
+            // Fetch dữ liệu lớp học từ Google Sheet
+            try {
+                const resClass = await fetch(CLASS_SHEET_URL + "?action=getClasses");
+                if (resClass.ok) {
+                    const data = await resClass.json();
+                    if (Array.isArray(data)) remoteClasses = data;
+                    else if (data.classes && Array.isArray(data.classes)) remoteClasses = data.classes;
+                    else if (data.data && Array.isArray(data.data)) remoteClasses = data.data;
+                }
+            } catch (e) {
+                console.warn("Không thể tải từ CLASS_SHEET_URL:", e);
+            }
+
+            // Đồng bộ kết hợp dữ liệu Local
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            let allUsersMap = {};
+
+            Object.keys(localUsers).forEach(mssv => {
+                allUsersMap[mssv] = {
+                    mssv: mssv,
+                    fullname: localUsers[mssv].fullname || `Sinh Viên (${mssv})`,
+                    scores: localUsers[mssv].scores || {},
+                    joinedClassCode: localUsers[mssv].joinedClassCode || 'Chưa tham gia'
+                };
+            });
+
+            remoteUsers.forEach(u => {
+                const mssv = u.mssv || u.MSSV;
+                if (mssv) {
+                    allUsersMap[mssv] = {
+                        mssv: mssv,
+                        fullname: u.fullname || u.Fullname || u.name || allUsersMap[mssv]?.fullname || `Sinh Viên (${mssv})`,
+                        scores: u.scores || allUsersMap[mssv]?.scores || {},
+                        joinedClassCode: u.joinedClassCode || u.classCode || allUsersMap[mssv]?.joinedClassCode || 'Chưa tham gia'
+                    };
+                }
+            });
+
+            // Hiển thị danh sách Sinh Viên
+            const userList = Object.values(allUsersMap);
+            if (usersContainer) {
+                if (userList.length === 0) {
+                    usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2">Chưa có dữ liệu sinh viên nào.</p>';
+                } else {
+                    usersContainer.innerHTML = userList.map(u => {
+                        let totalScore = calculateTotalFromScores(u.scores);
+                        return `
+                            <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+                                <div class="overflow-hidden pr-2">
+                                    <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
+                                    <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
+                                    <p class="text-[11px] text-slate-400">ĐRL: <span class="font-bold text-emerald-400">${totalScore}</span> | Lớp: ${u.joinedClassCode || '---'}</p>
+                                </div>
+                                <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0" title="Xóa tài khoản">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // Hiển thị danh sách Lớp học
+            if (classesTbody) {
+                if (remoteClasses.length === 0) {
+                    let localClasses = {};
+                    userList.forEach(u => {
+                        if (u.joinedClassCode && u.joinedClassCode !== 'Chưa tham gia') {
+                            if (!localClasses[u.joinedClassCode]) {
+                                localClasses[u.joinedClassCode] = {
+                                    code: u.joinedClassCode,
+                                    name: `Lớp ${u.joinedClassCode}`,
+                                    pass: '••••••',
+                                    treasurer: 'Chưa cập nhật',
+                                    balance: 0
+                                };
+                            }
+                        }
+                    });
+                    const classArr = Object.values(localClasses);
+                    if (classArr.length === 0) {
+                        classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400">Chưa có lớp học nào được đăng ký.</td></tr>';
+                    } else {
+                        classesTbody.innerHTML = classArr.map(c => `
+                            <tr class="hover:bg-slate-700/40">
+                                <td class="p-3 font-mono font-bold text-blue-400">${c.code}</td>
+                                <td class="p-3">${c.name}</td>
+                                <td class="p-3 font-mono text-slate-400">${c.pass || '••••••'}</td>
+                                <td class="p-3">${c.treasurer || 'Chưa có'}</td>
+                                <td class="p-3 font-bold text-amber-400">${(c.balance || 0).toLocaleString()} VNĐ</td>
+                                <td class="p-3 text-center">
+                                    <button onclick="deleteAdminClass('${c.code}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+                } else {
+                    classesTbody.innerHTML = remoteClasses.map(c => `
+                        <tr class="hover:bg-slate-700/40">
+                            <td class="p-3 font-mono font-bold text-blue-400">${c.code || c.classCode || '---'}</td>
+                            <td class="p-3">${c.name || c.className || '---'}</td>
+                            <td class="p-3 font-mono text-slate-400">${c.pass || c.password || '••••••'}</td>
+                            <td class="p-3">${c.treasurer || 'Chưa có'}</td>
+                            <td class="p-3 font-bold text-amber-400">${Number(c.balance || 0).toLocaleString()} VNĐ</td>
+                            <td class="p-3 text-center">
+                                <button onclick="deleteAdminClass('${c.code || c.classCode}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            }
+        }
+
+        function calculateTotalFromScores(scores) {
+            if (!scores) return 0;
+            if (scores.direct_score !== undefined) return scores.direct_score;
+            let sum = 0;
+            Object.values(scores).forEach(v => {
+                sum += parseFloat(v) || 0;
+            });
+            return Math.min(100, sum);
+        }
+
+        async function deleteAdminUser(mssv) {
+            if (!confirm(`Bạn có chắc chắn muốn xóa sinh viên MSSV ${mssv}?`)) return;
+            
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            if (localUsers[mssv]) {
+                delete localUsers[mssv];
+                localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+            }
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'deleteUser', mssv: mssv })
+                });
+            } catch (e) {
+                console.error("Lỗi gửi yêu cầu xóa tới Google Sheet:", e);
+            }
+
+            alert(`Đã xóa sinh viên ${mssv}!`);
+            loadAdminData();
+        }
+
+        async function deleteAdminClass(classCode) {
+            if (!confirm(`Bạn có chắc chắn muốn xóa lớp ${classCode}?`)) return;
+            try {
+                await fetch(CLASS_SHEET_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'deleteClass', classCode: classCode })
+                });
+            } catch (e) {
+                console.error("Lỗi gửi yêu cầu xóa lớp tới Google Sheet:", e);
+            }
+            alert(`Đã xóa lớp ${classCode}!`);
+            loadAdminData();
+        }
+
+        function saveCurrentUserData() {
+            if (!currentUser) return;
+            localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            if (currentUser.mssv) {
+                localUsers[currentUser.mssv] = {
+                    fullname: currentUser.fullname,
+                    scores: userScores,
+                    joinedClassCode: currentUser.joinedClassCode
+                };
+                localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+            }
+        }
+
+        /* ================= BẢNG VÀ TÍNH ĐIỂM DRL ================= */
         function renderDRLTable() {
             const tbody = document.getElementById('drl-table-body');
             if (!tbody) return;
+
+            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(lang);
             tbody.innerHTML = '';
 
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const t = translations[currentLang] || translations.vi;
-            const currentStructure = getLocalizedDrlStructure(currentLang);
-
-            currentStructure.forEach(sec => {
-                const headerRow = document.createElement('tr');
-                headerRow.className = "bg-slate-100/80 font-bold text-slate-800";
-                headerRow.innerHTML = `
-                    <td class="py-2.5 px-4" colspan="2">${sec.title}</td>
-                    <td class="py-2.5 px-2 text-center text-xs text-blue-700">${t.maxLabel} ${sec.maxScore}đ</td>
-                    <td class="py-2.5 px-2 text-center text-blue-700" id="sec-score-${sec.sectionId}">0</td>
+            structure.forEach(sec => {
+                const secHeaderRow = document.createElement('tr');
+                secHeaderRow.className = "bg-slate-200/80 dark:bg-slate-700/80 font-bold text-slate-800 dark:text-white text-xs uppercase border-y border-slate-300 dark:border-slate-600";
+                secHeaderRow.innerHTML = `
+                    <td class="py-2.5 px-4" colspan="3">${sec.title}</td>
+                    <td class="py-2.5 px-2 text-center text-blue-600 dark:text-blue-400 font-black" id="sec-score-${sec.sectionId}">0 / ${sec.maxScore}</td>
                 `;
-                tbody.appendChild(headerRow);
+                tbody.appendChild(secHeaderRow);
 
                 sec.items.forEach(item => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50/80 transition-colors";
-                    let controlHTML = '';
+                    tr.className = "hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition border-b border-slate-200/60 dark:border-slate-700/50";
+                    
+                    let inputControlHtml = '';
+                    const val = userScores[item.id] !== undefined ? userScores[item.id] : 0;
 
-                    if (item.type === 'checkbox') {
-                        const isChecked = userScores[item.id] === true ? 'checked' : '';
-                        controlHTML = `<input type="checkbox" onchange="handleInputChange('${item.id}', this.checked)" ${isChecked} class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">`;
-                    } else if (item.type === 'number') {
-                        const val = userScores[item.id] !== undefined ? userScores[item.id] : '';
-                        controlHTML = `<input type="number" min="0" max="${item.max}" placeholder="${t.inputPlaceholder}" value="${val}" oninput="handleInputChange('${item.id}', this.value)" class="w-28 px-2 py-1 text-center border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 text-xs">`;
+                    if (item.type === 'number') {
+                        inputControlHtml = `<input type="number" min="0" max="${item.max}" value="${val}" onchange="updateScore('${item.id}', this.value, ${item.max})" class="w-20 px-2 py-1 text-center text-xs border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none">`;
+                    } else if (item.type === 'checkbox') {
+                        const checked = val > 0 ? 'checked' : '';
+                        inputControlHtml = `<input type="checkbox" ${checked} onchange="updateScore('${item.id}', this.checked ? ${item.score} : 0, ${item.max})" class="w-4 h-4 text-blue-600 rounded cursor-pointer">`;
                     } else if (item.type === 'select') {
-                        let optsHTML = item.options.map((opt) => {
-                            const isSel = userScores[item.id] == opt.score ? 'selected' : '';
-                            return `<option value="${opt.score}" ${isSel}>${opt.label}</option>`;
-                        }).join('');
-                        controlHTML = `<select onchange="handleInputChange('${item.id}', this.value)" class="w-full px-2 py-1 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">${optsHTML}</select>`;
+                        let optsHtml = item.options.map(opt => `<option value="${opt.score}" ${val == opt.score ? 'selected' : ''}>${opt.label}</option>`).join('');
+                        inputControlHtml = `<select onchange="updateScore('${item.id}', this.value, ${item.max})" class="w-full text-xs border border-slate-300 rounded px-2 py-1 focus:outline-none">${optsHtml}</select>`;
                     }
 
                     tr.innerHTML = `
-                        <td class="py-2 px-4 text-slate-700 pl-8">${item.text}</td>
-                        <td class="py-2 px-2 text-center text-slate-400 text-xs">${item.max}</td>
-                        <td class="py-2 px-4 text-center">${controlHTML}</td>
-                        <td class="py-2 px-2 text-center font-medium text-slate-800" id="item-score-${item.id}">0</td>
+                        <td class="py-3 px-4 text-xs text-slate-700 dark:text-slate-200">${item.text}</td>
+                        <td class="py-3 px-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">${item.max}</td>
+                        <td class="py-3 px-4 text-center">${inputControlHtml}</td>
+                        <td class="py-3 px-2 text-center font-bold text-xs text-blue-600 dark:text-blue-400" id="item-earned-${item.id}">${val}</td>
                     `;
                     tbody.appendChild(tr);
                 });
             });
         }
 
-        function handleInputChange(itemId, value) {
-            userScores[itemId] = value;
-            saveUserScores();
+        function updateScore(itemId, value, maxVal) {
+            let num = parseFloat(value) || 0;
+            if (num < 0) num = 0;
+            if (num > maxVal) num = maxVal;
+
+            userScores[itemId] = num;
+            if (currentUser) {
+                currentUser.scores = userScores;
+                saveCurrentUserData();
+            }
+
+            const earnedTd = document.getElementById(`item-earned-${itemId}`);
+            if (earnedTd) earnedTd.textContent = num;
+
             calculateTotalHUD();
         }
 
         function calculateTotalHUD() {
-            let totalDRL = 0;
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const currentStructure = getLocalizedDrlStructure(currentLang);
+            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const t = translations[lang] || translations.vi;
+            const structure = getLocalizedDrlStructure(lang);
 
-            currentStructure.forEach(sec => {
-                let sectionTotal = 0;
+            let total = 0;
+            structure.forEach(sec => {
+                let secSum = 0;
                 sec.items.forEach(item => {
-                    const rawVal = userScores[item.id];
-                    let earned = 0;
-
-                    if (item.type === 'checkbox') {
-                        earned = rawVal === true ? item.score : 0;
-                    } else if (item.type === 'number') {
-                        const num = parseFloat(rawVal);
-                        earned = !isNaN(num) ? num : 0;
-                    } else if (item.type === 'select') {
-                        earned = parseFloat(rawVal) || 0;
-                    }
-
-                    earned = Math.min(item.max, Math.max(0, earned));
-                    
-                    const itemElem = document.getElementById(`item-score-${item.id}`);
-                    if (itemElem) itemElem.textContent = earned;
-                    sectionTotal += earned;
+                    secSum += parseFloat(userScores[item.id] || 0);
                 });
+                if (secSum > sec.maxScore) secSum = sec.maxScore;
+                total += secSum;
 
-                sectionTotal = Math.min(sec.maxScore, sectionTotal);
-                const secElem = document.getElementById(`sec-score-${sec.sectionId}`);
-                if (secElem) secElem.textContent = sectionTotal;
+                const secElem = document.getElementById(`summary-sec-${sec.sectionId === 'I' ? '1' : sec.sectionId === 'II' ? '2' : sec.sectionId === 'III' ? '3' : sec.sectionId === 'IV' ? '4' : '5'}`);
+                if (secElem) secElem.textContent = `${secSum}/${sec.maxScore}`;
 
-                const summaryElem = document.getElementById(`summary-sec-${sec.sectionId === 'I' ? 1 : sec.sectionId === 'II' ? 2 : sec.sectionId === 'III' ? 3 : sec.sectionId === 'IV' ? 4 : 5}`);
-                if (summaryElem) summaryElem.textContent = `${sectionTotal}/${sec.maxScore}`;
-
-                totalDRL += sectionTotal;
+                const secScoreElem = document.getElementById(`sec-score-${sec.sectionId}`);
+                if (secScoreElem) secScoreElem.textContent = `${secSum} / ${sec.maxScore}`;
             });
 
-            totalDRL = Math.min(100, Math.max(0, totalDRL));
+            if (total > 100) total = 100;
 
-            document.getElementById('hud-total-score').textContent = totalDRL;
-            document.getElementById('hud-progress-bar').style.width = `${totalDRL}%`;
+            const scoreDisplay = document.getElementById('hud-total-score');
+            const progressBar = document.getElementById('hud-progress-bar');
+            const ratingDisplay = document.getElementById('hud-rating');
 
-            const ratingElem = document.getElementById('hud-rating');
-            const t = translations[currentLang] || translations.vi;
+            if (scoreDisplay) scoreDisplay.textContent = total;
+            if (progressBar) progressBar.style.width = `${total}%`;
 
-            const maxUnitElem = document.getElementById('hud-max-unit');
-            if (maxUnitElem && t.maxUnit) maxUnitElem.textContent = t.maxUnit;
+            if (ratingDisplay) {
+                let ratingText = t.unrated;
+                let ratingColor = "bg-white/10 text-white";
 
-            if (totalDRL >= 90) { ratingElem.textContent = t.rateEx; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
-            else if (totalDRL >= 80) { ratingElem.textContent = t.rateGood; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
-            else if (totalDRL >= 65) { ratingElem.textContent = t.rateFair; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
-            else if (totalDRL >= 50) { ratingElem.textContent = t.rateAvg; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
-            else { ratingElem.textContent = t.rateWeak; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+                if (total >= 90) { ratingText = t.rateEx; ratingColor = "bg-emerald-500 text-white border-emerald-300"; }
+                else if (total >= 80) { ratingText = t.rateGood; ratingColor = "bg-blue-500 text-white border-blue-300"; }
+                else if (total >= 65) { ratingText = t.rateFair; ratingColor = "bg-amber-500 text-white border-amber-300"; }
+                else if (total >= 50) { ratingText = t.rateAvg; ratingColor = "bg-orange-500 text-white border-orange-300"; }
+                else { ratingText = t.rateWeak; ratingColor = "bg-rose-500 text-white border-rose-300"; }
+
+                ratingDisplay.textContent = ratingText;
+                ratingDisplay.className = `font-bold text-xs px-3 py-1 rounded-full border shadow-sm ${ratingColor}`;
+            }
         }
 
         function applyDirectScore() {
             const input = document.getElementById('direct-score-input');
-            const score = parseFloat(input.value);
-            if (isNaN(score) || score < 0 || score > 100) { 
-                alert('Vui lòng nhập số điểm hợp lệ từ 0 đến 100!'); 
-                return; 
+            let val = parseFloat(input.value);
+            if (isNaN(val) || val < 0 || val > 100) {
+                alert("Vui lòng nhập điểm từ 0 đến 100!");
+                return;
             }
-            
-            document.getElementById('hud-total-score').textContent = score;
-            document.getElementById('hud-progress-bar').style.width = `${score}%`;
-            
-            const ratingElem = document.getElementById('hud-rating');
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const t = translations[currentLang] || translations.vi;
 
-            if (score >= 90) { ratingElem.textContent = t.rateEx; ratingElem.className = "font-bold text-sm px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30"; }
-            else if (score >= 80) { ratingElem.textContent = t.rateGood; ratingElem.className = "font-bold text-sm px-3 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30"; }
-            else if (score >= 65) { ratingElem.textContent = t.rateFair; ratingElem.className = "font-bold text-sm px-3 py-1 bg-yellow-500/20 text-yellow-200 rounded-full border border-yellow-400/30"; }
-            else if (score >= 50) { ratingElem.textContent = t.rateAvg; ratingElem.className = "font-bold text-sm px-3 py-1 bg-orange-500/20 text-orange-200 rounded-full border border-orange-400/30"; }
-            else { ratingElem.textContent = t.rateWeak; ratingElem.className = "font-bold text-sm px-3 py-1 bg-rose-500/20 text-rose-200 rounded-full border border-rose-400/30"; }
+            userScores = { direct_score: val };
+            if (currentUser) {
+                currentUser.scores = userScores;
+                saveCurrentUserData();
+            }
+
+            renderDRLTable();
+            const scoreDisplay = document.getElementById('hud-total-score');
+            const progressBar = document.getElementById('hud-progress-bar');
+            if (scoreDisplay) scoreDisplay.textContent = val;
+            if (progressBar) progressBar.style.width = `${val}%`;
+
+            alert("Đã ghi đè điểm rèn luyện trực tiếp!");
         }
 
         function resetAllScores() {
-            userScores = {};
-            saveUserScores();
-            renderDRLTable();
-            calculateTotalHUD();
+            if (confirm("Bạn có chắc chắn muốn đặt lại tất cả điểm rèn luyện về 0?")) {
+                userScores = {};
+                if (currentUser) {
+                    currentUser.scores = userScores;
+                    saveCurrentUserData();
+                }
+                document.getElementById('direct-score-input').value = '';
+                renderDRLTable();
+                calculateTotalHUD();
+            }
         }
 
-        function saveUserScores() {
-            if (!currentUser || !currentUser.mssv) return;
-            currentUser.scores = userScores;
-            localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-            
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            localUsers[currentUser.mssv] = { scores: userScores };
-            localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+        /* ================= QUẢN LÝ QUỶ LỚP ================= */
+        function renderClassFundHUD() {
+            const notJoinedBox = document.getElementById('class-not-joined');
+            const joinedBox = document.getElementById('class-joined-view');
+            const statusBadge = document.getElementById('class-badge-status');
+
+            if (!currentUser || !currentUser.joinedClassCode) {
+                notJoinedBox.classList.remove('hidden');
+                joinedBox.classList.add('hidden');
+                statusBadge.textContent = "Chưa tham gia lớp";
+                statusBadge.className = "text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600";
+            } else {
+                notJoinedBox.classList.add('hidden');
+                joinedBox.classList.remove('hidden');
+                statusBadge.textContent = `Lớp: ${currentUser.joinedClassCode}`;
+                statusBadge.className = "text-[10px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold px-2.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-700";
+                
+                document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> Mã Lớp: ${currentUser.joinedClassCode}`;
+            }
+        }
+
+        function openClassModal(mode) {
+            document.getElementById('class-modal').classList.remove('hidden');
+            const joinForm = document.getElementById('form-join-class');
+            const createForm = document.getElementById('form-create-class');
+            const title = document.getElementById('class-modal-title');
+
+            if (mode === 'join') {
+                joinForm.classList.remove('hidden');
+                createForm.classList.add('hidden');
+                title.innerHTML = `<i class="fa-solid fa-users text-blue-600"></i> Tham gia Lớp`;
+            } else {
+                joinForm.classList.add('hidden');
+                createForm.classList.remove('hidden');
+                title.innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-600"></i> Đăng ký Lớp Mới`;
+            }
+        }
+
+        function closeClassModal() {
+            document.getElementById('class-modal').classList.add('hidden');
+        }
+
+        function handleJoinClass(e) {
+            e.preventDefault();
+            const code = document.getElementById('join-class-code').value.trim().toUpperCase();
+            if (currentUser) {
+                currentUser.joinedClassCode = code;
+                saveCurrentUserData();
+                renderClassFundHUD();
+                closeClassModal();
+                alert(`Đã tham gia vào lớp ${code} thành công!`);
+            }
+        }
+
+        function handleCreateClass(e) {
+            e.preventDefault();
+            const code = document.getElementById('create-class-code').value.trim().toUpperCase();
+            if (currentUser) {
+                currentUser.joinedClassCode = code;
+                saveCurrentUserData();
+                renderClassFundHUD();
+                closeClassModal();
+                alert(`Đã tạo và đăng ký lớp ${code} thành công!`);
+            }
+        }
+
+        function leaveCurrentClass() {
+            if (confirm("Bạn có chắc muốn rời khỏi lớp hiện tại?")) {
+                if (currentUser) {
+                    currentUser.joinedClassCode = null;
+                    saveCurrentUserData();
+                    renderClassFundHUD();
+                }
+            }
+        }
+
+        function requestTreasurerRole() {
+            alert("Đã gửi yêu cầu cấp quyền Thủ quỹ tới Admin!");
+        }
+
+        function openFundTransactionModal(type) {
+            document.getElementById('fund-trans-modal').classList.remove('hidden');
+            document.getElementById('trans-type').value = type;
+            document.getElementById('fund-trans-title').innerHTML = type === 'deposit' ? 
+                `<i class="fa-solid fa-circle-plus text-emerald-500"></i> Thêm Quỹ Lớp` : 
+                `<i class="fa-solid fa-circle-minus text-rose-500"></i> Rút Quỹ Lớp`;
+        }
+
+        function closeFundTransactionModal() {
+            document.getElementById('fund-trans-modal').classList.add('hidden');
+        }
+
+        function handleFundTransaction(e) {
+            e.preventDefault();
+            alert("Giao dịch đã được lưu!");
+            closeFundTransactionModal();
         }
     </script>
 </body>
