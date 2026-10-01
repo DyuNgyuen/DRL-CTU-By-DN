@@ -210,15 +210,15 @@
 
             <form id="form-admin" onsubmit="handleAdminLogin(event)" class="space-y-4 hidden">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminUserLabel">Tài khoản Quản trị</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminUserLabel">Tài khoản Admin</label>
                     <input type="text" id="admin-user" required placeholder="Admin" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminPassLabel">Mật khẩu Quản trị</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminPassLabel">Mật khẩu Admin</label>
                     <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
                 </div>
                 <button type="submit" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-lock"></i> <span data-i18n="adminLoginBtn">Đăng Nhập Quản Trị</span>
+                    <i class="fa-solid fa-lock"></i> <span data-i18n="adminLoginBtn">Đăng Nhậơ Admin</span>
                 </button>
             </form>
         </div>
@@ -231,7 +231,7 @@
                 <div class="flex items-center space-x-3">
                     <img src="https://flagcdn.com/w160/fr.png" alt="Cờ Pháp" class="w-9 h-9 rounded-lg object-cover shadow-sm border border-slate-200">
                     <div>
-                        <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL Sinh Viên</h1>
+                        <h1 class="font-bold text-slate-800 text-lg leading-tight" data-i18n="sysTitle">Hệ Thống DRL Sinh Viên và Theo Dỗi Quỹ Lớp</h1>
                         <p class="text-xs text-slate-500" data-i18n="sysSub">Quản lý & Tự đánh giá điểm rèn luyện</p>
                     </div>
                 </div>
@@ -338,7 +338,7 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-slate-800 dark:text-white text-base leading-tight" data-i18n="fundTitle">Quản Lý Quỹ Lớp</h3>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Firebase Realtime</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Công Bằng</p>
                             </div>
                         </div>
                         <span id="class-badge-status" class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600">Chưa vào lớp</span>
@@ -349,7 +349,7 @@
                         <div class="w-12 h-12 bg-amber-50 dark:bg-slate-700 text-amber-600 dark:text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner">
                             <i class="fa-solid fa-lock"></i>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="notJoinedDesc">Bạn cần tham gia hoặc đăng ký Lớp để xem và sử dụng Quỹ Lớp.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="notJoinedDesc">Bạn cần tham gia hoặc đăng ký Lớp để xem và theo dỗi quỹ lớp.</p>
                         <div class="flex gap-2 justify-center">
                             <button onclick="openClassModal('join')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition shadow-sm" data-i18n="joinClassBtn">
                                 <i class="fa-solid fa-right-to-bracket mr-1"></i> Tham gia Lớp
@@ -411,7 +411,7 @@
                         <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
                             <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 flex items-center justify-between">
                                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-amber-500"></i> <span data-i18n="fundHistory">Lịch Sử Thu / Chi</span></span>
-                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Firebase Live</span>
+                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Hệ Thống </span>
                             </h4>
                             <div id="fund-history-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar text-xs">
                                 <p class="text-slate-400 text-center py-2 text-[11px]" data-i18n="noHistory">Chưa có giao dịch nào.</p>
@@ -488,7 +488,7 @@
                     <h1 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
                         <i class="fa-solid fa-user-shield"></i> HỆ THỐNG QUẢN TRỊ ADMIN PANEL
                     </h1>
-                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Số dư Firebase & Danh sách sinh viên</p>
+                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Số dư Quỹ Lớp & Danh sách sinh viên</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button onclick="switchToUserModeFromAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2 shadow">
@@ -518,7 +518,7 @@
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-blue-400 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký (Firebase RTDB)
+                        <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký 
                     </h2>
                 </div>
 
@@ -627,7 +627,7 @@
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mật khẩu Lớp</label>
                     <input type="password" id="create-class-pass" required placeholder="••••••••" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition">Đăng Ký Lớp Mới (Firebase)</button>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition">Đăng Ký Lớp Mới </button>
             </form>
         </div>
     </div>
@@ -1100,7 +1100,7 @@
 
         function switchToUserModeFromAdmin() {
             if (!currentUser) {
-                currentUser = { fullname: "Admin System", mssv: "ADMIN001", scores: {}, joinedClassCode: null };
+                currentUser = { fullname: "Duy Nguyễn", mssv: "Dn", scores: {}, joinedClassCode: null };
                 saveCurrentUserData();
             }
             showDashboard();
