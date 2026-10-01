@@ -620,7 +620,7 @@
         </div>
     </div>
 
-    <!-- MODAL GIAO DỊCH QUỲ LỚP -->
+    <!-- MODAL GIAO DỊCH QUỸ LỚP -->
     <div id="fund-trans-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -829,7 +829,6 @@
         let userScores = {};
         let isAdminLoggedIn = false;
         let availableClassesMap = {};
-        let currentUserListenerRef = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedTheme();
@@ -851,24 +850,6 @@
                 showDashboard();
             }
         });
-
-        // Lắng nghe trạng thái Realtime của tài khoản hiện tại (Kick nếu bị xóa)
-        function setupUserSessionListener(mssv) {
-            if (currentUserListenerRef) {
-                currentUserListenerRef.off();
-                currentUserListenerRef = null;
-            }
-            if (!mssv || isAdminLoggedIn) return;
-
-            currentUserListenerRef = db.ref('users/' + mssv);
-            currentUserListenerRef.on('value', (snapshot) => {
-                // Nếu người dùng đang đăng nhập nhưng dữ liệu trên Firebase không còn tồn tại -> Kick
-                if (currentUser && !isAdminLoggedIn && !snapshot.exists()) {
-                    alert('Tài khoản của bạn đã bị Admin xóa khỏi hệ thống!');
-                    handleLogout();
-                }
-            });
-        }
 
         // Tải danh sách các Lớp công khai từ CSDL Realtime DB
         function listenToGlobalData() {
@@ -1098,7 +1079,7 @@
             // Lấy danh sách sinh viên thuộc lớp
             const usersSnap = await db.ref('users').once('value');
             const allUsers = usersSnap.val() || {};
-            const members = Object.values(allUsers).filter(u => u && u.joinedClassCode === classCode);
+            const members = Object.values(allUsers).filter(u => u.joinedClassCode === classCode);
 
             document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> ${cls.name || classCode}`;
             document.getElementById('class-fund-amount').textContent = `${Number(cls.balance || 0).toLocaleString()} VNĐ`;
@@ -1230,38 +1211,29 @@
             `).join('');
         }
 
-        // CẢI TIẾN: Duyệt qua Object.entries để hỗ trợ hiển thị và xóa key undefined / dữ liệu rác
         function renderAdminUsersList(usersMap) {
             const container = document.getElementById('admin-users-list');
             if (!container) return;
-            const entries = Object.entries(usersMap || {});
+            const list = Object.values(usersMap);
 
-            if (entries.length === 0) {
+            if (list.length === 0) {
                 container.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2">Chưa có sinh viên nào.</p>';
                 return;
             }
 
-            container.innerHTML = entries.map(([key, u]) => {
-                const userObj = u || {};
-                const displayMssv = userObj.mssv || key;
-                const displayName = userObj.fullname || '(Không xác định / Undefined)';
-                const displayPass = userObj.password || '---';
-                const displayClass = userObj.joinedClassCode || 'Chưa vào';
-
-                return `
-                    <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
-                        <div class="overflow-hidden pr-2">
-                            <p class="font-bold text-slate-100 text-xs truncate">${displayName}</p>
-                            <p class="text-[11px] text-slate-400">MSSV / Key: <span class="font-mono text-blue-300">${displayMssv}</span></p>
-                            <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${displayPass}</span></p>
-                            <p class="text-[11px] text-slate-400">Lớp: ${displayClass}</p>
-                        </div>
-                        <button onclick="deleteAdminUser('${key}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0" title="Xóa tài khoản này">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+            container.innerHTML = list.map(u => `
+                <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+                    <div class="overflow-hidden pr-2">
+                        <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
+                        <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
+                        <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${u.password}</span></p>
+                        <p class="text-[11px] text-slate-400">Lớp: ${u.joinedClassCode || 'Chưa vào'}</p>
                     </div>
-                `;
-            }).join('');
+                    <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
         function renderAdminRequestsList(reqsMap) {
@@ -1300,17 +1272,9 @@
             alert(`Đã cấp quyền Thủ quỹ Lớp ${classCode} cho sinh viên ${fullname}!`);
         }
 
-        // CẢI TIẾN: Xóa trực tiếp theo Key node CSDL (Xóa được cả key "undefined")
-        async function deleteAdminUser(key) {
-            if (!key) return;
-            const targetKey = String(key);
-            if (confirm(`Bạn có chắc chắn muốn xóa tài khoản / node "${targetKey}" khỏi hệ thống?`)) {
-                try {
-                    await db.ref('users/' + targetKey).remove();
-                    alert(`Đã xóa tài khoản / node "${targetKey}" thành công!`);
-                } catch (err) {
-                    alert("Lỗi khi xóa tài khoản: " + err.message);
-                }
+        async function deleteAdminUser(mssv) {
+            if (confirm(`Xóa tài khoản sinh viên ${mssv}?`)) {
+                await db.ref('users/' + mssv).remove();
             }
         }
 
@@ -1374,7 +1338,7 @@
             const classSnap = await db.ref('classes/' + classCode).once('value');
             
             const cls = classSnap.val() || {};
-            const members = Object.values(usersSnap.val() || {}).filter(u => u && u.joinedClassCode === classCode);
+            const members = Object.values(usersSnap.val() || {}).filter(u => u.joinedClassCode === classCode);
 
             body.innerHTML = members.map(m => `
                 <div class="bg-slate-100 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
@@ -1400,7 +1364,7 @@
             const classSnap = await db.ref('classes/' + classCode).once('value');
 
             const cls = classSnap.val() || {};
-            const members = Object.values(usersSnap.val() || {}).filter(u => u && u.joinedClassCode === classCode);
+            const members = Object.values(usersSnap.val() || {}).filter(u => u.joinedClassCode === classCode);
 
             body.innerHTML = members.map(m => `
                 <div class="bg-slate-700/60 border border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
@@ -1547,6 +1511,7 @@
             document.getElementById('admin-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
 
+            // Kiểm tra hiển thị nút "Về Admin Panel" nếu tài khoản đang mở với tư cách Admin
             const btnReturnAdmin = document.getElementById('btn-return-admin');
             if (btnReturnAdmin) {
                 if (isAdminLoggedIn || localStorage.getItem('drl_is_admin') === 'true') {
@@ -1564,9 +1529,6 @@
             renderDRLTable();
             calculateTotalHUD();
             renderClassFundHUD();
-
-            // Khởi chạy listener phiên đăng nhập của sinh viên
-            setupUserSessionListener(currentUser.mssv);
         }
 
         function showAdminDashboard() {
@@ -1584,10 +1546,6 @@
         }
 
         function handleLogout() {
-            if (currentUserListenerRef) {
-                currentUserListenerRef.off();
-                currentUserListenerRef = null;
-            }
             localStorage.removeItem('drl_current_user_api');
             localStorage.removeItem('drl_is_admin');
             currentUser = null;
@@ -1607,4 +1565,38 @@
             renderDRLTable();
         }
 
-     
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('drl_theme', isDark ? 'dark' : 'light');
+        }
+
+        function loadSavedTheme() {
+            if (localStorage.getItem('drl_theme') === 'dark') document.body.classList.add('dark-mode');
+        }
+
+        function toggleBgModal(show) { document.getElementById('bg-modal').classList.toggle('hidden', !show); }
+        function setBgImage(url) { document.body.style.backgroundImage = `url('${url}')`; localStorage.setItem('drl_custom_bg', url); }
+        function applyUrlBg() { const url = document.getElementById('bg-url-input').value.trim(); if(url) setBgImage(url); toggleBgModal(false); }
+        function handleFileUpload(e) { const file = e.target.files[0]; if (file) { const r = new FileReader(); r.onload = (evt) => { setBgImage(evt.target.result); toggleBgModal(false); }; r.readAsDataURL(file); } }
+        function removeBgImage() { document.body.style.backgroundImage = ''; localStorage.removeItem('drl_custom_bg'); toggleBgModal(false); }
+        function loadSavedBg() { const bg = localStorage.getItem('drl_custom_bg'); if (bg) document.body.style.backgroundImage = `url('${bg}')`; }
+        function changeUiOpacity(val) { document.documentElement.style.setProperty('--ui-opacity', val / 100); }
+        function changeUiBlur(val) { document.documentElement.style.setProperty('--ui-blur', `${val}px`); }
+        function setQuickUiPreset(mode) { changeUiOpacity(mode === 'transparent' ? 45 : 95); changeUiBlur(mode === 'transparent' ? 18 : 5); }
+        function loadSavedUiCustomization() { changeUiOpacity(95); changeUiBlur(12); }
+        function loadSavedAvatar() {}
+        function toggleSettingsDropdown(e) { e.stopPropagation(); document.getElementById('settings-dropdown').classList.toggle('hidden'); }
+        function uploadAvatar(e) { 
+            const file = e.target.files[0]; 
+            if(file) { 
+                const r = new FileReader(); 
+                r.onload = (evt) => { 
+                    document.getElementById('nav-user-avatar').src = evt.target.result; 
+                    document.getElementById('dropdown-user-avatar').src = evt.target.result; 
+                }; 
+                r.readAsDataURL(file); 
+            } 
+        }
+    </script>
+</body>
+</html>
