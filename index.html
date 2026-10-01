@@ -1446,10 +1446,6 @@
                 status: 'pending'
             });
 
-            let reqs = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
-            reqs.push({ classCode: currentUser.joinedClassCode, mssv: currentUser.mssv, fullname: currentUser.fullname, time: new Date().toLocaleString('vi-VN'), status: 'pending' });
-            localStorage.setItem('drl_treasurer_requests', JSON.stringify(reqs));
-
             alert("Đã gửi yêu cầu làm Thủ quỹ đến Admin!");
         }
 
@@ -1581,29 +1577,29 @@
             const countBadge = document.getElementById('admin-request-count');
             
             const snapshot = await db.ref('treasurer_requests').once('value');
-            const reqData = snapshot.val() || {};
+            const reqs = snapshot.val() || {};
 
-            const pendingReqs = Object.entries(reqData).filter(([key, val]) => val.status === 'pending');
-            countBadge.textContent = `${pendingReqs.length} yêu cầu`;
+            const reqList = Object.entries(reqs).filter(([key, val]) => val.status === 'pending');
+            if (countBadge) countBadge.textContent = `${reqList.length} yêu cầu`;
 
-            if (pendingReqs.length === 0) {
-                listContainer.innerHTML = '<p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>';
-                return;
+            if (listContainer) {
+                if (reqList.length === 0) {
+                    listContainer.innerHTML = '<p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>';
+                } else {
+                    listContainer.innerHTML = reqList.map(([key, r]) => `
+                        <div class="bg-slate-700/60 border border-slate-600/60 p-3 rounded-xl flex items-center justify-between text-xs">
+                            <div>
+                                <p class="font-bold text-slate-100">${r.fullname} (${r.mssv})</p>
+                                <p class="text-slate-400">Yêu cầu làm Thủ quỹ Lớp: <span class="font-mono text-amber-300">${r.classCode}</span> - ${r.time}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="approveTreasurerRequest('${key}', '${r.classCode}', '${r.mssv}', '${r.fullname}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg font-semibold transition">Duyệt</button>
+                                <button onclick="rejectTreasurerRequest('${key}')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded-lg font-semibold transition">Từ chối</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
             }
-
-            listContainer.innerHTML = pendingReqs.map(([reqKey, req]) => `
-                <div class="bg-slate-700/60 border border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
-                    <div>
-                        <p class="font-bold text-slate-100 text-xs">${req.fullname} (${req.mssv})</p>
-                        <p class="text-[11px] text-amber-300">Yêu cầu làm Thủ quỹ Lớp: <span class="font-bold">${req.classCode}</span></p>
-                        <p class="text-[10px] text-slate-400">Thời gian: ${req.time}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="approveTreasurerRequest('${reqKey}', '${req.classCode}', '${req.mssv}', '${req.fullname}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-xs font-semibold transition">Duyệt</button>
-                        <button onclick="rejectTreasurerRequest('${reqKey}')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded-lg text-xs font-semibold transition">Từ chối</button>
-                    </div>
-                </div>
-            `).join('');
         }
 
         async function approveTreasurerRequest(reqKey, classCode, mssv, fullname) {
@@ -1619,25 +1615,22 @@
 
         async function rejectTreasurerRequest(reqKey) {
             await db.ref('treasurer_requests/' + reqKey).update({ status: 'rejected' });
-            alert("Đã từ chối yêu cầu.");
             loadAdminRequests();
         }
 
-        /* DRL TABLE & HUD CALCULATIONS */
+        /* DRL SCORING TABLE & CALCULATION LOGIC */
         function renderDRLTable() {
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const drlData = getLocalizedDrlStructure(currentLang);
             const tbody = document.getElementById('drl-table-body');
             if (!tbody) return;
 
+            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(lang);
             let html = '';
 
-            drlData.forEach(sec => {
+            structure.forEach(sec => {
                 html += `
-                    <tr class="bg-blue-50/50 dark:bg-slate-800/80 font-bold text-blue-900 dark:text-blue-300">
-                        <td colspan="4" class="py-2.5 px-4 text-xs sm:text-sm border-t border-b border-slate-200 dark:border-slate-700">
-                            ${sec.title} (Tối đa ${sec.maxScore} điểm)
-                        </td>
+                    <tr class="bg-slate-200/80 dark:bg-slate-800/80 font-bold text-slate-800 dark:text-slate-100">
+                        <td colspan="4" class="py-2.5 px-4 text-xs font-bold text-blue-700 dark:text-blue-300">${sec.title} (Tối đa ${sec.maxScore}đ)</td>
                     </tr>
                 `;
 
@@ -1645,22 +1638,32 @@
                     const savedVal = userScores[item.id] !== undefined ? userScores[item.id] : 0;
                     let inputControl = '';
 
-                    if (item.type === 'number') {
-                        inputControl = `<input type="number" min="0" max="${item.max}" value="${savedVal}" onchange="updateItemScore('${item.id}', this.value, ${item.max})" class="w-20 text-center px-2 py-1 text-xs border border-slate-300 dark:border-slate-600 rounded focus:ring-1 focus:ring-blue-500">`;
-                    } else if (item.type === 'checkbox') {
+                    if (item.type === 'checkbox') {
                         const checked = savedVal > 0 ? 'checked' : '';
-                        inputControl = `<input type="checkbox" ${checked} onchange="updateItemScore('${item.id}', this.checked ? ${item.score || item.max} : 0, ${item.max})" class="w-4 h-4 text-blue-600 rounded cursor-pointer">`;
+                        inputControl = `
+                            <input type="checkbox" id="input_${item.id}" ${checked} onchange="updateScore('${item.id}', this.checked ? ${item.score} : 0)" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                        `;
+                    } else if (item.type === 'number') {
+                        inputControl = `
+                            <input type="number" id="input_${item.id}" min="0" max="${item.max}" value="${savedVal}" onchange="updateScore('${item.id}', Math.min(${item.max}, Math.max(0, Number(this.value))))" class="w-20 px-2 py-1 border border-slate-300 rounded text-center text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        `;
                     } else if (item.type === 'select') {
-                        let opts = item.options.map(opt => `<option value="${opt.score}" ${savedVal == opt.score ? 'selected' : ''}>${opt.label}</option>`).join('');
-                        inputControl = `<select onchange="updateItemScore('${item.id}', this.value, ${item.max})" class="w-full text-xs px-2 py-1 border border-slate-300 dark:border-slate-600 rounded focus:ring-1 focus:ring-blue-500 cursor-pointer">${opts}</select>`;
+                        const opts = item.options.map(o => `
+                            <option value="${o.score}" ${savedVal == o.score ? 'selected' : ''}>${o.label}</option>
+                        `).join('');
+                        inputControl = `
+                            <select id="input_${item.id}" onchange="updateScore('${item.id}', Number(this.value))" class="w-full px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                ${opts}
+                            </select>
+                        `;
                     }
 
                     html += `
-                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
-                            <td class="py-2.5 px-4 text-xs text-slate-700 dark:text-slate-200">${item.text}</td>
-                            <td class="py-2.5 px-2 text-center text-xs font-semibold text-slate-500 dark:text-slate-400">${item.max}</td>
-                            <td class="py-2.5 px-4 text-center">${inputControl}</td>
-                            <td class="py-2.5 px-2 text-center text-xs font-bold text-blue-600 dark:text-blue-400" id="earned-${item.id}">${savedVal}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                            <td class="py-2 px-4 text-xs text-slate-700 dark:text-slate-200">${item.text}</td>
+                            <td class="py-2 px-2 text-center text-xs font-semibold text-slate-500 dark:text-slate-400">${item.max}</td>
+                            <td class="py-2 px-4 text-center text-xs">${inputControl}</td>
+                            <td class="py-2 px-2 text-center text-xs font-bold text-blue-600 dark:text-blue-400" id="earned_${item.id}">${savedVal}</td>
                         </tr>
                     `;
                 });
@@ -1669,60 +1672,80 @@
             tbody.innerHTML = html;
         }
 
-        function updateItemScore(id, val, max) {
-            let score = Number(val) || 0;
-            if (score < 0) score = 0;
-            if (score > max) score = max;
+        function updateScore(itemId, score) {
+            userScores[itemId] = Number(score);
+            delete userScores.direct_override; // Xóa ghi đè nếu chấm điểm thủ công
 
-            userScores[id] = score;
+            const earnedEl = document.getElementById(`earned_${itemId}`);
+            if (earnedEl) earnedEl.textContent = score;
+
             if (currentUser) {
                 currentUser.scores = userScores;
                 saveCurrentUserData();
             }
-
-            const earnedEl = document.getElementById(`earned-${id}`);
-            if (earnedEl) earnedEl.textContent = score;
-
             calculateTotalHUD();
         }
 
+        function applyDirectScore() {
+            const input = document.getElementById('direct-score-input');
+            const score = Number(input.value);
+            if (isNaN(score) || score < 0 || score > 100) {
+                alert("Vui lòng nhập điểm trong khoảng 0 - 100!");
+                return;
+            }
+
+            userScores = { direct_override: score };
+            if (currentUser) {
+                currentUser.scores = userScores;
+                saveCurrentUserData();
+            }
+            renderDRLTable();
+            calculateTotalHUD();
+            alert("Đã cập nhật điểm trực tiếp!");
+        }
+
+        function resetAllScores() {
+            userScores = {};
+            if (currentUser) {
+                currentUser.scores = userScores;
+                saveCurrentUserData();
+            }
+            renderDRLTable();
+            calculateTotalHUD();
+            document.getElementById('direct-score-input').value = '';
+        }
+
         function calculateTotalHUD() {
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const drlData = getLocalizedDrlStructure(currentLang);
-            const t = translations[currentLang] || translations.vi;
+            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(lang);
+            const t = translations[lang] || translations.vi;
 
             let total = 0;
             let secScores = { I: 0, II: 0, III: 0, IV: 0, V: 0 };
 
-            drlData.forEach(sec => {
-                let secTotal = 0;
-                sec.items.forEach(item => {
-                    const score = Number(userScores[item.id]) || 0;
-                    secTotal += score;
+            if (userScores.direct_override !== undefined) {
+                total = userScores.direct_override;
+            } else {
+                structure.forEach(sec => {
+                    let secSum = 0;
+                    sec.items.forEach(item => {
+                        secSum += (userScores[item.id] || 0);
+                    });
+                    secSum = Math.min(sec.maxScore, secSum);
+                    secScores[sec.sectionId] = secSum;
+                    total += secSum;
                 });
-                if (secTotal > sec.maxScore) secTotal = sec.maxScore;
-                secScores[sec.sectionId] = secTotal;
-                total += secTotal;
-            });
-
-            if (userScores['_directScore'] !== undefined) {
-                total = Number(userScores['_directScore']) || 0;
+                total = Math.min(100, total);
             }
 
-            if (total > 100) total = 100;
-            if (total < 0) total = 0;
+            // Cập nhật UI HUD
+            const totalScoreEl = document.getElementById('hud-total-score');
+            const progressBar = document.getElementById('hud-progress-bar');
+            const ratingEl = document.getElementById('hud-rating');
 
-            document.getElementById('hud-total-score').textContent = total;
-            document.getElementById('hud-progress-bar').style.width = `${total}%`;
+            if (totalScoreEl) totalScoreEl.textContent = total;
+            if (progressBar) progressBar.style.width = `${total}%`;
 
-            // Tóm tắt 5 Tiêu chí
-            document.getElementById('summary-sec-1').textContent = `${secScores.I}/20`;
-            document.getElementById('summary-sec-2').textContent = `${secScores.II}/25`;
-            document.getElementById('summary-sec-3').textContent = `${secScores.III}/20`;
-            document.getElementById('summary-sec-4').textContent = `${secScores.IV}/15`;
-            document.getElementById('summary-sec-5').textContent = `${secScores.V}/20`;
-
-            // Xếp loại dự kiến
             let ratingText = t.unrated;
             if (total >= 90) ratingText = t.rateEx;
             else if (total >= 80) ratingText = t.rateGood;
@@ -1730,36 +1753,14 @@
             else if (total >= 50) ratingText = t.rateAvg;
             else if (total > 0) ratingText = t.rateWeak;
 
-            document.getElementById('hud-rating').textContent = ratingText;
-        }
+            if (ratingEl) ratingEl.textContent = ratingText;
 
-        function applyDirectScore() {
-            const input = document.getElementById('direct-score-input');
-            const val = Number(input.value);
-            if (isNaN(val) || val < 0 || val > 100) {
-                alert("Vui lòng nhập điểm từ 0 đến 100!");
-                return;
-            }
-            userScores['_directScore'] = val;
-            if (currentUser) {
-                currentUser.scores = userScores;
-                saveCurrentUserData();
-            }
-            calculateTotalHUD();
-            alert(`Đã cập nhật điểm trực tiếp: ${val} điểm!`);
-        }
-
-        function resetAllScores() {
-            if (confirm("Bạn có chắc chắn muốn đặt lại tất cả điểm rèn luyện về 0?")) {
-                userScores = {};
-                if (currentUser) {
-                    currentUser.scores = {};
-                    saveCurrentUserData();
-                }
-                document.getElementById('direct-score-input').value = '';
-                renderDRLTable();
-                calculateTotalHUD();
-            }
+            // Hiển thị tóm tắt 5 Tiêu chí
+            if (document.getElementById('summary-sec-1')) document.getElementById('summary-sec-1').textContent = `${secScores.I}/20`;
+            if (document.getElementById('summary-sec-2')) document.getElementById('summary-sec-2').textContent = `${secScores.II}/25`;
+            if (document.getElementById('summary-sec-3')) document.getElementById('summary-sec-3').textContent = `${secScores.III}/20`;
+            if (document.getElementById('summary-sec-4')) document.getElementById('summary-sec-4').textContent = `${secScores.IV}/15`;
+            if (document.getElementById('summary-sec-5')) document.getElementById('summary-sec-5').textContent = `${secScores.V}/20`;
         }
     </script>
 </body>
