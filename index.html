@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý DRL & Quỹ Lớp CTU By Nguyễn Duy</title>
+    <title>Quản Lý DRL & Quỹ Lớp CTU By N.DUY</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --ui-opacity: 0.95;
@@ -21,7 +26,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
-        /* Dynamic Background & Typography */
         body {
             background-size: cover;
             background-position: center;
@@ -32,9 +36,8 @@
             color: #0f172a;
         }
 
-        /* 1. NỀN TRẮNG DỊU MẮT & CHỮ ĐEN RÕ NÉT (LIGHT MODE) */
         body:not(.dark-mode) {
-            background-color: #f0f3f7 !important; /* Nền xám nhạt dịu nhẹ, không bị chói */
+            background-color: #f0f3f7 !important;
             color: #090d16 !important;
         }
 
@@ -45,40 +48,38 @@
         body:not(.dark-mode) strong,
         body:not(.dark-mode) .font-bold,
         body:not(.dark-mode) .font-semibold {
-            color: #000000 !important; /* Chữ tiêu đề đen rõ nét */
+            color: #000000 !important;
         }
 
         body:not(.dark-mode) .text-slate-800,
         body:not(.dark-mode) .text-slate-700 {
-            color: #0f172a !important; /* Chữ đậm đen nét */
+            color: #0f172a !important;
         }
 
         body:not(.dark-mode) .text-slate-600,
         body:not(.dark-mode) .text-slate-500,
         body:not(.dark-mode) .text-slate-400 {
-            color: #334155 !important; /* Chữ phụ sắc nét, không bị mờ nhạt */
+            color: #334155 !important;
         }
 
-        /* 3. KHUNG (GLASS PANEL) - MÀU VỪA MỨC NỀN TRẮNG VÀ ĐEN, ĐỦ PHÂN BIỆT */
         .glass-panel {
             background-color: var(--bg-card-light) !important;
             backdrop-filter: blur(var(--ui-blur));
             -webkit-backdrop-filter: blur(var(--ui-blur));
-            border: 1px solid rgba(203, 213, 225, 0.8) !important; /* Viền vừa đủ tách biệt */
+            border: 1px solid rgba(203, 213, 225, 0.8) !important;
             box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
 
-        /* DARK MODE - MÀU KHUNG VỪA ĐỦ, KHÔNG ĐẬM CHÁT */
         body.dark-mode {
             background-color: #0f172a;
             color: #f8fafc !important;
         }
 
         body.dark-mode .glass-panel {
-            background-color: var(--bg-card-dark) !important; /* Tone slate vừa đủ */
+            background-color: var(--bg-card-dark) !important;
             color: #f8fafc !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important; /* Viền vừa đủ phân biệt */
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
@@ -106,7 +107,7 @@
         body.dark-mode .bg-slate-100\/80,
         body.dark-mode .bg-slate-100\/90,
         body.dark-mode .bg-slate-50 {
-            background-color: rgba(51, 65, 85, 0.45) !important; /* Khung con không bị quá tối */
+            background-color: rgba(51, 65, 85, 0.45) !important;
             color: #f1f5f9 !important;
         }
 
@@ -131,14 +132,12 @@
             background-color: rgba(255, 255, 255, 0.06) !important;
         }
 
-        /* 4. TỐI ƯU THIẾT KẾ HUD THÔNG TIN */
         .hud-score-card {
             background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1d4ed8 100%);
             border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.3);
         }
 
-        /* NÚT ĐẶT LẠI BẢNG ĐIỂM THAY ĐỔI THEO THEME */
         .btn-reset-score {
             background-color: #fef2f2;
             color: #dc2626;
@@ -164,11 +163,10 @@
 </head>
 <body id="app-body" class="bg-slate-100 text-slate-800 min-h-screen">
 
-    <!-- ================= AUTH SECTION ================= -->
+    <!-- AUTH SECTION -->
     <div id="auth-section" class="min-h-screen flex items-center justify-center p-4 backdrop-blur-sm bg-slate-900/10">
         <div class="glass-panel p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-200/80">
             <div class="text-center mb-8">
-                <!-- Logo -->
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-3 overflow-hidden border border-slate-200 shadow">
                     <img src="https://flagcdn.com/w160/fr.png" class="w-full h-full object-cover" alt="Logo">
                 </div>
@@ -176,14 +174,12 @@
                 <p class="text-slate-500 text-sm mt-1" data-i18n="authSub">Thuộc Khoa Ngoại Ngữ</p>
             </div>
 
-            <!-- Tab Switcher (Đăng nhập - Đăng ký - Admin) -->
             <div class="flex border-b border-slate-200 mb-6 text-xs sm:text-sm">
                 <button id="tab-login" onclick="switchAuthTab('login')" class="w-1/3 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all" data-i18n="login">Đăng nhập</button>
                 <button id="tab-register" onclick="switchAuthTab('register')" class="w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all" data-i18n="register">Đăng ký</button>
                 <button id="tab-admin" onclick="switchAuthTab('admin')" class="w-1/3 pb-3 font-semibold text-purple-600 border-b-2 border-transparent transition-all"><i class="fa-solid fa-user-shield mr-1"></i> Admin</button>
             </div>
 
-            <!-- Form Đăng Nhập Sinh Viên -->
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="mssv">Mã Số Sinh Viên (MSSV)</label>
@@ -196,7 +192,6 @@
                 <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="login">Đăng Nhập</button>
             </form>
 
-            <!-- Form Đăng Ký Sinh Viên -->
             <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="fullname">Họ và Tên</label>
@@ -213,7 +208,6 @@
                 <button type="submit" id="btn-register" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition" data-i18n="createAccount">Tạo Tài Khoản</button>
             </form>
 
-            <!-- Form Đăng Nhập Admin -->
             <form id="form-admin" onsubmit="handleAdminLogin(event)" class="space-y-4 hidden">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1" data-i18n="adminUserLabel">Tài khoản Quản trị</label>
@@ -230,9 +224,8 @@
         </div>
     </div>
 
-    <!-- ================= DASHBOARD HUD SECTION ================= -->
+    <!-- DASHBOARD HUD SECTION -->
     <div id="dashboard-section" class="hidden min-h-screen flex flex-col backdrop-blur-xs bg-slate-900/10">
-        <!-- Header / Navigation -->
         <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40 shadow-sm transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -244,26 +237,22 @@
                 </div>
                 
                 <div class="flex items-center space-x-3">
-                    <!-- Nút Quay lại Admin Panel nếu đang ở quyền Admin (Yêu cầu 3) -->
                     <button id="btn-return-admin" onclick="showAdminDashboard()" class="hidden bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg transition text-xs font-semibold flex items-center gap-1.5 shadow-sm border border-purple-400">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Về Admin Panel</span>
                     </button>
 
-                    <!-- Nút Tùy Chỉnh Background & UI -->
                     <button onclick="toggleBgModal(true)" class="bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 px-3 py-2 rounded-lg transition text-xs font-medium flex items-center gap-1.5 border border-slate-300 shadow-sm" title="Đổi hình nền & Giao diện">
                         <i class="fa-solid fa-palette text-blue-600"></i>
                         <span class="hidden sm:inline" data-i18n="background">Hình nền & UI</span>
                     </button>
 
-                    <!-- Nút Chuyển Mode Sáng/Tối -->
                     <button id="theme-toggle-btn" onclick="toggleTheme()" class="relative inline-flex items-center h-8 w-16 rounded-full p-1 transition-colors duration-300 focus:outline-none shadow-inner border border-slate-300/40 cursor-pointer" style="background-color: #FDEEBE;" title="Chuyển chế độ Sáng/Tối">
                         <span id="theme-toggle-thumb" class="inline-flex items-center justify-center w-6 h-6 rounded-full transition-all duration-300 transform translate-x-0 shadow-md" style="background-color: #F1B82D;">
                             <i id="theme-toggle-icon" class="fa-solid fa-sun text-white text-xs theme-thumb-icon"></i>
                         </span>
                     </button>
 
-                    <!-- MENU DROPDOWN NHÂN VIÊN & CÀI ĐẶT -->
                     <div class="relative inline-block text-left" id="user-menu-container">
                         <button id="user-avatar-btn" onclick="toggleSettingsDropdown(event)" class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-600 p-1.5 rounded-full border border-slate-300 dark:border-slate-600 transition focus:outline-none shadow-sm">
                             <img id="nav-user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=DuyNguyen" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-blue-500">
@@ -271,7 +260,6 @@
                             <i class="fa-solid fa-chevron-down text-xs text-slate-500 dark:text-slate-400 pr-1.5"></i>
                         </button>
 
-                        <!-- Popup Settings -->
                         <div id="settings-dropdown" class="hidden absolute right-0 mt-2 w-72 glass-panel rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 py-2 z-50 transition-all duration-200">
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center gap-3">
                                 <div class="relative group">
@@ -302,9 +290,6 @@
                                     <select id="language-select" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-xs text-slate-800 dark:text-slate-100 focus:outline-none cursor-pointer">
                                         <option value="vi">🇻🇳 Tiếng Việt</option>
                                         <option value="en">🇬🇧 English</option>
-                                        <option value="zh">🇨🇳 中文</option>
-                                        <option value="ko">🇰🇷 한국어</option>
-                                        <option value="fr">🇫🇷 Français</option>
                                     </select>
                                 </div>
                             </div>
@@ -321,13 +306,9 @@
             </div>
         </header>
 
-        <!-- Main Content Layout -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- Left Panel -->
             <div class="lg:col-span-4 space-y-6">
-                
-                <!-- HUD Summary Card (TỐI ƯU GIAO DIỆN) -->
+                <!-- HUD Score -->
                 <div class="hud-score-card rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
                     <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
                         <i class="fa-solid fa-award text-9xl"></i>
@@ -338,7 +319,6 @@
                         <span id="hud-max-unit" class="text-blue-100 font-medium text-lg" data-i18n="maxUnit">/ 100 điểm</span>
                     </div>
 
-                    <!-- Progress Bar -->
                     <div class="w-full bg-blue-950/50 rounded-full h-3 my-4 p-0.5 border border-blue-400/30">
                         <div id="hud-progress-bar" class="bg-gradient-to-r from-emerald-400 to-cyan-400 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
@@ -349,7 +329,7 @@
                     </div>
                 </div>
 
-                <!-- HUD CHỨC NĂNG QUẢN LÝ QUĨ LỚP -->
+                <!-- HUD Quản Lý Quỹ Lớp (Firebase Synchronized) -->
                 <div class="glass-panel p-5 rounded-2xl shadow-md space-y-4 relative overflow-hidden">
                     <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-3">
                         <div class="flex items-center gap-3">
@@ -358,18 +338,18 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-slate-800 dark:text-white text-base leading-tight" data-i18n="fundTitle">Quản Lý Quỹ Lớp</h3>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Tự động đồng bộ</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Firebase Realtime</p>
                             </div>
                         </div>
                         <span id="class-badge-status" class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600">Chưa vào lớp</span>
                     </div>
 
-                    <!-- Trạng thái chưa tham gia lớp -->
+                    <!-- Chưa tham gia lớp -->
                     <div id="class-not-joined" class="text-center py-5 space-y-3">
                         <div class="w-12 h-12 bg-amber-50 dark:bg-slate-700 text-amber-600 dark:text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner">
                             <i class="fa-solid fa-lock"></i>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="notJoinedDesc">Bạn cần đăng nhập hoặc tạo mới thông tin Lớp để xem và sử dụng Quỹ Lớp.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="notJoinedDesc">Bạn cần tham gia hoặc đăng ký Lớp để xem và sử dụng Quỹ Lớp.</p>
                         <div class="flex gap-2 justify-center">
                             <button onclick="openClassModal('join')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition shadow-sm" data-i18n="joinClassBtn">
                                 <i class="fa-solid fa-right-to-bracket mr-1"></i> Tham gia Lớp
@@ -380,17 +360,16 @@
                         </div>
                     </div>
 
-                    <!-- Trạng thái đã tham gia lớp -->
+                    <!-- Đã tham gia lớp -->
                     <div id="class-joined-view" class="hidden space-y-4">
                         <div class="bg-gradient-to-br from-amber-600 via-orange-500 to-amber-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden border border-amber-300/30">
                             <i class="fa-solid fa-piggy-bank absolute -right-4 -bottom-4 text-8xl text-white/15 pointer-events-none"></i>
                             
-                            <!-- Thêm nút Logo xem danh sách thành viên (Yêu cầu 6) -->
                             <div class="flex items-center justify-between">
                                 <div class="text-[11px] text-amber-100 font-semibold uppercase tracking-wider flex items-center gap-1.5" id="class-name-display">
                                     <i class="fa-solid fa-users text-amber-200"></i> Lớp: ---
                                 </div>
-                                <button onclick="openClassMembersModal()" class="bg-white/20 hover:bg-white/30 text-white px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-white/30 shadow-sm" title="Xem thành viên trong lớp">
+                                <button onclick="openClassMembersModal()" class="bg-white/20 hover:bg-white/30 text-white px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-white/30 shadow-sm" title="Xem danh sách thành viên Firebase">
                                     <i class="fa-solid fa-id-card text-amber-200"></i> <span>Xem Thành Viên</span>
                                 </button>
                             </div>
@@ -404,7 +383,6 @@
                                     </div>
                                     <div>
                                         <div class="text-[10px] text-amber-100/80 leading-none" data-i18n="treasurerLabel">Thủ Quỹ Lớp</div>
-                                        <!-- Thủ quỹ hiển thị Tên kèm MSSV (Yêu cầu 2) -->
                                         <strong id="class-treasurer-name" class="font-bold text-white text-xs">Chưa có</strong>
                                     </div>
                                 </div>
@@ -412,22 +390,20 @@
                             </div>
                         </div>
 
-                        <!-- Các hành động dành riêng cho Thủ quỹ -->
+                        <!-- Hành động Thủ quỹ -->
                         <div id="treasurer-actions" class="hidden grid grid-cols-2 gap-2">
                             <button onclick="openFundTransactionModal('deposit')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2.5 rounded-xl font-semibold transition flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg" data-i18n="addFundBtn">
-                                <i class="fa-solid fa-circle-plus"></i> Thêm Quỹ
+                                <i class="fa-solid fa-circle-plus"></i> Nạp Quỹ
                             </button>
                             <button onclick="openFundTransactionModal('withdraw')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs py-2.5 rounded-xl font-semibold transition flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg" data-i18n="withdrawFundBtn">
                                 <i class="fa-solid fa-circle-minus"></i> Rút Quỹ
                             </button>
                         </div>
 
-                        <!-- Nút gửi yêu cầu làm thủ quỹ & rời lớp -->
                         <div id="member-actions" class="flex flex-col gap-2">
                             <button id="btn-request-treasurer" onclick="requestTreasurerRole()" class="w-full bg-amber-50 dark:bg-slate-700 hover:bg-amber-100 dark:hover:bg-slate-600 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-slate-600 text-xs py-2 rounded-xl font-semibold transition flex items-center justify-center gap-1.5" data-i18n="reqTreasurerBtn">
                                 <i class="fa-solid fa-hand-raising text-amber-500"></i> Yêu cầu làm Thủ quỹ
                             </button>
-                            <!-- Rời lớp mới có thể thoát lớp (Yêu cầu 5) -->
                             <button onclick="leaveCurrentClass()" class="text-[11px] text-slate-400 hover:text-rose-500 text-center transition" data-i18n="leaveClassBtn">Rời khỏi lớp hiện tại</button>
                         </div>
 
@@ -435,7 +411,7 @@
                         <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
                             <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 flex items-center justify-between">
                                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-amber-500"></i> <span data-i18n="fundHistory">Lịch Sử Thu / Chi</span></span>
-                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Thời gian thực</span>
+                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Firebase Live</span>
                             </h4>
                             <div id="fund-history-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar text-xs">
                                 <p class="text-slate-400 text-center py-2 text-[11px]" data-i18n="noHistory">Chưa có giao dịch nào.</p>
@@ -444,7 +420,7 @@
                     </div>
                 </div>
 
-                <!-- MỤC 1: Nhập điểm trực tiếp -->
+                <!-- Nhập điểm trực tiếp -->
                 <div class="glass-panel p-5 rounded-2xl shadow-sm border border-slate-200/80">
                     <h3 class="font-bold text-slate-800 dark:text-white text-base mb-3 flex items-center">
                         <i class="fa-solid fa-sliders text-blue-600 mr-2"></i>
@@ -459,7 +435,7 @@
                     </div>
                 </div>
 
-                <!-- Tóm tắt 5 Tiêu chí DRL -->
+                <!-- Tóm tắt 5 Tiêu chí -->
                 <div class="glass-panel p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
                     <h3 class="font-bold text-slate-800 dark:text-white text-sm border-b border-slate-200 dark:border-slate-700 pb-2" data-i18n="summaryTitle">Tóm tắt 5 Tiêu chí DRL</h3>
                     <div class="space-y-2 text-xs">
@@ -473,20 +449,18 @@
 
             </div>
 
-            <!-- Right Panel: Bảng chi tiết 5 Nội dung -->
+            <!-- Right Panel -->
             <div class="lg:col-span-8 glass-panel rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700 mb-4 gap-2">
                     <div>
                         <h2 class="text-lg font-bold text-slate-800 dark:text-white" data-i18n="tableTitle">2. Bảng Chấm Điểm Rèn Luyện Chi Tiết</h2>
                         <p class="text-xs text-slate-500 dark:text-slate-300" data-i18n="tableSub">Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT</p>
                     </div>
-                    <!-- Nút Đặt lại bảng điểm tùy biến theo Theme -->
                     <button id="btn-reset-scores" onclick="resetAllScores()" class="btn-reset-score text-xs font-medium flex items-center gap-1.5 self-start sm:self-auto px-3.5 py-2 rounded-lg transition shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i> <span data-i18n="reset">Đặt lại bảng điểm</span>
                     </button>
                 </div>
 
-                <!-- Table Area -->
                 <div class="overflow-x-auto custom-scrollbar flex-grow">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
@@ -498,7 +472,6 @@
                             </tr>
                         </thead>
                         <tbody id="drl-table-body" class="text-sm divide-y divide-slate-200/60 dark:divide-slate-700/50">
-                            <!-- Dynamic content -->
                         </tbody>
                     </table>
                 </div>
@@ -507,7 +480,7 @@
         </main>
     </div>
 
-    <!-- ================= ADMIN PANEL SECTION ================= -->
+    <!-- ADMIN PANEL SECTION -->
     <div id="admin-section" class="hidden min-h-screen bg-slate-900 text-slate-100 p-4 sm:p-8">
         <div class="max-w-7xl mx-auto space-y-6">
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-xl">
@@ -515,15 +488,14 @@
                     <h1 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
                         <i class="fa-solid fa-user-shield"></i> HỆ THỐNG QUẢN TRỊ ADMIN PANEL
                     </h1>
-                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Xem Mật Khẩu, Xóa Tài khoản sinh viên & Đồng bộ Google Sheet</p>
+                    <p class="text-xs text-slate-400 mt-1">Quản lý Lớp học, Cấp quyền Thủ quỹ, Số dư Firebase & Danh sách sinh viên</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <!-- Nút dùng các chức năng khác dạng Tài khoản Bình thường mà không cần đăng xuất Admin (Yêu cầu 3) -->
                     <button onclick="switchToUserModeFromAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2 shadow">
                         <i class="fa-solid fa-user-gear"></i> Giao Diện Sinh Viên
                     </button>
                     <button onclick="loadAdminData()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-rotate"></i> Đồng bộ Google Sheet
+                        <i class="fa-solid fa-rotate"></i> Làm Mới Dữ Liệu
                     </button>
                     <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2">
                         <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất Admin
@@ -531,7 +503,6 @@
                 </div>
             </div>
 
-            <!-- Cải thiện Thông báo yêu cầu (Yêu cầu 3) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-amber-400 flex items-center gap-2">
@@ -544,15 +515,11 @@
                 </div>
             </div>
 
-            <!-- Xem danh sách Lớp & Quyền xem Mật khẩu + Vào lớp xem thành viên (Yêu cầu 1) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-blue-400 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký
+                        <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký (Firebase RTDB)
                     </h2>
-                    <span class="text-xs text-emerald-400 border border-emerald-500/40 bg-emerald-950/40 px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Tự động đồng bộ Google Sheet
-                    </span>
                 </div>
 
                 <div class="overflow-x-auto custom-scrollbar">
@@ -573,15 +540,11 @@
                 </div>
             </div>
 
-            <!-- Quyền Xem cả Mật khẩu Sinh viên (Yêu cầu 1) -->
             <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-base font-bold text-teal-400 flex items-center gap-2">
-                        <i class="fa-solid fa-users"></i> Danh Sách Tài Khoản Sinh Viên Đã Đăng Ký
+                        <i class="fa-solid fa-users"></i> Danh Sách Tài Khoản Sinh Viên
                     </h2>
-                    <span class="text-xs text-rose-400 border border-rose-500/40 bg-rose-950/40 px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-trash mr-1"></i> Xóa trực tiếp trên Google Sheet
-                    </span>
                 </div>
                 <div id="admin-users-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                 </div>
@@ -589,7 +552,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL XEM THÀNH VIÊN LỚP DÀNH CHO TẤT CẢ MỌI NGUỜI (Yêu cầu 6) ================= -->
+    <!-- MODAL XEM THÀNH VIÊN LỚP (FIREBASE PUBLIC DATA) -->
     <div id="class-members-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -601,7 +564,6 @@
                 </button>
             </div>
             <div class="p-6 space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar" id="class-members-list-body">
-                <!-- Roster content -->
             </div>
             <div class="px-6 py-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 text-right">
                 <button onclick="closeClassMembersModal()" class="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-300 transition">Đóng</button>
@@ -609,7 +571,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL QUẢN LÝ THÀNH VIÊN VÀ CẤP QUYỀN THỦ QUỸ (DÀNH CHO ADMIN) (Yêu cầu 1) ================= -->
+    <!-- MODAL CẤP QUYỀN THỦ QUỸ (ADMIN) -->
     <div id="admin-class-members-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-800 text-white">
@@ -621,7 +583,6 @@
                 </button>
             </div>
             <div class="p-6 space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar" id="admin-class-members-list-body">
-                <!-- Admin member management content -->
             </div>
             <div class="px-6 py-3 bg-slate-800 border-t border-slate-700 text-right">
                 <button onclick="closeAdminClassMembersModal()" class="bg-slate-700 text-slate-200 px-4 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-600 transition">Đóng</button>
@@ -629,7 +590,7 @@
         </div>
     </div>
 
-    <!-- ================= MODALS THAM GIA / TẠO LỚP ================= -->
+    <!-- MODALS THAM GIA / TẠO LỚP -->
     <div id="class-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -666,17 +627,17 @@
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Mật khẩu Lớp</label>
                     <input type="password" id="create-class-pass" required placeholder="••••••••" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition">Đăng Ký Lớp & Đồng Bộ Sheet</button>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition">Đăng Ký Lớp Mới (Firebase)</button>
             </form>
         </div>
     </div>
 
-    <!-- ================= MODAL GIAO DỊCH QUỶ LỚP ================= -->
+    <!-- MODAL NẠP / RÚT QUỸ LỚP -->
     <div id="fund-trans-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
                 <h3 id="fund-trans-title" class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-money-bill-transfer text-amber-500"></i> Thêm/Rút Quỹ Lớp
+                    <i class="fa-solid fa-money-bill-transfer text-amber-500"></i> Nạp/Rút Quỹ Lớp
                 </h3>
                 <button onclick="closeFundTransactionModal()" class="text-slate-400 hover:text-slate-600 p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -697,7 +658,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL CHỌN BACKGROUND & CÀI ĐẶT GIAO DIỆN MỜ/ĐỤC ================= -->
+    <!-- MODAL BACKGROUND & UI -->
     <div id="bg-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -710,7 +671,6 @@
             </div>
             
             <div class="p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar">
-                <!-- CÀI ĐẶT ĐỘ MỜ TRONG SUỐT HOẶC ĐEN ĐỤC / TRẮNG ĐỤC -->
                 <div class="bg-blue-50/60 dark:bg-slate-800/80 p-4 rounded-xl border border-blue-200 dark:border-slate-600 space-y-3">
                     <h4 class="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase flex items-center gap-1.5">
                         <i class="fa-solid fa-sliders text-blue-600"></i> Bảng Tùy Chỉnh Độ Trong Suốt Giao Diện
@@ -739,7 +699,6 @@
                     </div>
                 </div>
 
-                <!-- HÌNH NỀN GỢI Ý -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-2 uppercase">Hình nền gợi ý</label>
                     <div class="grid grid-cols-3 gap-2">
@@ -776,17 +735,27 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <!-- JAVASCRIPT LOGIC & FIREBASE INTEGRATION -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym2ddo_tffnOvS63KAMpYMxjG3Q4wOsDNxue8z-oRqpIqzoAT1i-pLhQtZ5PyykLZdcA/exec";
-        const CLASS_SHEET_URL = "https://script.google.com/macros/s/AKfycbwSgidq66swJgKOvYFi3v_LjxO5A1BIYj9ncrLXm5oe7Kf2Lobz96bG6lwmkvHFRgbU/exec";
+        // CẤU HÌNH FIREBASE REALTIME DATABASE
+        const firebaseConfig = {
+            databaseURL: "https://csdl-ctu-c6350-default-rtdb.firebaseio.com"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        let currentClassRef = null;
+        let activeClassData = null;
 
         const translations = {
             vi: {
-                authTitle: "TÍNH DRL BY N.DUY", authSub: "Thuộc Khoa Ngoại Ngữ", login: "Đăng nhập", register: "Đăng ký", mssv: "Mã Số Sinh Viên (MSSV)", password: "Mật khẩu", fullname: "Họ và Tên", createAccount: "Tạo Tài Khoản", sysTitle: "Hệ Thống DRL Sinh Viên", sysSub: "Quản lý & Tự đánh giá điểm rèn luyện", background: "Hình nền & UI", totalScore: "Tổng Điểm Rèn Luyện", maxUnit: "/ 100 điểm", rating: "Xếp loại dự kiến:", directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)", directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.", directPlaceholder: "Nhập 0 - 100", inputPlaceholder: "Nhập điểm", maxLabel: "Tối đa:", update: "Cập nhật", summaryTitle: "Tóm tắt 5 Tiêu chí DRL", sec1: "I. Ý thức học tập:", sec2: "II. Nội quy & Quy chế:", sec3: "III. Hoạt động Phong trào:", sec4: "IV. Quan hệ Cộng đồng:", sec5: "V. Công tác Cán bộ & Khác:", tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết", tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT", reset: "Đặt lại bảng điểm", colContent: "Nội dung đánh giá", colMax: "Điểm tối đa", colInput: "Nhập/Chọn", colEarned: "Điểm đạt", changeAvatar: "Thay đổi ảnh đại diện", language: "Ngôn ngữ", logout: "Đăng xuất", role: "Sinh viên CTU", unrated: "Chưa xếp loại", rateEx: "Xuất sắc", rateGood: "Tốt", rateFair: "Khá", rateAvg: "Trung bình", rateWeak: "Yếu", fundTitle: "Quản Lý Quỹ Lớp", fundSub: "Minh bạch & Tự động đồng bộ", treasurerLabel: "Thủ Quỹ Lớp", notJoinedDesc: "Bạn cần đăng nhập hoặc tạo mới thông tin Lớp để xem và sử dụng Quỹ Lớp.", joinClassBtn: "Tham gia Lớp", createClassBtn: "Đăng ký Lớp Mới", addFundBtn: "Thêm Quỹ", withdrawFundBtn: "Rút Quỹ", reqTreasurerBtn: "Yêu cầu làm Thủ quỹ", leaveClassBtn: "Rời khỏi lớp hiện tại", fundHistory: "Lịch Sử Thu / Chi", realtimeTag: "Thời gian thực", noHistory: "Chưa có giao dịch nào.", adminNotice: "Khung dành riêng cho Quản trị viên hệ thống.", adminUserLabel: "Tài khoản Quản trị", adminPassLabel: "Mật khẩu Quản trị", adminLoginBtn: "Đăng Nhập Quản Trị"
+                authTitle: "TÍNH DRL BY N.DUY", authSub: "Thuộc Khoa Ngoại Ngữ", login: "Đăng nhập", register: "Đăng ký", mssv: "Mã Số Sinh Viên (MSSV)", password: "Mật khẩu", fullname: "Họ và Tên", createAccount: "Tạo Tài Khoản", sysTitle: "Hệ Thống DRL Sinh Viên", sysSub: "Quản lý & Tự đánh giá điểm rèn luyện", background: "Hình nền & UI", totalScore: "Tổng Điểm Rèn Luyện", maxUnit: "/ 100 điểm", rating: "Xếp loại dự kiến:", directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)", directInputDesc: "Bạn có thể nhập trực tiếp điểm rèn luyện tổng hợp tại đây nếu không muốn tích chọn từng mục nhỏ.", directPlaceholder: "Nhập 0 - 100", inputPlaceholder: "Nhập điểm", maxLabel: "Tối đa:", update: "Cập nhật", summaryTitle: "Tóm tắt 5 Tiêu chí DRL", sec1: "I. Ý thức học tập:", sec2: "II. Nội quy & Quy chế:", sec3: "III. Hoạt động Phong trào:", sec4: "IV. Quan hệ Cộng đồng:", sec5: "V. Công tác Cán bộ & Khác:", tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết", tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo bảng tiêu chí chuẩn ĐHCT", reset: "Đặt lại bảng điểm", colContent: "Nội dung đánh giá", colMax: "Điểm tối đa", colInput: "Nhập/Chọn", colEarned: "Điểm đạt", changeAvatar: "Thay đổi ảnh đại diện", language: "Ngôn ngữ", logout: "Đăng xuất", role: "Sinh viên CTU", unrated: "Chưa xếp loại", rateEx: "Xuất sắc", rateGood: "Tốt", rateFair: "Khá", rateAvg: "Trung bình", rateWeak: "Yếu", fundTitle: "Quản Lý Quỹ Lớp", fundSub: "Minh bạch & Firebase Realtime", treasurerLabel: "Thủ Quỹ Lớp", notJoinedDesc: "Bạn cần tham gia hoặc tạo mới thông tin Lớp để xem và sử dụng Quỹ Lớp.", joinClassBtn: "Tham gia Lớp", createClassBtn: "Đăng ký Lớp Mới", addFundBtn: "Nạp Quỹ", withdrawFundBtn: "Rút Quỹ", reqTreasurerBtn: "Yêu cầu làm Thủ quỹ", leaveClassBtn: "Rời khỏi lớp hiện tại", fundHistory: "Lịch Sử Thu / Chi", realtimeTag: "Firebase Live", noHistory: "Chưa có giao dịch nào.", adminNotice: "Khung dành riêng cho Quản trị viên hệ thống.", adminUserLabel: "Tài khoản Quản trị", adminPassLabel: "Mật khẩu Quản trị", adminLoginBtn: "Đăng Nhập Quản Trị"
             },
             en: {
-                authTitle: "DRL CALCULATOR BY N.DUY", authSub: "Faculty of Foreign Languages", login: "Log In", register: "Register", mssv: "Student ID (MSSV)", password: "Password", fullname: "Full Name", createAccount: "Create Account", sysTitle: "Student DRL System", sysSub: "Manage & Self-evaluate training points", background: "Wallpaper & UI", totalScore: "Total Training Score", maxUnit: "/ 100 pts", rating: "Expected Rating:", directInputTitle: "1. Direct Score Entry (Override)", directInputDesc: "You can directly enter your total score here if you don't want to select individual items.", directPlaceholder: "Enter 0 - 100", inputPlaceholder: "Enter score", maxLabel: "Max:", update: "Update", summaryTitle: "Summary of 5 DRL Criteria", sec1: "I. Academic Attitude:", sec2: "II. Rules & Regulations:", sec3: "III. Activities & Movements:", sec4: "IV. Community Relations:", sec5: "V. Cadre Work & Others:", tableTitle: "2. Detailed Training Scorecard", tableSub: "Select or enter values according to CTU standard criteria", reset: "Reset Scorecard", colContent: "Evaluation Content", colMax: "Max Score", colInput: "Input/Select", colEarned: "Earned Score", changeAvatar: "Change Avatar", language: "Language", logout: "Log Out", role: "CTU Student", unrated: "Unrated", rateEx: "Excellent", rateGood: "Good", rateFair: "Fair", rateAvg: "Average", rateWeak: "Weak", fundTitle: "Class Fund Management", fundSub: "Transparent & Auto Synced", treasurerLabel: "Class Treasurer", notJoinedDesc: "You need to join or create a class to manage and view funds.", joinClassBtn: "Join Class", createClassBtn: "Register New Class", addFundBtn: "Deposit Fund", withdrawFundBtn: "Withdraw Fund", reqTreasurerBtn: "Request Treasurer Role", leaveClassBtn: "Leave current class", fundHistory: "Transaction History", realtimeTag: "Realtime", noHistory: "No transactions yet.", adminNotice: "Reserved for System Administrators.", adminUserLabel: "Admin Username", adminPassLabel: "Admin Password", adminLoginBtn: "Admin Login"
+                authTitle: "DRL CALCULATOR BY N.DUY", authSub: "Faculty of Foreign Languages", login: "Log In", register: "Register", mssv: "Student ID (MSSV)", password: "Password", fullname: "Full Name", createAccount: "Create Account", sysTitle: "Student DRL System", sysSub: "Manage & Self-evaluate training points", background: "Wallpaper & UI", totalScore: "Total Training Score", maxUnit: "/ 100 pts", rating: "Expected Rating:", directInputTitle: "1. Direct Score Entry (Override)", directInputDesc: "You can directly enter your total score here if you don't want to select individual items.", directPlaceholder: "Enter 0 - 100", inputPlaceholder: "Enter score", maxLabel: "Max:", update: "Update", summaryTitle: "Summary of 5 DRL Criteria", sec1: "I. Academic Attitude:", sec2: "II. Rules & Regulations:", sec3: "III. Activities & Movements:", sec4: "IV. Community Relations:", sec5: "V. Cadre Work & Others:", tableTitle: "2. Detailed Training Scorecard", tableSub: "Select or enter values according to CTU standard criteria", reset: "Reset Scorecard", colContent: "Evaluation Content", colMax: "Max Score", colInput: "Input/Select", colEarned: "Earned Score", changeAvatar: "Change Avatar", language: "Language", logout: "Log Out", role: "CTU Student", unrated: "Unrated", rateEx: "Excellent", rateGood: "Good", rateFair: "Fair", rateAvg: "Average", rateWeak: "Weak", fundTitle: "Class Fund Management", fundSub: "Transparent & Firebase Live", treasurerLabel: "Class Treasurer", notJoinedDesc: "You need to join or create a class to manage and view funds.", joinClassBtn: "Join Class", createClassBtn: "Register New Class", addFundBtn: "Deposit Fund", withdrawFundBtn: "Withdraw Fund", reqTreasurerBtn: "Request Treasurer Role", leaveClassBtn: "Leave current class", fundHistory: "Transaction History", realtimeTag: "Firebase Live", noHistory: "No transactions yet.", adminNotice: "Reserved for System Administrators.", adminUserLabel: "Admin Username", adminPassLabel: "Admin Password", adminLoginBtn: "Admin Login"
             }
         };
 
@@ -795,75 +764,75 @@
             return [
                 {
                     sectionId: "I",
-                    title: { vi: "I. Trách nhiệm, tinh thần và thái độ trong học tập", en: "I. Academic Responsibility, Attitude & Effort" }[l] || "I. Trách nhiệm, tinh thần và thái độ trong học tập",
+                    title: { vi: "I. Trách nhiệm, tinh thần và thái độ trong học tập", en: "I. Academic Responsibility, Attitude & Effort" }[l],
                     maxScore: 20,
                     items: [
-                        { id: "i_a1", text: { vi: "Đi học đầy đủ, đúng giờ, nghiêm túc", en: "Full, punctual, and serious class attendance" }[l] || "Đi học đầy đủ, đúng giờ, nghiêm túc", max: 6, type: "number" },
-                        { id: "i_a2", text: { vi: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", en: "Scientific Research: Member / Leader / Paper" }[l] || "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", max: 8, type: "select", options: [
+                        { id: "i_a1", text: { vi: "Đi học đầy đủ, đúng giờ, nghiêm túc", en: "Full, punctual, and serious class attendance" }[l], max: 6, type: "number" },
+                        { id: "i_a2", text: { vi: "NCKH: Tham gia đề tài / Chủ nhiệm / Bài báo", en: "Scientific Research: Member / Leader / Paper" }[l], max: 8, type: "select", options: [
                             { label: "Không tham gia", score: 0 }, { label: "Tham gia đề tài (5đ)", score: 5 }, { label: "Chủ nhiệm đề tài (8đ)", score: 8 }, { label: "Có bài báo NCKH (8đ)", score: 8 }
                         ]},
-                        { id: "i_a3", text: { vi: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", en: "IT Cert (Basic: 3 pts | Advanced: 5 pts)" }[l] || "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", max: 5, type: "select", options: [
+                        { id: "i_a3", text: { vi: "Chứng chỉ tin học (Cơ bản: 3đ | Nâng cao: 5đ)", en: "IT Cert (Basic: 3 pts | Advanced: 5 pts)" }[l], max: 5, type: "select", options: [
                             { label: "Chưa có / Không tính", score: 0 }, { label: "Cơ bản và tương đương (3đ)", score: 3 }, { label: "Nâng cao (5đ)", score: 5 }
                         ]},
-                        { id: "i_a4", text: { vi: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", en: "Foreign Language Cert (A1, A2, B1, B2...)" }[l] || "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", max: 10, type: "select", options: [
+                        { id: "i_a4", text: { vi: "Chứng chỉ ngoại ngữ (A1, A2, B1, B2...)", en: "Foreign Language Cert (A1, A2, B1, B2...)" }[l], max: 10, type: "select", options: [
                             { label: "Chưa có / Không tính", score: 0 }, { label: "Bậc 1 (A1) / TOEIC 120-220 (3đ)", score: 3 }, { label: "Bậc 2 (A2) / IELTS 4.0 / TOEIC 225-445 (5đ)", score: 5 }, { label: "Bậc 3 (B1) / IELTS 4.5-5.0 / TOEIC 450-595 (7đ)", score: 7 }, { label: "Bậc 4 (B2) trở lên / IELTS >=5.5 (10đ)", score: 10 }
                         ]},
-                        { id: "i_a5", text: { vi: "Tham gia các CLB học thuật", en: "Participate in academic clubs" }[l] || "Tham gia các CLB học thuật", max: 2, type: "checkbox", score: 2 },
-                        { id: "i_b1", text: { vi: "Không vi phạm quy chế thi/kiểm tra", en: "No violation of exam regulations" }[l] || "Không vi phạm quy chế thi/kiểm tra", max: 6, type: "number" },
-                        { id: "i_b2", text: { vi: "Tham gia kỳ thi chuyên ngành, Olympic...", en: "Academic contests, Olympics..." }[l] || "Tham gia kỳ thi chuyên ngành, Olympic...", max: 4, type: "select", options: [
+                        { id: "i_a5", text: { vi: "Tham gia các CLB học thuật", en: "Participate in academic clubs" }[l], max: 2, type: "checkbox", score: 2 },
+                        { id: "i_b1", text: { vi: "Không vi phạm quy chế thi/kiểm tra", en: "No violation of exam regulations" }[l], max: 6, type: "number" },
+                        { id: "i_b2", text: { vi: "Tham gia kỳ thi chuyên ngành, Olympic...", en: "Academic contests, Olympics..." }[l], max: 4, type: "select", options: [
                             { label: "Không tham gia", score: 0 }, { label: "Có tham gia (2đ)", score: 2 }, { label: "Đạt giải cấp ĐH/Đơn vị (4đ)", score: 4 }
                         ]},
-                        { id: "i_c1", text: { vi: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", en: "GPA improvement / Semester GPA >= 3.6 (+2 pts)" }[l] || "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", max: 2, type: "checkbox", score: 2 },
-                        { id: "i_c2", text: { vi: "Kết quả học tập ĐTBCHK", en: "Semester GPA result" }[l] || "Kết quả học tập ĐTBCHK", max: 8, type: "select", options: [
+                        { id: "i_c1", text: { vi: "Có cố gắng tiến bộ / ĐTBHK >= 3.6 cộng 2đ", en: "GPA improvement / Semester GPA >= 3.6 (+2 pts)" }[l], max: 2, type: "checkbox", score: 2 },
+                        { id: "i_c2", text: { vi: "Kết quả học tập ĐTBCHK", en: "Semester GPA result" }[l], max: 8, type: "select", options: [
                             { label: "Dưới 2.00 (0đ)", score: 0 }, { label: "2.00 - 2.49 (2đ)", score: 2 }, { label: "2.50 - 3.19 (4đ)", score: 4 }, { label: "3.20 - 3.59 (6đ)", score: 6 }, { label: "Từ 3.60 trở lên (8đ)", score: 8 }
                         ]}
                     ]
                 },
                 {
                     sectionId: "II",
-                    title: { vi: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", en: "II. Compliance with Laws, Rules & Regulations" }[l] || "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế",
+                    title: { vi: "II. Trách nhiệm chấp hành pháp luật và nội quy, quy chế", en: "II. Compliance with Laws, Rules & Regulations" }[l],
                     maxScore: 25,
                     items: [
-                        { id: "ii_a", text: { vi: "Chấp hành nội quy, quy chế nhà trường", en: "Observe university rules & regulations" }[l] || "Chấp hành nội quy, quy chế nhà trường", max: 15, type: "number" },
-                        { id: "ii_b1", text: { vi: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", en: "Promote security, order & environment" }[l] || "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", max: 8, type: "checkbox", score: 8 },
-                        { id: "ii_b2", text: { vi: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", en: "Participate in surveys organized by CTU" }[l] || "Tham gia khảo sát ý kiến do ĐHCT tổ chức", max: 5, type: "number" }
+                        { id: "ii_a", text: { vi: "Chấp hành nội quy, quy chế nhà trường", en: "Observe university rules & regulations" }[l], max: 15, type: "number" },
+                        { id: "ii_b1", text: { vi: "Tích cực tuyên truyền vận động giữ gìn an ninh, trật tự, môi trường", en: "Promote security, order & environment" }[l], max: 8, type: "checkbox", score: 8 },
+                        { id: "ii_b2", text: { vi: "Tham gia khảo sát ý kiến do ĐHCT tổ chức", en: "Participate in surveys organized by CTU" }[l], max: 5, type: "number" }
                     ]
                 },
                 {
                     sectionId: "III",
-                    title: { vi: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", en: "III. Socio-political, Cultural & Sports Activities" }[l] || "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ",
+                    title: { vi: "III. Trách nhiệm tham gia các hoạt động chính trị - xã hội, văn thể mỹ", en: "III. Socio-political, Cultural & Sports Activities" }[l],
                     maxScore: 20,
                     items: [
-                        { id: "iii_a", text: { vi: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", en: "Full attendance in political, cultural & sports events" }[l] || "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", max: 12, type: "number" },
-                        { id: "iii_b1", text: { vi: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", en: "Core member of movements" }[l] || "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", max: 5, type: "select", options: [
+                        { id: "iii_a", text: { vi: "Tham gia đầy đủ các hoạt động chính trị, văn nghệ, thể thao", en: "Full attendance in political, cultural & sports events" }[l], max: 12, type: "number" },
+                        { id: "iii_b1", text: { vi: "Lực lượng nòng cốt phong trào (Bộ môn/Chi đoàn: 3đ | ĐHCT: 5đ)", en: "Core member of movements" }[l], max: 5, type: "select", options: [
                             { label: "Không", score: 0 }, { label: "Cấp Bộ môn/Khoa/Chi đoàn (3đ)", score: 3 }, { label: "Cấp ĐHCT / Đơn vị tương đương (5đ)", score: 5 }
                         ]},
-                        { id: "iii_b2", text: { vi: "Khen thưởng hoạt động phong trào", en: "Commendation for movement activities" }[l] || "Khen thưởng hoạt động phong trào", max: 10, type: "select", options: [
+                        { id: "iii_b2", text: { vi: "Khen thưởng hoạt động phong trào", en: "Commendation for movement activities" }[l], max: 10, type: "select", options: [
                             { label: "Không", score: 0 }, { label: "Giấy khen cấp cơ sở (6đ)", score: 6 }, { label: "Giấy khen cấp Đại học (8đ)", score: 8 }, { label: "Giấy khen cấp cao hơn (10đ)", score: 10 }
                         ]},
-                        { id: "iii_c", text: { vi: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", en: "Anti-crime & social evils awareness campaign" }[l] || "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", max: 6, type: "number" }
+                        { id: "iii_c", text: { vi: "Tham gia tuyên truyền phòng chống tội phạm, tệ nạn", en: "Anti-crime & social evils awareness campaign" }[l], max: 6, type: "number" }
                     ]
                 },
                 {
                     sectionId: "IV",
-                    title: { vi: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", en: "IV. Citizenship & Community Relations" }[l] || "IV. Trách nhiệm công dân trong quan hệ cộng đồng",
+                    title: { vi: "IV. Trách nhiệm công dân trong quan hệ cộng đồng", en: "IV. Citizenship & Community Relations" }[l],
                     maxScore: 15,
                     items: [
-                        { id: "iv_a", text: { vi: "Tuyên truyền chủ trương Đảng, pháp luật", en: "Promote guidelines and laws" }[l] || "Tuyên truyền chủ trương Đảng, pháp luật", max: 8, type: "number" },
-                        { id: "iv_b1", text: { vi: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", en: "Join community benefit groups & volunteer" }[l] || "Tham gia đội nhóm hướng đến lợi ích cộng đồng", max: 10, type: "number" },
-                        { id: "iv_b2", text: { vi: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", en: "Help peers in study and life" }[l] || "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", max: 2, type: "checkbox", score: 2 }
+                        { id: "iv_a", text: { vi: "Tuyên truyền chủ trương Đảng, pháp luật", en: "Promote guidelines and laws" }[l], max: 8, type: "number" },
+                        { id: "iv_b1", text: { vi: "Tham gia đội nhóm hướng đến lợi ích cộng đồng", en: "Join community benefit groups & volunteer" }[l], max: 10, type: "number" },
+                        { id: "iv_b2", text: { vi: "Có tinh thần giúp đỡ bạn bè trong học tập, cuộc sống", en: "Help peers in study and life" }[l], max: 2, type: "checkbox", score: 2 }
                     ]
                 },
                 {
                     sectionId: "V",
-                    title: { vi: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", en: "V. Student Leadership, Movements & Awards" }[l] || "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng",
+                    title: { vi: "V. Trách nhiệm & kết quả tham gia công tác cán bộ, phong trào, khen thưởng", en: "V. Student Leadership, Movements & Awards" }[l],
                     maxScore: 20,
                     items: [
-                        { id: "v_a", text: { vi: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", en: "Student leader positions" }[l] || "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", max: 10, type: "select", options: [
+                        { id: "v_a", text: { vi: "Chức vụ Cán bộ Lớp / Đoàn / Hội đảm nhận", en: "Student leader positions" }[l], max: 10, type: "select", options: [
                             { label: "Không đảm nhận", score: 0 }, { label: "Tổ trưởng, tổ phó (3đ)", score: 3 }, { label: "Thành viên ban chuyên môn (6đ)", score: 6 }, { label: "BCH Chi đoàn, Chi hội, Lớp phó (8đ)", score: 8 }, { label: "Bí thư, Lớp trưởng, Chủ nhiệm CLB, BCH Đoàn cơ sở (10đ)", score: 10 }
                         ]},
-                        { id: "v_b", text: { vi: "Hỗ trợ, tham gia tích cực hoạt động chung", en: "Support and active participation in common tasks" }[l] || "Hỗ trợ, tham gia tích cực hoạt động chung", max: 12, type: "number" },
-                        { id: "v_c", text: { vi: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", en: "Research, Startup, Outstanding Student award..." }[l] || "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", max: 6, type: "select", options: [
+                        { id: "v_b", text: { vi: "Hỗ trợ, tham gia tích cực hoạt động chung", en: "Support and active participation in common tasks" }[l], max: 12, type: "number" },
+                        { id: "v_c", text: { vi: "Thành tích NCKH, Khởi nghiệp, Đảng viên, SV5T...", en: "Research, Startup, Outstanding Student award..." }[l], max: 6, type: "select", options: [
                             { label: "Không có", score: 0 }, { label: "Đoàn viên ưu tú / SV5T cấp cơ sở (4đ)", score: 4 }, { label: "Kết nạp Đảng / SV5T cấp ĐHCT / Giải NCKH (6đ)", score: 6 }
                         ]}
                     ]
@@ -889,17 +858,9 @@
                 isAdminLoggedIn = true;
             }
 
-            // Tự động khôi phục thông tin đăng nhập sinh viên và lớp học (Yêu cầu 5)
             const savedUser = localStorage.getItem('drl_current_user_api');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
-                // Đồng bộ lớp học từ localUsers để chắc chắn không bị mất khi đăng xuất/đăng nhập lại
-                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-                if (currentUser && currentUser.mssv && localUsers[currentUser.mssv]) {
-                    if (localUsers[currentUser.mssv].joinedClassCode) {
-                        currentUser.joinedClassCode = localUsers[currentUser.mssv].joinedClassCode;
-                    }
-                }
             }
 
             if (isAdminLoggedIn && !currentUser) {
@@ -909,10 +870,25 @@
             }
         });
 
-        /* ================= TÙY CHỈNH MỜ TRONG SUỐT / ĐEN ĐỤC / TRẮNG ĐỤC ================= */
+        function saveCurrentUserData() {
+            if (currentUser) {
+                localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
+                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                localUsers[currentUser.mssv] = currentUser;
+                localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+
+                // Đồng bộ người dùng lên Firebase
+                db.ref('users/' + currentUser.mssv).update({
+                    mssv: currentUser.mssv,
+                    fullname: currentUser.fullname,
+                    joinedClassCode: currentUser.joinedClassCode || null
+                });
+            }
+        }
+
+        /* UI CONTROLS */
         function changeUiOpacity(val) {
-            const dec = val / 100;
-            document.documentElement.style.setProperty('--ui-opacity', dec);
+            document.documentElement.style.setProperty('--ui-opacity', val / 100);
             document.getElementById('ui-opacity-val').textContent = `${val}%`;
             localStorage.setItem('drl_ui_opacity', val);
         }
@@ -925,33 +901,24 @@
 
         function setQuickUiPreset(mode) {
             if (mode === 'transparent') {
-                changeUiOpacity(45);
-                changeUiBlur(18);
+                changeUiOpacity(45); changeUiBlur(18);
             } else if (mode === 'white') {
-                changeUiOpacity(98);
-                changeUiBlur(5);
+                changeUiOpacity(98); changeUiBlur(5);
                 if (document.body.classList.contains('dark-mode')) toggleTheme();
             } else if (mode === 'dark') {
-                changeUiOpacity(98);
-                changeUiBlur(5);
+                changeUiOpacity(98); changeUiBlur(5);
                 if (!document.body.classList.contains('dark-mode')) toggleTheme();
             }
-            document.getElementById('ui-opacity-range').value = localStorage.getItem('drl_ui_opacity') || 95;
-            document.getElementById('ui-blur-range').value = localStorage.getItem('drl_ui_blur') || 12;
         }
 
         function loadSavedUiCustomization() {
             const op = localStorage.getItem('drl_ui_opacity') || 95;
             const blur = localStorage.getItem('drl_ui_blur') || 12;
-            changeUiOpacity(op);
-            changeUiBlur(blur);
-            const opRange = document.getElementById('ui-opacity-range');
-            const blurRange = document.getElementById('ui-blur-range');
-            if (opRange) opRange.value = op;
-            if (blurRange) blurRange.value = blur;
+            changeUiOpacity(op); changeUiBlur(blur);
+            if(document.getElementById('ui-opacity-range')) document.getElementById('ui-opacity-range').value = op;
+            if(document.getElementById('ui-blur-range')) document.getElementById('ui-blur-range').value = blur;
         }
 
-        /* ================= USER SETTINGS & THEME LOGIC ================= */
         function toggleSettingsDropdown(e) {
             e.stopPropagation();
             document.getElementById('settings-dropdown').classList.toggle('hidden');
@@ -969,9 +936,8 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(evt) {
-                    const avatarUrl = evt.target.result;
-                    setAvatar(avatarUrl);
-                    localStorage.setItem('drl_user_avatar', avatarUrl);
+                    setAvatar(evt.target.result);
+                    localStorage.setItem('drl_user_avatar', evt.target.result);
                 };
                 reader.readAsDataURL(file);
             }
@@ -998,15 +964,9 @@
                 if (t[key]) el.textContent = t[key];
             });
 
-            const directInput = document.getElementById('direct-score-input');
-            if (directInput && t.directPlaceholder) directInput.placeholder = t.directPlaceholder;
-
-            const langSelect = document.getElementById('language-select');
-            if (langSelect) langSelect.value = lang;
-
             renderDRLTable();
             calculateTotalHUD();
-            renderClassFundHUD();
+            if (activeClassData) renderClassFundHUD(activeClassData);
         }
 
         function toggleTheme() {
@@ -1019,27 +979,23 @@
             const btn = document.getElementById('theme-toggle-btn');
             const thumb = document.getElementById('theme-toggle-thumb');
             const icon = document.getElementById('theme-toggle-icon');
-
             if (!btn || !thumb || !icon) return;
 
             if (isDark) {
                 btn.style.backgroundColor = '#0B192C';
                 thumb.style.backgroundColor = '#2CB5F6';
-                thumb.classList.remove('translate-x-0');
-                thumb.classList.add('translate-x-8');
+                thumb.classList.remove('translate-x-0'); thumb.classList.add('translate-x-8');
                 icon.className = 'fa-solid fa-moon text-white text-xs theme-thumb-icon';
             } else {
                 btn.style.backgroundColor = '#FDEEBE';
                 thumb.style.backgroundColor = '#F1B82D';
-                thumb.classList.remove('translate-x-8');
-                thumb.classList.add('translate-x-0');
+                thumb.classList.remove('translate-x-8'); thumb.classList.add('translate-x-0');
                 icon.className = 'fa-solid fa-sun text-white text-xs theme-thumb-icon';
             }
         }
 
         function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('drl_theme');
-            if (savedTheme === 'dark') {
+            if (localStorage.getItem('drl_theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 updateThemeUI(true);
             } else {
@@ -1047,138 +1003,78 @@
             }
         }
 
-        function toggleBgModal(show) {
-            document.getElementById('bg-modal').classList.toggle('hidden', !show);
-        }
+        function toggleBgModal(show) { document.getElementById('bg-modal').classList.toggle('hidden', !show); }
+        function setBgImage(url) { document.body.style.backgroundImage = `url('${url}')`; localStorage.setItem('drl_custom_bg', url); }
+        function applyUrlBg() { const url = document.getElementById('bg-url-input').value.trim(); if (url) { setBgImage(url); toggleBgModal(false); } }
+        function handleFileUpload(e) { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = (evt) => { setBgImage(evt.target.result); toggleBgModal(false); }; reader.readAsDataURL(file); } }
+        function removeBgImage() { document.body.style.backgroundImage = ''; localStorage.removeItem('drl_custom_bg'); toggleBgModal(false); }
+        function loadSavedBg() { const saved = localStorage.getItem('drl_custom_bg'); if (saved) document.body.style.backgroundImage = `url('${saved}')`; }
 
-        function setBgImage(url) {
-            document.body.style.backgroundImage = `url('${url}')`;
-            localStorage.setItem('drl_custom_bg', url);
-        }
-
-        function applyUrlBg() {
-            const url = document.getElementById('bg-url-input').value.trim();
-            if (url) {
-                setBgImage(url);
-                document.getElementById('bg-url-input').value = '';
-                toggleBgModal(false);
-            }
-        }
-
-        function handleFileUpload(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    setBgImage(evt.target.result);
-                    toggleBgModal(false);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeBgImage() {
-            document.body.style.backgroundImage = '';
-            localStorage.removeItem('drl_custom_bg');
-            toggleBgModal(false);
-        }
-
-        function loadSavedBg() {
-            const savedBg = localStorage.getItem('drl_custom_bg');
-            if (savedBg) document.body.style.backgroundImage = `url('${savedBg}')`;
-        }
-
-        /* ================= AUTH & TAB SWITCHING ================= */
+        /* AUTH & MODES */
         function switchAuthTab(tab) {
-            const loginForm = document.getElementById('form-login');
-            const regForm = document.getElementById('form-register');
-            const adminForm = document.getElementById('form-admin');
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-register').classList.add('hidden');
+            document.getElementById('form-admin').classList.add('hidden');
 
-            const tabLogin = document.getElementById('tab-login');
-            const tabReg = document.getElementById('tab-register');
-            const tabAdmin = document.getElementById('tab-admin');
-
-            loginForm.classList.add('hidden');
-            regForm.classList.add('hidden');
-            adminForm.classList.add('hidden');
-
-            tabLogin.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
-            tabReg.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
-            tabAdmin.className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            document.getElementById('tab-login').className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            document.getElementById('tab-register').className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
+            document.getElementById('tab-admin').className = "w-1/3 pb-3 font-semibold text-slate-400 border-b-2 border-transparent transition-all";
 
             if (tab === 'login') {
-                loginForm.classList.remove('hidden');
-                tabLogin.className = "w-1/3 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all";
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('tab-login').className = "w-1/3 pb-3 font-semibold text-blue-600 border-b-2 border-blue-600 transition-all";
             } else if (tab === 'register') {
-                regForm.classList.remove('hidden');
-                tabReg.className = "w-1/3 pb-3 font-semibold text-green-600 border-b-2 border-green-600 transition-all";
+                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('tab-register').className = "w-1/3 pb-3 font-semibold text-green-600 border-b-2 border-green-600 transition-all";
             } else if (tab === 'admin') {
-                adminForm.classList.remove('hidden');
-                tabAdmin.className = "w-1/3 pb-3 font-semibold text-purple-600 border-b-2 border-purple-600 transition-all";
+                document.getElementById('form-admin').classList.remove('hidden');
+                document.getElementById('tab-admin').className = "w-1/3 pb-3 font-semibold text-purple-600 border-b-2 border-purple-600 transition-all";
             }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-register');
             const fullname = document.getElementById('reg-fullname').value.trim();
             const mssv = document.getElementById('reg-mssv').value.trim().toUpperCase();
             const password = document.getElementById('reg-password').value;
 
-            btn.disabled = true;
-            btn.innerText = "...";
+            // Đồng bộ lên Firebase Realtime Database
+            await db.ref('users/' + mssv).set({
+                fullname: fullname,
+                mssv: mssv,
+                password: password,
+                scores: {},
+                joinedClassCode: null
+            });
 
-            try {
-                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-                if (!localUsers[mssv]) {
-                    localUsers[mssv] = { fullname: fullname, password: password, scores: {}, joinedClassCode: null };
-                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
-                } else {
-                    localUsers[mssv].password = password;
-                    localUsers[mssv].fullname = fullname;
-                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
-                }
-                alert("Tạo tài khoản thành công!");
-                document.getElementById('form-register').reset();
-                switchAuthTab('login');
-                document.getElementById('login-mssv').value = mssv;
-            } catch (err) {
-                alert("Lỗi kết nối dữ liệu!");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Tạo Tài Khoản";
-            }
+            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+            localUsers[mssv] = { fullname, password, mssv, scores: {}, joinedClassCode: null };
+            localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+
+            alert("Tạo tài khoản thành công!");
+            document.getElementById('form-register').reset();
+            switchAuthTab('login');
+            document.getElementById('login-mssv').value = mssv;
         }
 
         async function handleLogin(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-login');
             const mssv = document.getElementById('login-mssv').value.trim().toUpperCase();
             const password = document.getElementById('login-password').value;
 
-            btn.disabled = true;
-            btn.innerText = "...";
+            // Kiểm tra Firebase trước
+            const snapshot = await db.ref('users/' + mssv).once('value');
+            const val = snapshot.val();
 
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            let user = localUsers[mssv];
-
-            if (user && user.password === password) {
-                currentUser = {
-                    fullname: user.fullname,
-                    mssv: mssv,
-                    scores: user.scores || {},
-                    joinedClassCode: user.joinedClassCode || null
-                };
+            if (val && val.password === password) {
+                currentUser = val;
             } else {
-                currentUser = { 
-                    fullname: user ? user.fullname : `Sinh Viên (${mssv})`, 
-                    mssv: mssv, 
-                    scores: user ? user.scores : {}, 
-                    joinedClassCode: user ? user.joinedClassCode : null 
-                };
-                if (!localUsers[mssv]) {
-                    localUsers[mssv] = { fullname: currentUser.fullname, password: password, scores: {}, joinedClassCode: null };
-                    localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
+                let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
+                let user = localUsers[mssv];
+                if (user && user.password === password) {
+                    currentUser = user;
+                } else {
+                    currentUser = { fullname: `Sinh Viên (${mssv})`, mssv: mssv, scores: {}, joinedClassCode: null };
                 }
             }
 
@@ -1186,9 +1082,6 @@
             isAdminLoggedIn = false;
             localStorage.removeItem('drl_is_admin');
             showDashboard();
-
-            btn.disabled = false;
-            btn.innerText = "Đăng Nhập";
         }
 
         function handleAdminLogin(e) {
@@ -1205,26 +1098,19 @@
             }
         }
 
-        // Chuyển sang giao diện sinh viên mà không cần đăng xuất admin (Yêu cầu 3)
         function switchToUserModeFromAdmin() {
             if (!currentUser) {
-                currentUser = {
-                    fullname: "Admin System",
-                    mssv: "ADMIN001",
-                    scores: {},
-                    joinedClassCode: null
-                };
+                currentUser = { fullname: "Admin System", mssv: "ADMIN001", scores: {}, joinedClassCode: null };
                 saveCurrentUserData();
             }
             showDashboard();
         }
 
         function handleLogout() {
-            // Không xóa lớp học của sinh viên trong localStorage khi đăng xuất (Yêu cầu 5)
-            if (currentUser && currentUser.mssv) {
-                saveCurrentUserData();
+            if (currentClassRef) {
+                currentClassRef.off();
+                currentClassRef = null;
             }
-
             localStorage.removeItem('drl_current_user_api');
             localStorage.removeItem('drl_is_admin');
             currentUser = null;
@@ -1241,21 +1127,20 @@
             document.getElementById('admin-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
 
-            // Nút Về Admin Panel nếu đang đăng nhập Admin
-            const btnReturn = document.getElementById('btn-return-admin');
-            if (isAdminLoggedIn) {
-                btnReturn.classList.remove('hidden');
-            } else {
-                btnReturn.classList.add('hidden');
-            }
-            
+            document.getElementById('btn-return-admin').classList.toggle('hidden', !isAdminLoggedIn);
             document.getElementById('user-display-name').textContent = currentUser.fullname;
             document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
             document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
 
             userScores = currentUser.scores || {};
-            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
-            changeLanguage(currentLang);
+            changeLanguage(localStorage.getItem('drl_selected_lang') || 'vi');
+
+            // Lắng nghe dữ liệu lớp học Firebase Realtime
+            if (currentUser.joinedClassCode) {
+                listenToClassFirebase(currentUser.joinedClassCode);
+            } else {
+                renderClassNotJoined();
+            }
         }
 
         function showAdminDashboard() {
@@ -1266,127 +1151,358 @@
             loadAdminRequests();
         }
 
-        /* ================= ĐỒNG BỘ DỮ LIỆU GOOGLE SHEET VỀ ADMIN PANEL ================= */
+        /* FIREBASE REALTIME DATABASE FOR CLASS & FUND */
+        function listenToClassFirebase(classCode) {
+            if (currentClassRef) currentClassRef.off();
+
+            currentClassRef = db.ref('classes/' + classCode);
+            currentClassRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    activeClassData = data;
+                    renderClassFundHUD(data);
+                } else {
+                    renderClassNotJoined();
+                }
+            });
+        }
+
+        function renderClassNotJoined() {
+            activeClassData = null;
+            document.getElementById('class-not-joined').classList.remove('hidden');
+            document.getElementById('class-joined-view').classList.add('hidden');
+            document.getElementById('class-badge-status').textContent = 'Chưa vào lớp';
+            document.getElementById('class-badge-status').className = 'text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600';
+        }
+
+        function renderClassFundHUD(cls) {
+            document.getElementById('class-not-joined').classList.add('hidden');
+            document.getElementById('class-joined-view').classList.remove('hidden');
+            
+            document.getElementById('class-badge-status').textContent = `Lớp: ${cls.code}`;
+            document.getElementById('class-badge-status').className = 'text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full border border-emerald-300';
+
+            document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> ${cls.name || cls.code}`;
+            document.getElementById('class-fund-amount').textContent = `${Number(cls.balance || 0).toLocaleString('vi-VN')} VNĐ`;
+            
+            const isTreasurer = cls.treasurerMssv === currentUser.mssv;
+            document.getElementById('class-treasurer-name').textContent = cls.treasurerName ? `${cls.treasurerName} (${cls.treasurerMssv || ''})` : 'Chưa có';
+            document.getElementById('user-class-role-tag').textContent = isTreasurer ? 'Thủ Quỹ Lớp' : 'Thành viên';
+
+            if (isTreasurer) {
+                document.getElementById('treasurer-actions').classList.remove('hidden');
+            } else {
+                document.getElementById('treasurer-actions').classList.add('hidden');
+            }
+
+            renderFundHistoryList(cls.transactions);
+        }
+
+        function renderFundHistoryList(transactions) {
+            const listEl = document.getElementById('fund-history-list');
+            if (!transactions) {
+                listEl.innerHTML = '<p class="text-slate-400 text-center py-2 text-[11px]">Chưa có giao dịch nào.</p>';
+                return;
+            }
+
+            const transArray = Object.values(transactions).reverse();
+            if (transArray.length === 0) {
+                listEl.innerHTML = '<p class="text-slate-400 text-center py-2 text-[11px]">Chưa có giao dịch nào.</p>';
+                return;
+            }
+
+            listEl.innerHTML = transArray.map(t => {
+                const isDeposit = t.type === 'deposit';
+                return `
+                    <div class="p-2.5 rounded-xl border ${isDeposit ? 'bg-emerald-50/50 border-emerald-200 dark:bg-emerald-950/20' : 'bg-rose-50/50 border-rose-200 dark:bg-rose-950/20'} flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-xs ${isDeposit ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'}">
+                                ${isDeposit ? '+' : '-'}${Number(t.amount).toLocaleString('vi-VN')} VNĐ
+                            </p>
+                            <p class="text-[11px] text-slate-600 dark:text-slate-300">${t.reason}</p>
+                            <p class="text-[9px] text-slate-400">${t.timestamp} - Thực hiện: ${t.createdMssv || 'Thủ quỹ'}</p>
+                        </div>
+                        <span class="text-xs px-2 py-0.5 rounded font-bold ${isDeposit ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isDeposit ? 'Nạp' : 'Rút'}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* XỬ LÝ LỚP & THÀNH VIÊN TRÊN FIREBASE */
+        function openClassModal(type) {
+            document.getElementById('class-modal').classList.remove('hidden');
+            const formJoin = document.getElementById('form-join-class');
+            const formCreate = document.getElementById('form-create-class');
+            const title = document.getElementById('class-modal-title');
+
+            if (type === 'join') {
+                formJoin.classList.remove('hidden');
+                formCreate.classList.add('hidden');
+                title.innerHTML = '<i class="fa-solid fa-users text-blue-600"></i> Tham gia Lớp';
+            } else {
+                formJoin.classList.add('hidden');
+                formCreate.classList.remove('hidden');
+                title.innerHTML = '<i class="fa-solid fa-plus-circle text-emerald-600"></i> Đăng ký Lớp Mới (Firebase)';
+            }
+        }
+
+        function closeClassModal() { document.getElementById('class-modal').classList.add('hidden'); }
+
+        async function handleCreateClass(e) {
+            e.preventDefault();
+            const code = document.getElementById('create-class-code').value.trim().toUpperCase();
+            const name = document.getElementById('create-class-name').value.trim();
+            const pass = document.getElementById('create-class-pass').value;
+
+            // Tạo lớp trên Firebase
+            const classRef = db.ref('classes/' + code);
+            const snapshot = await classRef.once('value');
+            if (snapshot.exists()) {
+                alert("Mã lớp này đã tồn tại trên hệ thống!");
+                return;
+            }
+
+            const newClass = {
+                code: code,
+                name: name,
+                pass: pass,
+                treasurerMssv: currentUser.mssv,
+                treasurerName: currentUser.fullname,
+                balance: 0,
+                members: {
+                    [currentUser.mssv]: {
+                        mssv: currentUser.mssv,
+                        fullname: currentUser.fullname,
+                        joinedAt: new Date().toLocaleDateString('vi-VN')
+                    }
+                }
+            };
+
+            await classRef.set(newClass);
+
+            currentUser.joinedClassCode = code;
+            saveCurrentUserData();
+            listenToClassFirebase(code);
+
+            alert("Đã tạo lớp thành công trên Firebase!");
+            closeClassModal();
+        }
+
+        async function handleJoinClass(e) {
+            e.preventDefault();
+            const code = document.getElementById('join-class-code').value.trim().toUpperCase();
+            const pass = document.getElementById('join-class-pass').value;
+
+            const snapshot = await db.ref('classes/' + code).once('value');
+            const cls = snapshot.val();
+
+            if (!cls) {
+                alert("Mã lớp không tồn tại!");
+                return;
+            }
+
+            if (cls.pass !== pass) {
+                alert("Mật khẩu Lớp không chính xác!");
+                return;
+            }
+
+            // Thêm sinh viên vào danh sách thành viên Lớp trên Firebase
+            await db.ref(`classes/${code}/members/${currentUser.mssv}`).set({
+                mssv: currentUser.mssv,
+                fullname: currentUser.fullname,
+                joinedAt: new Date().toLocaleDateString('vi-VN')
+            });
+
+            currentUser.joinedClassCode = code;
+            saveCurrentUserData();
+            listenToClassFirebase(code);
+
+            alert("Đã tham gia lớp thành công!");
+            closeClassModal();
+        }
+
+        async function leaveCurrentClass() {
+            if (!currentUser.joinedClassCode) return;
+            if (confirm("Bạn có chắc chắn muốn rời khỏi lớp hiện tại?")) {
+                const code = currentUser.joinedClassCode;
+                
+                // Xóa thành viên khỏi Firebase
+                await db.ref(`classes/${code}/members/${currentUser.mssv}`).remove();
+
+                if (currentClassRef) {
+                    currentClassRef.off();
+                    currentClassRef = null;
+                }
+
+                currentUser.joinedClassCode = null;
+                saveCurrentUserData();
+                renderClassNotJoined();
+            }
+        }
+
+        /* MODAL DANH SÁCH THÀNH VIÊN LỚP (FIREBASE REALTIME) */
+        async function openClassMembersModal() {
+            if (!currentUser.joinedClassCode) return;
+            const code = currentUser.joinedClassCode;
+            document.getElementById('class-members-modal').classList.remove('hidden');
+            document.getElementById('members-modal-class-code').textContent = code;
+
+            const body = document.getElementById('class-members-list-body');
+            body.innerHTML = '<p class="text-center text-xs text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải thành viên từ Firebase...</p>';
+
+            const snapshot = await db.ref(`classes/${code}/members`).once('value');
+            const members = snapshot.val() || {};
+
+            const memberList = Object.values(members);
+            if (memberList.length === 0) {
+                body.innerHTML = '<p class="text-center text-xs text-slate-400 py-4">Chưa có thành viên nào.</p>';
+                return;
+            }
+
+            body.innerHTML = memberList.map((m, idx) => `
+                <div class="bg-slate-100 dark:bg-slate-700/60 p-3 rounded-xl flex items-center justify-between border border-slate-200 dark:border-slate-600">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+                        <div>
+                            <p class="font-bold text-xs text-slate-800 dark:text-slate-100">${m.fullname}</p>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">MSSV: <span class="font-mono text-blue-600 dark:text-blue-400 font-semibold">${m.mssv}</span></p>
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-slate-400">Tham gia: ${m.joinedAt || 'Vừa xong'}</span>
+                </div>
+            `).join('');
+        }
+
+        function closeClassMembersModal() { document.getElementById('class-members-modal').classList.add('hidden'); }
+
+        /* NẠP & RÚT QUỸ LỚP (LƯU TRÊN FIREBASE) */
+        function openFundTransactionModal(type) {
+            document.getElementById('fund-trans-modal').classList.remove('hidden');
+            document.getElementById('trans-type').value = type;
+            const title = document.getElementById('fund-trans-title');
+            const btn = document.getElementById('trans-submit-btn');
+
+            if (type === 'deposit') {
+                title.innerHTML = '<i class="fa-solid fa-circle-plus text-emerald-500"></i> Nạp Quỹ Lớp (Firebase)';
+                btn.className = 'w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-semibold transition';
+                btn.textContent = 'Xác Nhận Nạp Quỹ';
+            } else {
+                title.innerHTML = '<i class="fa-solid fa-circle-minus text-rose-500"></i> Rút Quỹ Lớp (Firebase)';
+                btn.className = 'w-full bg-rose-600 hover:bg-rose-700 text-white py-2 rounded-lg text-xs font-semibold transition';
+                btn.textContent = 'Xác Nhận Rút Quỹ';
+            }
+        }
+
+        function closeFundTransactionModal() { document.getElementById('fund-trans-modal').classList.add('hidden'); }
+
+        async function handleFundTransaction(e) {
+            e.preventDefault();
+            if (!activeClassData || !currentUser.joinedClassCode) return;
+
+            const type = document.getElementById('trans-type').value;
+            const amount = Number(document.getElementById('trans-amount').value);
+            const reason = document.getElementById('trans-reason').value.trim();
+            const code = currentUser.joinedClassCode;
+
+            let currentBalance = Number(activeClassData.balance || 0);
+
+            if (type === 'withdraw' && amount > currentBalance) {
+                alert("Số tiền rút vượt quá số dư hiện tại của Quỹ Lớp!");
+                return;
+            }
+
+            let newBalance = type === 'deposit' ? currentBalance + amount : currentBalance - amount;
+
+            // Đẩy giao dịch lên Firebase Realtime Database
+            const transRef = db.ref(`classes/${code}/transactions`).push();
+            await transRef.set({
+                type: type,
+                amount: amount,
+                reason: reason,
+                timestamp: new Date().toLocaleString('vi-VN'),
+                createdMssv: currentUser.mssv
+            });
+
+            // Cập nhật số dư mới lên Firebase
+            await db.ref(`classes/${code}/balance`).set(newBalance);
+
+            alert("Giao dịch thành công! Dữ liệu đã đồng bộ trên Firebase.");
+            closeFundTransactionModal();
+            document.getElementById('trans-amount').value = '';
+            document.getElementById('trans-reason').value = '';
+        }
+
+        async function requestTreasurerRole() {
+            if (!currentUser.joinedClassCode) return;
+            const requestsRef = db.ref('treasurer_requests').push();
+            await requestsRef.set({
+                classCode: currentUser.joinedClassCode,
+                mssv: currentUser.mssv,
+                fullname: currentUser.fullname,
+                time: new Date().toLocaleString('vi-VN'),
+                status: 'pending'
+            });
+
+            let reqs = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
+            reqs.push({ classCode: currentUser.joinedClassCode, mssv: currentUser.mssv, fullname: currentUser.fullname, time: new Date().toLocaleString('vi-VN'), status: 'pending' });
+            localStorage.setItem('drl_treasurer_requests', JSON.stringify(reqs));
+
+            alert("Đã gửi yêu cầu làm Thủ quỹ đến Admin!");
+        }
+
+        /* ADMIN DATA SYNC WITH FIREBASE */
         async function loadAdminData() {
             const usersContainer = document.getElementById('admin-users-list');
             const classesTbody = document.getElementById('admin-classes-tbody');
 
-            if (usersContainer) usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải dữ liệu từ Google Sheet...</p>';
-            if (classesTbody) classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải danh sách lớp...</td></tr>';
+            if (usersContainer) usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Tải dữ liệu Firebase...</p>';
+            if (classesTbody) classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Tải dữ liệu Firebase...</td></tr>';
 
-            let remoteUsers = [];
-            let remoteClasses = [];
+            // Tải danh sách Users từ Firebase
+            const usersSnap = await db.ref('users').once('value');
+            const firebaseUsers = usersSnap.val() || {};
 
-            // Fetch dữ liệu tài khoản sinh viên từ Google Sheet
-            try {
-                const resUser = await fetch(SCRIPT_URL + "?action=getUsers");
-                if (resUser.ok) {
-                    const data = await resUser.json();
-                    if (Array.isArray(data)) remoteUsers = data;
-                    else if (data.users && Array.isArray(data.users)) remoteUsers = data.users;
-                    else if (data.data && Array.isArray(data.data)) remoteUsers = data.data;
-                }
-            } catch (e) {
-                console.warn("Không thể tải từ SCRIPT_URL:", e);
-            }
-
-            // Fetch dữ liệu lớp học từ Google Sheet
-            try {
-                const resClass = await fetch(CLASS_SHEET_URL + "?action=getClasses");
-                if (resClass.ok) {
-                    const data = await resClass.json();
-                    if (Array.isArray(data)) remoteClasses = data;
-                    else if (data.classes && Array.isArray(data.classes)) remoteClasses = data.classes;
-                    else if (data.data && Array.isArray(data.data)) remoteClasses = data.data;
-                }
-            } catch (e) {
-                console.warn("Không thể tải từ CLASS_SHEET_URL:", e);
-            }
-
-            // Đồng bộ kết hợp dữ liệu Local
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            let allUsersMap = {};
-
-            Object.keys(localUsers).forEach(mssv => {
-                allUsersMap[mssv] = {
-                    mssv: mssv,
-                    fullname: localUsers[mssv].fullname || `Sinh Viên (${mssv})`,
-                    password: localUsers[mssv].password || '••••••',
-                    scores: localUsers[mssv].scores || {},
-                    joinedClassCode: localUsers[mssv].joinedClassCode || 'Chưa tham gia'
-                };
-            });
-
-            remoteUsers.forEach(u => {
-                const mssv = u.mssv || u.MSSV;
-                if (mssv) {
-                    allUsersMap[mssv] = {
-                        mssv: mssv,
-                        fullname: u.fullname || u.Fullname || u.name || allUsersMap[mssv]?.fullname || `Sinh Viên (${mssv})`,
-                        password: u.password || u.Password || allUsersMap[mssv]?.password || '••••••',
-                        scores: u.scores || allUsersMap[mssv]?.scores || {},
-                        joinedClassCode: u.joinedClassCode || u.classCode || allUsersMap[mssv]?.joinedClassCode || 'Chưa tham gia'
-                    };
-                }
-            });
-
-            // Hiển thị danh sách Sinh Viên KÈM MẬT KHẨU (Yêu cầu 1)
-            const userList = Object.values(allUsersMap);
+            const userList = Object.values(firebaseUsers);
             if (usersContainer) {
                 if (userList.length === 0) {
-                    usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2">Chưa có dữ liệu sinh viên nào.</p>';
+                    usersContainer.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2">Chưa có dữ liệu sinh viên.</p>';
                 } else {
-                    usersContainer.innerHTML = userList.map(u => {
-                        let totalScore = calculateTotalFromScores(u.scores);
-                        return `
-                            <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
-                                <div class="overflow-hidden pr-2">
-                                    <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
-                                    <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
-                                    <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${u.password}</span></p>
-                                    <p class="text-[11px] text-slate-400">ĐRL: <span class="font-bold text-emerald-400">${totalScore}</span> | Lớp: ${u.joinedClassCode || '---'}</p>
-                                </div>
-                                <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0" title="Xóa tài khoản">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
+                    usersContainer.innerHTML = userList.map(u => `
+                        <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+                            <div class="overflow-hidden pr-2">
+                                <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
+                                <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
+                                <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${u.password || '••••••'}</span></p>
+                                <p class="text-[11px] text-slate-400">Lớp: ${u.joinedClassCode || 'Chưa vào lớp'}</p>
                             </div>
-                        `;
-                    }).join('');
+                            <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition" title="Xóa tài khoản Firebase">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `).join('');
                 }
             }
 
-            // Đồng bộ dữ liệu Lớp học & Thêm nút "Xem thành viên" cấp quyền Thủ quỹ (Yêu cầu 1)
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            let combinedClassesMap = { ...localClasses };
+            // Tải danh sách Lớp từ Firebase
+            const classesSnap = await db.ref('classes').once('value');
+            const firebaseClasses = classesSnap.val() || {};
 
-            remoteClasses.forEach(c => {
-                const code = c.code || c.classCode;
-                if (code) {
-                    combinedClassesMap[code] = {
-                        code: code,
-                        name: c.name || c.className || `Lớp ${code}`,
-                        pass: c.pass || c.password || combinedClassesMap[code]?.pass || '••••••',
-                        treasurerMssv: c.treasurerMssv || combinedClassesMap[code]?.treasurerMssv || null,
-                        treasurerName: c.treasurerName || combinedClassesMap[code]?.treasurerName || c.treasurer || 'Chưa có',
-                        balance: Number(c.balance || combinedClassesMap[code]?.balance || 0)
-                    };
-                }
-            });
-
+            const classArr = Object.values(firebaseClasses);
             if (classesTbody) {
-                const classArr = Object.values(combinedClassesMap);
                 if (classArr.length === 0) {
-                    classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400">Chưa có lớp học nào được đăng ký.</td></tr>';
+                    classesTbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-slate-400">Chưa có lớp học nào được tạo.</td></tr>';
                 } else {
                     classesTbody.innerHTML = classArr.map(c => `
                         <tr class="hover:bg-slate-700/40">
                             <td class="p-3 font-mono font-bold text-blue-400">${c.code}</td>
                             <td class="p-3">${c.name}</td>
                             <td class="p-3 font-mono text-amber-300 font-bold">${c.pass || '••••••'}</td>
-                            <td class="p-3 text-emerald-300 font-medium">${c.treasurerName ? `${c.treasurerName} ${c.treasurerMssv ? `(${c.treasurerMssv})` : ''}` : 'Chưa có'}</td>
-                            <td class="p-3 font-bold text-amber-400">${Number(c.balance || 0).toLocaleString()} VNĐ</td>
+                            <td class="p-3 text-emerald-300 font-medium">${c.treasurerName ? `${c.treasurerName} (${c.treasurerMssv})` : 'Chưa có'}</td>
+                            <td class="p-3 font-bold text-amber-400">${Number(c.balance || 0).toLocaleString('vi-VN')} VNĐ</td>
                             <td class="p-3 text-center flex items-center justify-center gap-1.5">
-                                <button onclick="openAdminClassMembersModal('${c.code}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded text-xs transition font-medium" title="Xem danh sách & cấp quyền thủ quỹ">
+                                <button onclick="openAdminClassMembersModal('${c.code}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1 rounded text-xs transition font-medium">
                                     <i class="fa-solid fa-users-gear mr-1"></i> Thành viên
                                 </button>
                                 <button onclick="deleteAdminClass('${c.code}')" class="bg-rose-600/80 hover:bg-rose-600 text-white px-2.5 py-1 rounded text-xs transition">Xóa</button>
@@ -1397,84 +1513,44 @@
             }
         }
 
-        /* ================= QUẢN LÝ YÊU CẦU CẤP QUYỀN THỦ QUỸ VỀ ADMIN (Yêu cầu 3) ================= */
-        function loadAdminRequests() {
-            const listContainer = document.getElementById('admin-requests-list');
-            const countBadge = document.getElementById('admin-request-count');
-            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
-
-            const pendingReqs = requests.filter(r => r.status === 'pending');
-            countBadge.textContent = `${pendingReqs.length} yêu cầu`;
-
-            if (pendingReqs.length === 0) {
-                listContainer.innerHTML = '<p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>';
-                return;
+        async function deleteAdminUser(mssv) {
+            if (confirm(`Bạn có chắc muốn xóa sinh viên ${mssv} khỏi Firebase?`)) {
+                await db.ref('users/' + mssv).remove();
+                loadAdminData();
             }
-
-            listContainer.innerHTML = pendingReqs.map((r, index) => `
-                <div class="bg-slate-700/80 border border-slate-600 p-3 rounded-xl flex items-center justify-between shadow-md">
-                    <div>
-                        <p class="font-bold text-amber-300 text-xs">${r.fullname} <span class="font-mono text-slate-300">(${r.mssv})</span></p>
-                        <p class="text-[11px] text-slate-400">Yêu cầu làm Thủ quỹ Lớp: <span class="font-bold text-blue-400">${r.classCode}</span> - <span class="text-slate-400">${r.time}</span></p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="approveTreasurerRequest(${index})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
-                            <i class="fa-solid fa-check"></i> Duyệt
-                        </button>
-                        <button onclick="rejectTreasurerRequest(${index})" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
-                            <i class="fa-solid fa-xmark"></i> Từ chối
-                        </button>
-                    </div>
-                </div>
-            `).join('');
         }
 
-        function approveTreasurerRequest(reqIndex) {
-            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
-            const req = requests[reqIndex];
-            if (!req) return;
-
-            assignTreasurer(req.classCode, req.mssv, req.fullname);
-            req.status = 'approved';
-            localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
-            alert(`Đã cấp quyền Thủ quỹ Lớp ${req.classCode} cho sinh viên ${req.fullname} (${req.mssv})!`);
-            loadAdminRequests();
-            loadAdminData();
-        }
-
-        function rejectTreasurerRequest(reqIndex) {
-            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
-            if (requests[reqIndex]) {
-                requests[reqIndex].status = 'rejected';
-                localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
+        async function deleteAdminClass(code) {
+            if (confirm(`Bạn có chắc muốn xóa Lớp ${code} khỏi Firebase?`)) {
+                await db.ref('classes/' + code).remove();
+                loadAdminData();
             }
-            loadAdminRequests();
         }
 
-        /* ================= QUẢN LÝ THÀNH VIÊN VÀ CẤP QUYỀN THỦ QUỸ TRONG MỖI LỚP (Yêu cầu 1) ================= */
-        function openAdminClassMembersModal(classCode) {
+        async function openAdminClassMembersModal(classCode) {
             document.getElementById('admin-class-members-modal').classList.remove('hidden');
             document.getElementById('admin-members-class-code').textContent = classCode;
 
             const body = document.getElementById('admin-class-members-list-body');
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            const cls = localClasses[classCode] || {};
+            body.innerHTML = '<p class="text-center text-xs text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Đang tải...</p>';
 
-            let classMembers = Object.values(localUsers).filter(u => u.joinedClassCode === classCode);
+            const classSnap = await db.ref('classes/' + classCode).once('value');
+            const cls = classSnap.val();
+            const members = cls.members || {};
 
-            if (classMembers.length === 0) {
+            const memberList = Object.values(members);
+            if (memberList.length === 0) {
                 body.innerHTML = '<p class="text-slate-400 text-xs text-center py-4">Chưa có sinh viên nào tham gia lớp này.</p>';
                 return;
             }
 
-            body.innerHTML = classMembers.map(m => {
-                const isTreasurer = cls.treasurerMssv === m.mssv || (currentUser && currentUser.mssv === m.mssv && cls.treasurerMssv === m.mssv);
+            body.innerHTML = memberList.map(m => {
+                const isTreasurer = cls.treasurerMssv === m.mssv;
                 return `
                     <div class="bg-slate-700/60 border border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
                         <div>
                             <p class="font-bold text-slate-100 text-xs">${m.fullname}</p>
-                            <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${m.mssv}</span> | Mật khẩu: <span class="font-mono text-amber-300">${m.password || '••••••'}</span></p>
+                            <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${m.mssv}</span></p>
                         </div>
                         <div>
                             ${isTreasurer ? 
@@ -1487,505 +1563,205 @@
             }).join('');
         }
 
-        function closeAdminClassMembersModal() {
-            document.getElementById('admin-class-members-modal').classList.add('hidden');
-        }
+        function closeAdminClassMembersModal() { document.getElementById('admin-class-members-modal').classList.add('hidden'); }
 
-        function assignTreasurer(classCode, mssv, fullname) {
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            if (!localClasses[classCode]) {
-                localClasses[classCode] = { code: classCode, name: `Lớp ${classCode}`, balance: 0 };
-            }
-            localClasses[classCode].treasurerMssv = mssv;
-            localClasses[classCode].treasurerName = fullname;
-            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
-
-            alert(`Đã chọn ${fullname} (${mssv}) làm Thủ quỹ lớp ${classCode}!`);
+        async function assignTreasurer(classCode, mssv, fullname) {
+            await db.ref('classes/' + classCode).update({
+                treasurerMssv: mssv,
+                treasurerName: fullname
+            });
+            alert(`Đã gán sinh viên ${fullname} (${mssv}) làm Thủ quỹ Lớp ${classCode} trên Firebase!`);
             openAdminClassMembersModal(classCode);
             loadAdminData();
-            renderClassFundHUD();
         }
 
-        /* ================= MODAL XEM THÀNH VIÊN TRONG LỚP CHO SINH VIÊN (Yêu cầu 6) ================= */
-        function openClassMembersModal() {
-            if (!currentUser || !currentUser.joinedClassCode) return;
-            const classCode = currentUser.joinedClassCode;
+        async function loadAdminRequests() {
+            const listContainer = document.getElementById('admin-requests-list');
+            const countBadge = document.getElementById('admin-request-count');
+            
+            const snapshot = await db.ref('treasurer_requests').once('value');
+            const reqData = snapshot.val() || {};
 
-            document.getElementById('class-members-modal').classList.remove('hidden');
-            document.getElementById('members-modal-class-code').textContent = classCode;
+            const pendingReqs = Object.entries(reqData).filter(([key, val]) => val.status === 'pending');
+            countBadge.textContent = `${pendingReqs.length} yêu cầu`;
 
-            const body = document.getElementById('class-members-list-body');
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            const cls = localClasses[classCode] || {};
-
-            let members = Object.values(localUsers).filter(u => u.joinedClassCode === classCode);
-
-            if (members.length === 0) {
-                body.innerHTML = '<p class="text-slate-400 text-xs text-center py-4">Chưa có thành viên nào khác trong lớp.</p>';
+            if (pendingReqs.length === 0) {
+                listContainer.innerHTML = '<p class="text-slate-400 text-xs py-2">Hiện tại không có yêu cầu nào.</p>';
                 return;
             }
 
-            body.innerHTML = members.map(m => {
-                const isTreasurer = cls.treasurerMssv === m.mssv;
-                let totalScore = calculateTotalFromScores(m.scores);
-                return `
-                    <div class="bg-slate-100 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-slate-600 text-blue-600 dark:text-blue-300 flex items-center justify-center font-bold text-xs">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-800 dark:text-slate-100 text-xs">${m.fullname} ${m.mssv === currentUser.mssv ? '<span class="text-blue-500">(Bạn)</span>' : ''}</p>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-400">MSSV: <span class="font-mono">${m.mssv}</span> | ĐRL: <span class="font-bold text-emerald-600 dark:text-emerald-400">${totalScore}</span></p>
-                            </div>
-                        </div>
-                        <div>
-                            ${isTreasurer ? `<span class="bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-crown mr-1"></i> Thủ quỹ</span>` : `<span class="bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full text-[10px]">Thành viên</span>`}
-                        </div>
+            listContainer.innerHTML = pendingReqs.map(([reqId, r]) => `
+                <div class="bg-slate-700/80 border border-slate-600 p-3 rounded-xl flex items-center justify-between shadow-md">
+                    <div>
+                        <p class="font-bold text-amber-300 text-xs">${r.fullname} <span class="font-mono text-slate-300">(${r.mssv})</span></p>
+                        <p class="text-[11px] text-slate-400">Yêu cầu làm Thủ quỹ Lớp: <span class="font-bold text-blue-400">${r.classCode}</span> - <span class="text-slate-400">${r.time}</span></p>
                     </div>
-                `;
-            }).join('');
+                    <div class="flex gap-2">
+                        <button onclick="approveTreasurerRequest('${reqId}', '${r.classCode}', '${r.mssv}', '${r.fullname}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-check"></i> Duyệt
+                        </button>
+                        <button onclick="rejectTreasurerRequest('${reqId}')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-xmark"></i> Từ chối
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function closeClassMembersModal() {
-            document.getElementById('class-members-modal').classList.add('hidden');
+        async function approveTreasurerRequest(reqId, classCode, mssv, fullname) {
+            await assignTreasurer(classCode, mssv, fullname);
+            await db.ref(`treasurer_requests/${reqId}`).update({ status: 'approved' });
+            loadAdminRequests();
         }
 
-        function calculateTotalFromScores(scores) {
-            if (!scores) return 0;
-            if (scores.direct_score !== undefined) return scores.direct_score;
-            let sum = 0;
-            Object.values(scores).forEach(v => {
-                sum += parseFloat(v) || 0;
-            });
-            return Math.min(100, sum);
+        async function rejectTreasurerRequest(reqId) {
+            await db.ref(`treasurer_requests/${reqId}`).update({ status: 'rejected' });
+            loadAdminRequests();
         }
 
-        async function deleteAdminUser(mssv) {
-            if (!confirm(`Bạn có chắc chắn muốn xóa sinh viên MSSV ${mssv}?`)) return;
-            
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            if (localUsers[mssv]) {
-                delete localUsers[mssv];
-                localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
-            }
-
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'deleteUser', mssv: mssv })
-                });
-            } catch (e) {
-                console.error("Lỗi gửi yêu cầu xóa tới Google Sheet:", e);
-            }
-
-            alert(`Đã xóa sinh viên ${mssv}!`);
-            loadAdminData();
-        }
-
-        async function deleteAdminClass(classCode) {
-            if (!confirm(`Bạn có chắc chắn muốn xóa lớp ${classCode}?`)) return;
-
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            if (localClasses[classCode]) {
-                delete localClasses[classCode];
-                localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
-            }
-
-            try {
-                await fetch(CLASS_SHEET_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'deleteClass', classCode: classCode })
-                });
-            } catch (e) {
-                console.error("Lỗi gửi yêu cầu xóa lớp tới Google Sheet:", e);
-            }
-            alert(`Đã xóa lớp ${classCode}!`);
-            loadAdminData();
-        }
-
-        // Lưu thông tin người dùng hiện tại và duy trì trạng thái Lớp học
-        function saveCurrentUserData() {
-            if (!currentUser) return;
-            localStorage.setItem('drl_current_user_api', JSON.stringify(currentUser));
-            let localUsers = JSON.parse(localStorage.getItem('drl_users_local_scores') || '{}');
-            if (currentUser.mssv) {
-                if (!localUsers[currentUser.mssv]) {
-                    localUsers[currentUser.mssv] = { fullname: currentUser.fullname, scores: currentUser.scores || {}, joinedClassCode: currentUser.joinedClassCode || null };
-                } else {
-                    localUsers[currentUser.mssv].fullname = currentUser.fullname;
-                    localUsers[currentUser.mssv].scores = userScores;
-                    localUsers[currentUser.mssv].joinedClassCode = currentUser.joinedClassCode;
-                }
-                localStorage.setItem('drl_users_local_scores', JSON.stringify(localUsers));
-            }
-        }
-
-        /* ================= BẢNG VÀ TÍNH ĐIỂM DRL ================= */
+        /* BẢNG ĐIỂM DRL & TÍNH TOÁN */
         function renderDRLTable() {
             const tbody = document.getElementById('drl-table-body');
             if (!tbody) return;
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(currentLang);
+            const t = translations[currentLang] || translations.vi;
 
-            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const structure = getLocalizedDrlStructure(lang);
-            tbody.innerHTML = '';
-
+            let html = '';
             structure.forEach(sec => {
-                const secHeaderRow = document.createElement('tr');
-                secHeaderRow.className = "bg-slate-200/80 dark:bg-slate-700/80 font-bold text-slate-800 dark:text-white text-xs uppercase border-y border-slate-300 dark:border-slate-600";
-                secHeaderRow.innerHTML = `
-                    <td class="py-2.5 px-4" colspan="3">${sec.title}</td>
-                    <td class="py-2.5 px-2 text-center text-blue-600 dark:text-blue-400 font-black" id="sec-score-${sec.sectionId}">0 / ${sec.maxScore}</td>
+                html += `
+                    <tr class="bg-blue-50/80 dark:bg-slate-800/80 font-bold border-t border-b border-blue-200 dark:border-slate-600 text-blue-900 dark:text-blue-300">
+                        <td colspan="4" class="py-2.5 px-4">${sec.title} (Tối đa ${sec.maxScore}đ)</td>
+                    </tr>
                 `;
-                tbody.appendChild(secHeaderRow);
-
                 sec.items.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-200/40 dark:hover:bg-slate-700/40 transition border-b border-slate-200/60 dark:border-slate-700/50";
-                    
-                    let inputControlHtml = '';
-                    const val = userScores[item.id] !== undefined ? userScores[item.id] : 0;
+                    const currentScore = userScores[item.id] !== undefined ? userScores[item.id] : 0;
+                    let inputControl = '';
 
                     if (item.type === 'number') {
-                        inputControlHtml = `<input type="number" min="0" max="${item.max}" value="${val}" onchange="updateScore('${item.id}', this.value, ${item.max})" class="w-20 px-2 py-1 text-center text-xs border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none">`;
+                        inputControl = `<input type="number" min="0" max="${item.max}" value="${currentScore}" onchange="updateItemScore('${item.id}', this.value, ${item.max})" placeholder="${t.inputPlaceholder}" class="w-24 text-center px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-blue-500">`;
                     } else if (item.type === 'checkbox') {
-                        const checked = val > 0 ? 'checked' : '';
-                        inputControlHtml = `<input type="checkbox" ${checked} onchange="updateScore('${item.id}', this.checked ? ${item.score} : 0, ${item.max})" class="w-4 h-4 text-blue-600 rounded cursor-pointer">`;
+                        const checked = currentScore > 0 ? 'checked' : '';
+                        inputControl = `<input type="checkbox" ${checked} onchange="updateItemScore('${item.id}', this.checked ? ${item.score} : 0, ${item.max})" class="w-4 h-4 text-blue-600 rounded cursor-pointer">`;
                     } else if (item.type === 'select') {
-                        let optsHtml = item.options.map(opt => `<option value="${opt.score}" ${val == opt.score ? 'selected' : ''}>${opt.label}</option>`).join('');
-                        inputControlHtml = `<select onchange="updateScore('${item.id}', this.value, ${item.max})" class="w-full text-xs border border-slate-300 rounded px-2 py-1 focus:outline-none">${optsHtml}</select>`;
+                        let opts = item.options.map(o => `<option value="${o.score}" ${currentScore == o.score ? 'selected' : ''}>${o.label}</option>`).join('');
+                        inputControl = `<select onchange="updateItemScore('${item.id}', this.value, ${item.max})" class="w-full text-xs border border-slate-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500">${opts}</select>`;
                     }
 
-                    tr.innerHTML = `
-                        <td class="py-3 px-4 text-xs text-slate-700 dark:text-slate-200">${item.text}</td>
-                        <td class="py-3 px-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">${item.max}</td>
-                        <td class="py-3 px-4 text-center">${inputControlHtml}</td>
-                        <td class="py-3 px-2 text-center font-bold text-xs text-blue-600 dark:text-blue-400" id="item-earned-${item.id}">${val}</td>
+                    html += `
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                            <td class="py-2 px-4 text-xs">${item.text}</td>
+                            <td class="py-2 px-2 text-center text-xs font-semibold text-slate-500">${item.max}</td>
+                            <td class="py-2 px-4 text-center">${inputControl}</td>
+                            <td class="py-2 px-2 text-center font-bold text-xs text-blue-600 dark:text-blue-400" id="earned-${item.id}">${currentScore}</td>
+                        </tr>
                     `;
-                    tbody.appendChild(tr);
                 });
             });
+
+            tbody.innerHTML = html;
         }
 
-        function updateScore(itemId, value, maxVal) {
-            let num = parseFloat(value) || 0;
-            if (num < 0) num = 0;
-            if (num > maxVal) num = maxVal;
+        function updateItemScore(id, val, max) {
+            let score = Number(val) || 0;
+            if (score < 0) score = 0;
+            if (score > max) score = max;
 
-            userScores[itemId] = num;
+            userScores[id] = score;
+            const earnedEl = document.getElementById(`earned-${id}`);
+            if (earnedEl) earnedEl.textContent = score;
+
             if (currentUser) {
                 currentUser.scores = userScores;
                 saveCurrentUserData();
             }
-
-            const earnedTd = document.getElementById(`item-earned-${itemId}`);
-            if (earnedTd) earnedTd.textContent = num;
-
             calculateTotalHUD();
         }
 
-        function calculateTotalHUD() {
-            const lang = localStorage.getItem('drl_selected_lang') || 'vi';
-            const t = translations[lang] || translations.vi;
-            const structure = getLocalizedDrlStructure(lang);
-
-            let total = 0;
-            structure.forEach(sec => {
-                let secSum = 0;
-                sec.items.forEach(item => {
-                    secSum += parseFloat(userScores[item.id] || 0);
-                });
-                if (secSum > sec.maxScore) secSum = sec.maxScore;
-                total += secSum;
-
-                const secElem = document.getElementById(`summary-sec-${sec.sectionId === 'I' ? '1' : sec.sectionId === 'II' ? '2' : sec.sectionId === 'III' ? '3' : sec.sectionId === 'IV' ? '4' : '5'}`);
-                if (secElem) secElem.textContent = `${secSum}/${sec.maxScore}`;
-
-                const secScoreElem = document.getElementById(`sec-score-${sec.sectionId}`);
-                if (secScoreElem) secScoreElem.textContent = `${secSum} / ${sec.maxScore}`;
-            });
-
-            if (total > 100) total = 100;
-
-            const scoreDisplay = document.getElementById('hud-total-score');
-            const progressBar = document.getElementById('hud-progress-bar');
-            const ratingDisplay = document.getElementById('hud-rating');
-
-            if (scoreDisplay) scoreDisplay.textContent = total;
-            if (progressBar) progressBar.style.width = `${total}%`;
-
-            if (ratingDisplay) {
-                let ratingText = t.unrated;
-                let ratingColor = "bg-white/10 text-white";
-
-                if (total >= 90) { ratingText = t.rateEx; ratingColor = "bg-emerald-500 text-white border-emerald-300"; }
-                else if (total >= 80) { ratingText = t.rateGood; ratingColor = "bg-blue-500 text-white border-blue-300"; }
-                else if (total >= 65) { ratingText = t.rateFair; ratingColor = "bg-amber-500 text-white border-amber-300"; }
-                else if (total >= 50) { ratingText = t.rateAvg; ratingColor = "bg-orange-500 text-white border-orange-300"; }
-                else { ratingText = t.rateWeak; ratingColor = "bg-rose-500 text-white border-rose-300"; }
-
-                ratingDisplay.textContent = ratingText;
-                ratingDisplay.className = `font-bold text-xs px-3 py-1 rounded-full border shadow-sm ${ratingColor}`;
-            }
-        }
-
         function applyDirectScore() {
-            const input = document.getElementById('direct-score-input');
-            let val = parseFloat(input.value);
+            const val = Number(document.getElementById('direct-score-input').value);
             if (isNaN(val) || val < 0 || val > 100) {
                 alert("Vui lòng nhập điểm từ 0 đến 100!");
                 return;
             }
-
-            userScores = { direct_score: val };
+            userScores = { direct: val };
             if (currentUser) {
                 currentUser.scores = userScores;
                 saveCurrentUserData();
             }
-
             renderDRLTable();
-            const scoreDisplay = document.getElementById('hud-total-score');
-            const progressBar = document.getElementById('hud-progress-bar');
-            if (scoreDisplay) scoreDisplay.textContent = val;
-            if (progressBar) progressBar.style.width = `${val}%`;
-
-            alert("Đã ghi đè điểm rèn luyện trực tiếp!");
+            calculateTotalHUD();
         }
 
         function resetAllScores() {
-            if (confirm("Bạn có chắc chắn muốn đặt lại tất cả điểm rèn luyện về 0?")) {
-                userScores = {};
-                if (currentUser) {
-                    currentUser.scores = userScores;
-                    saveCurrentUserData();
-                }
-                document.getElementById('direct-score-input').value = '';
-                renderDRLTable();
-                calculateTotalHUD();
-            }
-        }
-
-        /* ================= QUẢN LÝ QUỶ LỚP & HIỂN THỊ THỦ QUỸ (Yêu cầu 2) ================= */
-        function renderClassFundHUD() {
-            const notJoinedBox = document.getElementById('class-not-joined');
-            const joinedBox = document.getElementById('class-joined-view');
-            const statusBadge = document.getElementById('class-badge-status');
-
-            if (!currentUser || !currentUser.joinedClassCode) {
-                notJoinedBox.classList.remove('hidden');
-                joinedBox.classList.add('hidden');
-                statusBadge.textContent = "Chưa tham gia lớp";
-                statusBadge.className = "text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600";
-            } else {
-                notJoinedBox.classList.add('hidden');
-                joinedBox.classList.remove('hidden');
-                statusBadge.textContent = `Lớp: ${currentUser.joinedClassCode}`;
-                statusBadge.className = "text-[10px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold px-2.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-700";
-                
-                document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> Mã Lớp: ${currentUser.joinedClassCode}`;
-
-                let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-                const cls = localClasses[currentUser.joinedClassCode] || { balance: 0, treasurerName: 'Chưa có', treasurerMssv: null, history: [] };
-
-                document.getElementById('class-fund-amount').textContent = `${Number(cls.balance || 0).toLocaleString()} VNĐ`;
-
-                // Thủ quỹ sẽ hiện tên kèm Mã Số Sinh Viên (Yêu cầu 2)
-                const treasurerElem = document.getElementById('class-treasurer-name');
-                if (cls.treasurerName && cls.treasurerName !== 'Chưa có') {
-                    treasurerElem.textContent = `${cls.treasurerName} ${cls.treasurerMssv ? `(${cls.treasurerMssv})` : ''}`;
-                } else {
-                    treasurerElem.textContent = "Chưa có";
-                }
-
-                const isTreasurer = cls.treasurerMssv === currentUser.mssv;
-                const roleTag = document.getElementById('user-class-role-tag');
-                const treasurerActions = document.getElementById('treasurer-actions');
-
-                if (isTreasurer) {
-                    roleTag.textContent = "Thủ quỹ Lớp";
-                    roleTag.className = "bg-amber-300 text-amber-900 px-2.5 py-1 rounded-full text-[11px] font-black shadow-sm border border-amber-200";
-                    treasurerActions.classList.remove('hidden');
-                } else {
-                    roleTag.textContent = "Thành viên";
-                    roleTag.className = "bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold border border-white/20 text-white";
-                    treasurerActions.classList.add('hidden');
-                }
-
-                // Render lịch sử
-                const historyList = document.getElementById('fund-history-list');
-                const history = cls.history || [];
-                if (history.length === 0) {
-                    historyList.innerHTML = '<p class="text-slate-400 text-center py-2 text-[11px]">Chưa có giao dịch nào.</p>';
-                } else {
-                    historyList.innerHTML = history.slice().reverse().map(h => `
-                        <div class="flex justify-between items-center p-2 rounded-lg bg-slate-100/70 dark:bg-slate-700/50 border border-slate-200/60 dark:border-slate-600/50">
-                            <div>
-                                <p class="font-bold text-slate-800 dark:text-slate-100 text-[11px]">${h.reason}</p>
-                                <p class="text-[9px] text-slate-400">${h.time} - Thực hiện: ${h.by}</p>
-                            </div>
-                            <span class="font-bold ${h.type === 'deposit' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}">
-                                ${h.type === 'deposit' ? '+' : '-'}${Number(h.amount).toLocaleString()}đ
-                            </span>
-                        </div>
-                    `).join('');
-                }
-            }
-        }
-
-        function openClassModal(mode) {
-            document.getElementById('class-modal').classList.remove('hidden');
-            const joinForm = document.getElementById('form-join-class');
-            const createForm = document.getElementById('form-create-class');
-            const title = document.getElementById('class-modal-title');
-
-            if (mode === 'join') {
-                joinForm.classList.remove('hidden');
-                createForm.classList.add('hidden');
-                title.innerHTML = `<i class="fa-solid fa-users text-blue-600"></i> Tham gia Lớp`;
-            } else {
-                joinForm.classList.add('hidden');
-                createForm.classList.remove('hidden');
-                title.innerHTML = `<i class="fa-solid fa-plus-circle text-emerald-600"></i> Đăng ký Lớp Mới`;
-            }
-        }
-
-        function closeClassModal() {
-            document.getElementById('class-modal').classList.add('hidden');
-        }
-
-        function handleJoinClass(e) {
-            e.preventDefault();
-            const code = document.getElementById('join-class-code').value.trim().toUpperCase();
+            userScores = {};
             if (currentUser) {
-                currentUser.joinedClassCode = code;
+                currentUser.scores = userScores;
                 saveCurrentUserData();
-                renderClassFundHUD();
-                closeClassModal();
-                alert(`Đã tham gia vào lớp ${code} thành công!`);
             }
+            renderDRLTable();
+            calculateTotalHUD();
         }
 
-        function handleCreateClass(e) {
-            e.preventDefault();
-            const code = document.getElementById('create-class-code').value.trim().toUpperCase();
-            const name = document.getElementById('create-class-name').value.trim();
-            const pass = document.getElementById('create-class-pass').value;
+        function calculateTotalFromScores(scores) {
+            if (!scores) return 0;
+            if (scores.direct !== undefined) return scores.direct;
 
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            localClasses[code] = {
-                code: code,
-                name: name,
-                pass: pass,
-                balance: 0,
-                treasurerName: 'Chưa có',
-                treasurerMssv: null,
-                history: []
-            };
-            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(currentLang);
+            let grandTotal = 0;
 
-            if (currentUser) {
-                currentUser.joinedClassCode = code;
-                saveCurrentUserData();
-                renderClassFundHUD();
-                closeClassModal();
-                alert(`Đã tạo và đăng ký lớp ${code} thành công!`);
-            }
-        }
-
-        // Rời khỏi lớp duy nhất bằng nút Rời Lớp (Yêu cầu 5)
-        function leaveCurrentClass() {
-            if (confirm("Bạn có chắc muốn rời khỏi lớp hiện tại?")) {
-                if (currentUser) {
-                    currentUser.joinedClassCode = null;
-                    saveCurrentUserData();
-                    renderClassFundHUD();
-                }
-            }
-        }
-
-        // Gửi yêu cầu làm thủ quỹ về Admin Panel (Yêu cầu 3)
-        function requestTreasurerRole() {
-            if (!currentUser || !currentUser.joinedClassCode) {
-                alert("Bạn cần tham gia lớp trước khi gửi yêu cầu!");
-                return;
-            }
-
-            let requests = JSON.parse(localStorage.getItem('drl_treasurer_requests') || '[]');
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
-
-            requests.push({
-                mssv: currentUser.mssv,
-                fullname: currentUser.fullname,
-                classCode: currentUser.joinedClassCode,
-                time: timeStr,
-                status: 'pending'
+            structure.forEach(sec => {
+                let secSum = 0;
+                sec.items.forEach(item => {
+                    secSum += Number(scores[item.id] || 0);
+                });
+                grandTotal += Math.min(secSum, sec.maxScore);
             });
 
-            localStorage.setItem('drl_treasurer_requests', JSON.stringify(requests));
-            alert("Đã gửi yêu cầu cấp quyền Thủ quỹ cho lớp " + currentUser.joinedClassCode + " tới Admin Panel thành công!");
+            return Math.min(grandTotal, 100);
         }
 
-        function openFundTransactionModal(type) {
-            document.getElementById('fund-trans-modal').classList.remove('hidden');
-            document.getElementById('trans-type').value = type;
-            document.getElementById('fund-trans-title').innerHTML = type === 'deposit' ? 
-                `<i class="fa-solid fa-circle-plus text-emerald-500"></i> Thêm Quỹ Lớp` : 
-                `<i class="fa-solid fa-circle-minus text-rose-500"></i> Rút Quỹ Lớp`;
-        }
+        function calculateTotalHUD() {
+            const currentLang = localStorage.getItem('drl_selected_lang') || 'vi';
+            const structure = getLocalizedDrlStructure(currentLang);
+            const t = translations[currentLang] || translations.vi;
 
-        function closeFundTransactionModal() {
-            document.getElementById('fund-trans-modal').classList.add('hidden');
-        }
+            let grandTotal = 0;
 
-        function handleFundTransaction(e) {
-            e.preventDefault();
-            const type = document.getElementById('trans-type').value;
-            const amount = parseFloat(document.getElementById('trans-amount').value);
-            const reason = document.getElementById('trans-reason').value.trim();
+            if (userScores.direct !== undefined) {
+                grandTotal = userScores.direct;
+                for (let i = 1; i <= 5; i++) {
+                    const el = document.getElementById(`summary-sec-${i}`);
+                    if (el) el.textContent = `${grandTotal}/100`;
+                }
+            } else {
+                structure.forEach((sec, idx) => {
+                    let secSum = 0;
+                    sec.items.forEach(item => {
+                        secSum += Number(userScores[item.id] || 0);
+                    });
+                    const secEarned = Math.min(secSum, sec.maxScore);
+                    grandTotal += secEarned;
 
-            if (!amount || amount <= 0 || !reason) {
-                alert("Vui lòng nhập số tiền và lý do hợp lệ!");
-                return;
+                    const el = document.getElementById(`summary-sec-${idx + 1}`);
+                    if (el) el.textContent = `${secEarned}/${sec.maxScore}`;
+                });
             }
 
-            const code = currentUser.joinedClassCode;
-            let localClasses = JSON.parse(localStorage.getItem('drl_classes_local') || '{}');
-            let cls = localClasses[code] || { code: code, balance: 0, history: [] };
+            grandTotal = Math.min(grandTotal, 100);
 
-            if (type === 'withdraw' && amount > cls.balance) {
-                alert("Số dư quỹ lớp không đủ để thực hiện rút quỹ!");
-                return;
-            }
+            document.getElementById('hud-total-score').textContent = grandTotal;
+            document.getElementById('hud-progress-bar').style.width = `${grandTotal}%`;
 
-            if (type === 'deposit') cls.balance += amount;
-            else cls.balance -= amount;
+            let rating = t.unrated;
+            if (grandTotal >= 90) rating = t.rateEx;
+            else if (grandTotal >= 80) rating = t.rateGood;
+            else if (grandTotal >= 65) rating = t.rateFair;
+            else if (grandTotal >= 50) rating = t.rateAvg;
+            else if (grandTotal > 0) rating = t.rateWeak;
 
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} - ${now.getDate()}/${now.getMonth()+1}`;
-
-            if (!cls.history) cls.history = [];
-            cls.history.push({
-                type: type,
-                amount: amount,
-                reason: reason,
-                by: currentUser.fullname,
-                time: timeStr
-            });
-
-            localClasses[code] = cls;
-            localStorage.setItem('drl_classes_local', JSON.stringify(localClasses));
-
-            document.getElementById('trans-amount').value = '';
-            document.getElementById('trans-reason').value = '';
-            closeFundTransactionModal();
-            renderClassFundHUD();
-            alert("Đã cập nhật giao dịch Quỹ Lớp thành công!");
+            document.getElementById('hud-rating').textContent = rating;
         }
     </script>
 </body>
