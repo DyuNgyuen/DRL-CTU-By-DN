@@ -322,7 +322,7 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-slate-800 dark:text-white text-base leading-tight" data-i18n="fundTitle">Quản Lý Quỹ Lớp</h3>
-                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Tự động đồng bộ Firebase</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-300" data-i18n="fundSub">Minh bạch & Tự động đồng bộ</p>
                             </div>
                         </div>
                         <span id="class-badge-status" class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-full border border-slate-200 dark:border-slate-600">Chưa vào lớp</span>
@@ -391,7 +391,7 @@
                         <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
                             <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 flex items-center justify-between">
                                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-amber-500"></i> <span data-i18n="fundHistory">Lịch Sử Thu / Chi</span></span>
-                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Firebase Realtime</span>
+                                <span class="text-[10px] text-slate-400 font-normal" data-i18n="realtimeTag">Tự động Realtime</span>
                             </h4>
                             <div id="fund-history-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar text-xs">
                                 <p class="text-slate-400 text-center py-2 text-[11px]">Chưa có giao dịch nào.</p>
@@ -466,7 +466,7 @@
                     <h1 class="text-2xl font-bold text-purple-400 flex items-center gap-2">
                         <i class="fa-solid fa-user-shield"></i> HỆ THỐNG QUẢN TRỊ ADMIN PANEL
                     </h1>
-                    <p class="text-xs text-slate-400 mt-1">Đồng bộ Firebase Realtime & Google Sheet API</p>
+                    <p class="text-xs text-slate-400 mt-1">Đồng bộ Realtime & Hệ thống</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button onclick="switchToUserModeFromAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-2 shadow">
@@ -498,7 +498,7 @@
                         <i class="fa-solid fa-list-check"></i> Danh Sách Lớp Đã Đăng Ký
                     </h2>
                     <span class="text-xs text-emerald-400 border border-emerald-500/40 bg-emerald-950/40 px-3 py-1 rounded-full">
-                        <i class="fa-solid fa-bolt mr-1"></i> Firebase Realtime
+                        <i class="fa-solid fa-bolt mr-1"></i> Đồng bộ Realtime
                     </span>
                 </div>
 
@@ -571,7 +571,7 @@
         </div>
     </div>
 
-    <!-- MODALS THAM GIA / TẠO LỚP (Bổ sung Chức năng chọn lớp đã tạo - Yêu cầu 3) -->
+    <!-- MODALS THAM GIA / TẠO LỚP -->
     <div id="class-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -583,7 +583,7 @@
                 </button>
             </div>
 
-            <!-- Form Tham Gia Lớp có Danh Sách Lớp Đã Tạo (Yêu cầu 3) -->
+            <!-- Form Tham Gia Lớp có Danh Sách Lớp Đã Tạo -->
             <form id="form-join-class" onsubmit="handleJoinClass(event)" class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Chọn Lớp Đã Tạo</label>
@@ -620,7 +620,7 @@
         </div>
     </div>
 
-    <!-- MODAL GIAO DỊCH QUỶ LỚP -->
+    <!-- MODAL GIAO DỊCH QUỲ LỚP -->
     <div id="fund-trans-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 dark:border-slate-700 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800">
@@ -723,11 +723,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC - KHÔNG LỖI VẶT & FIREBASE TỰ ĐỘNG -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Key Firebase CSDL theo liên kết của bạn
+        // Key CSDL theo liên kết
         const firebaseConfig = {
-            databaseURL: "https://csdl-ctu-c6350-default-rtdb.asia-southeast1.firebasedatabase.app"
+            databaseURL: "https://csdl-ctu-c6350-default-rtdb.firebaseio.com/"
         };
 
         if (!firebase.apps.length) {
@@ -737,10 +737,10 @@
 
         const translations = {
             vi: {
-                authTitle: "TÍNH DRL BY N.DUY", authSub: "Thuộc Khoa Ngoại Ngữ", login: "Đăng nhập", register: "Đăng ký", mssv: "Mã Số Sinh Viên (MSSV)", password: "Mật khẩu", fullname: "Họ và Tên", createAccount: "Tạo Tài Khoản", sysTitle: "Hệ Thống DRL Sinh Viên", sysSub: "Quản lý & Tự đánh giá điểm rèn luyện", background: "Hình nền & UI", totalScore: "Tổng Điểm Rèn Luyện", maxUnit: "/ 100 điểm", rating: "Xếp loại dự kiến:", directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)", directInputDesc: "Nhập trực tiếp tổng điểm rèn luyện tại đây nếu muốn bỏ qua tích chọn từng mục nhỏ.", directPlaceholder: "Nhập 0 - 100", inputPlaceholder: "Nhập điểm", maxLabel: "Tối đa:", update: "Cập nhật", summaryTitle: "Tóm tắt 5 Tiêu chí DRL", sec1: "I. Ý thức học tập:", sec2: "II. Nội quy & Quy chế:", sec3: "III. Hoạt động Phong trào:", sec4: "IV. Quan hệ Cộng đồng:", sec5: "V. Công tác Cán bộ & Khác:", tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết", tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo tiêu chí chuẩn ĐHCT", reset: "Đặt lại bảng điểm", colContent: "Nội dung đánh giá", colMax: "Điểm tối đa", colInput: "Nhập/Chọn", colEarned: "Điểm đạt", changeAvatar: "Thay đổi ảnh đại diện", language: "Ngôn ngữ", logout: "Đăng xuất", role: "Sinh viên CTU", unrated: "Chưa xếp loại", rateEx: "Xuất sắc", rateGood: "Tốt", rateFair: "Khá", rateAvg: "Trung bình", rateWeak: "Yếu", fundTitle: "Quản Lý Quỹ Lớp", fundSub: "Minh bạch & Tự động đồng bộ Firebase", treasurerLabel: "Thủ Quỹ Lớp", notJoinedDesc: "Bạn cần chọn hoặc tạo mới Lớp để xem thông tin Quỹ Lớp và Thành viên.", joinClassBtn: "Tham gia Lớp", createClassBtn: "Đăng ký Lớp Mới", addFundBtn: "Thêm Quỹ", withdrawFundBtn: "Rút Quỹ", reqTreasurerBtn: "Yêu cầu làm Thủ quỹ", leaveClassBtn: "Rời khỏi lớp hiện tại", fundHistory: "Lịch Sử Thu / Chi", realtimeTag: "Firebase Realtime", adminNotice: "Khung dành riêng cho Quản trị viên hệ thống.", adminUserLabel: "Tài khoản Quản trị", adminPassLabel: "Mật khẩu Quản trị", adminLoginBtn: "Đăng Nhập Quản Trị"
+                authTitle: "TÍNH DRL BY N.DUY", authSub: "Thuộc Khoa Ngoại Ngữ", login: "Đăng nhập", register: "Đăng ký", mssv: "Mã Số Sinh Viên (MSSV)", password: "Mật khẩu", fullname: "Họ và Tên", createAccount: "Tạo Tài Khoản", sysTitle: "Hệ Thống DRL Sinh Viên", sysSub: "Quản lý & Tự đánh giá điểm rèn luyện", background: "Hình nền & UI", totalScore: "Tổng Điểm Rèn Luyện", maxUnit: "/ 100 điểm", rating: "Xếp loại dự kiến:", directInputTitle: "1. Nhập Điểm Trực Tiếp (Ghi đè)", directInputDesc: "Nhập trực tiếp tổng điểm rèn luyện tại đây nếu muốn bỏ qua tích chọn từng mục nhỏ.", directPlaceholder: "Nhập 0 - 100", inputPlaceholder: "Nhập điểm", maxLabel: "Tối đa:", update: "Cập nhật", summaryTitle: "Tóm tắt 5 Tiêu chí DRL", sec1: "I. Ý thức học tập:", sec2: "II. Nội quy & Quy chế:", sec3: "III. Hoạt động Phong trào:", sec4: "IV. Quan hệ Cộng đồng:", sec5: "V. Công tác Cán bộ & Khác:", tableTitle: "2. Bảng Chấm Điểm Rèn Luyện Chi Tiết", tableSub: "Tích chọn hoặc nhập giá trị tương ứng theo tiêu chí chuẩn ĐHCT", reset: "Đặt lại bảng điểm", colContent: "Nội dung đánh giá", colMax: "Điểm tối đa", colInput: "Nhập/Chọn", colEarned: "Điểm đạt", changeAvatar: "Thay đổi ảnh đại diện", language: "Ngôn ngữ", logout: "Đăng xuất", role: "Sinh viên CTU", unrated: "Chưa xếp loại", rateEx: "Xuất sắc", rateGood: "Tốt", rateFair: "Khá", rateAvg: "Trung bình", rateWeak: "Yếu", fundTitle: "Quản Lý Quỹ Lớp", fundSub: "Minh bạch & Tự động đồng bộ", treasurerLabel: "Thủ Quỹ Lớp", notJoinedDesc: "Bạn cần chọn hoặc tạo mới Lớp để xem thông tin Quỹ Lớp và Thành viên.", joinClassBtn: "Tham gia Lớp", createClassBtn: "Đăng ký Lớp Mới", addFundBtn: "Thêm Quỹ", withdrawFundBtn: "Rút Quỹ", reqTreasurerBtn: "Yêu cầu làm Thủ quỹ", leaveClassBtn: "Rời khỏi lớp hiện tại", fundHistory: "Lịch Sử Thu / Chi", realtimeTag: "Tự động Realtime", adminNotice: "Khung dành riêng cho Quản trị viên hệ thống.", adminUserLabel: "Tài khoản Quản trị", adminPassLabel: "Mật khẩu Quản trị", adminLoginBtn: "Đăng Nhập Quản Trị"
             },
             en: {
-                authTitle: "DRL CALCULATOR BY N.DUY", authSub: "Faculty of Foreign Languages", login: "Log In", register: "Register", mssv: "Student ID (MSSV)", password: "Password", fullname: "Full Name", createAccount: "Create Account", sysTitle: "Student DRL System", sysSub: "Manage & Self-evaluate training points", background: "Wallpaper & UI", totalScore: "Total Training Score", maxUnit: "/ 100 pts", rating: "Expected Rating:", directInputTitle: "1. Direct Score Entry", directInputDesc: "Enter score directly if you don't want to pick individual items.", directPlaceholder: "Enter 0 - 100", inputPlaceholder: "Enter score", maxLabel: "Max:", update: "Update", summaryTitle: "Summary of 5 Criteria", sec1: "I. Academic Attitude:", sec2: "II. Rules & Regulations:", sec3: "III. Movements:", sec4: "IV. Community:", sec5: "V. Cadre Work & Others:", tableTitle: "2. Detailed Training Scorecard", tableSub: "Select or enter values according to CTU criteria", reset: "Reset Scorecard", colContent: "Evaluation Content", colMax: "Max Score", colInput: "Input/Select", colEarned: "Earned Score", changeAvatar: "Change Avatar", language: "Language", logout: "Log Out", role: "CTU Student", unrated: "Unrated", rateEx: "Excellent", rateGood: "Good", rateFair: "Fair", rateAvg: "Average", rateWeak: "Weak", fundTitle: "Class Fund Management", fundSub: "Transparent & Realtime Sync", treasurerLabel: "Treasurer", notJoinedDesc: "Join or create a class to manage funds.", joinClassBtn: "Join Class", createClassBtn: "Register New Class", addFundBtn: "Deposit", withdrawFundBtn: "Withdraw", reqTreasurerBtn: "Request Treasurer", leaveClassBtn: "Leave Class", fundHistory: "History", realtimeTag: "Firebase Realtime", adminNotice: "Admin Dashboard.", adminUserLabel: "Admin Username", adminPassLabel: "Admin Password", adminLoginBtn: "Admin Login"
+                authTitle: "DRL CALCULATOR BY N.DUY", authSub: "Faculty of Foreign Languages", login: "Log In", register: "Register", mssv: "Student ID (MSSV)", password: "Password", fullname: "Full Name", createAccount: "Create Account", sysTitle: "Student DRL System", sysSub: "Manage & Self-evaluate training points", background: "Wallpaper & UI", totalScore: "Total Training Score", maxUnit: "/ 100 pts", rating: "Expected Rating:", directInputTitle: "1. Direct Score Entry", directInputDesc: "Enter score directly if you don't want to pick individual items.", directPlaceholder: "Enter 0 - 100", inputPlaceholder: "Enter score", maxLabel: "Max:", update: "Update", summaryTitle: "Summary of 5 Criteria", sec1: "I. Academic Attitude:", sec2: "II. Rules & Regulations:", sec3: "III. Movements:", sec4: "IV. Community:", sec5: "V. Cadre Work & Others:", tableTitle: "2. Detailed Training Scorecard", tableSub: "Select or enter values according to CTU criteria", reset: "Reset Scorecard", colContent: "Evaluation Content", colMax: "Max Score", colInput: "Input/Select", colEarned: "Earned Score", changeAvatar: "Change Avatar", language: "Language", logout: "Log Out", role: "CTU Student", unrated: "Unrated", rateEx: "Excellent", rateGood: "Good", rateFair: "Fair", rateAvg: "Average", rateWeak: "Weak", fundTitle: "Class Fund Management", fundSub: "Transparent & Realtime Sync", treasurerLabel: "Treasurer", notJoinedDesc: "Join or create a class to manage funds.", joinClassBtn: "Join Class", createClassBtn: "Register New Class", addFundBtn: "Deposit", withdrawFundBtn: "Withdraw", reqTreasurerBtn: "Request Treasurer", leaveClassBtn: "Leave Class", fundHistory: "History", realtimeTag: "Realtime Sync", adminNotice: "Admin Dashboard.", adminUserLabel: "Admin Username", adminPassLabel: "Admin Password", adminLoginBtn: "Admin Login"
             }
         };
 
@@ -829,13 +829,14 @@
         let userScores = {};
         let isAdminLoggedIn = false;
         let availableClassesMap = {};
+        let currentUserListenerRef = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadSavedTheme();
             loadSavedBg();
             loadSavedAvatar();
             loadSavedUiCustomization();
-            listenToFirebaseGlobalData();
+            listenToGlobalData();
 
             const savedUser = localStorage.getItem('drl_current_user_api');
             if (savedUser) {
@@ -851,8 +852,26 @@
             }
         });
 
-        // Tải danh sách các Lớp công khai từ Firebase Realtime DB
-        function listenToFirebaseGlobalData() {
+        // Lắng nghe trạng thái Realtime của tài khoản hiện tại (Kick nếu bị xóa)
+        function setupUserSessionListener(mssv) {
+            if (currentUserListenerRef) {
+                currentUserListenerRef.off();
+                currentUserListenerRef = null;
+            }
+            if (!mssv || isAdminLoggedIn) return;
+
+            currentUserListenerRef = db.ref('users/' + mssv);
+            currentUserListenerRef.on('value', (snapshot) => {
+                // Nếu người dùng đang đăng nhập nhưng dữ liệu trên Firebase không còn tồn tại -> Kick
+                if (currentUser && !isAdminLoggedIn && !snapshot.exists()) {
+                    alert('Tài khoản của bạn đã bị Admin xóa khỏi hệ thống!');
+                    handleLogout();
+                }
+            });
+        }
+
+        // Tải danh sách các Lớp công khai từ CSDL Realtime DB
+        function listenToGlobalData() {
             db.ref('classes').on('value', (snapshot) => {
                 availableClassesMap = snapshot.val() || {};
                 populateClassSelectDropdown();
@@ -875,7 +894,7 @@
             });
         }
 
-        // Tải danh sách Lớp vào ô Chọn Lớp (Yêu cầu 3)
+        // Tải danh sách Lớp vào ô Chọn Lớp
         function populateClassSelectDropdown() {
             const selectEl = document.getElementById('select-existing-class');
             if (!selectEl) return;
@@ -919,7 +938,7 @@
                     document.getElementById('login-mssv').value = mssv;
                 }
             } catch (err) {
-                alert("Lỗi kết nối Firebase Realtime Database!");
+                alert("Lỗi kết nối CSDL Database!");
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Tạo Tài Khoản";
@@ -1008,7 +1027,7 @@
                 currentUser.joinedClassCode = code;
                 saveCurrentUserData();
 
-                alert(`Đã đăng ký Lớp ${code} thành công và được lưu lên Firebase!`);
+                alert(`Đã đăng ký Lớp ${code} thành công!`);
                 closeClassModal();
                 renderClassFundHUD();
             } catch (err) {
@@ -1052,7 +1071,7 @@
             renderClassFundHUD();
         }
 
-        /* HIỂN THỊ CÔNG KHẢI QUỸ LỚP VÀ SỐ THÀNH VIÊN (Yêu cầu 4) */
+        /* HIỂN THỊ CÔNG KHẢI QUỸ LỚP VÀ SỐ THÀNH VIÊN */
         async function renderClassFundHUD() {
             const notJoinedView = document.getElementById('class-not-joined');
             const joinedView = document.getElementById('class-joined-view');
@@ -1072,14 +1091,14 @@
             statusBadge.textContent = `Lớp: ${classCode}`;
             statusBadge.className = "text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-700";
 
-            // Tải dữ liệu lớp realtime từ Firebase
+            // Tải dữ liệu lớp realtime
             const classSnap = await db.ref('classes/' + classCode).once('value');
             const cls = classSnap.val() || {};
 
-            // Lấy danh sách sinh viên thuộc lớp để tính công khai số lượng thành viên (Yêu cầu 4)
+            // Lấy danh sách sinh viên thuộc lớp
             const usersSnap = await db.ref('users').once('value');
             const allUsers = usersSnap.val() || {};
-            const members = Object.values(allUsers).filter(u => u.joinedClassCode === classCode);
+            const members = Object.values(allUsers).filter(u => u && u.joinedClassCode === classCode);
 
             document.getElementById('class-name-display').innerHTML = `<i class="fa-solid fa-users text-amber-200"></i> ${cls.name || classCode}`;
             document.getElementById('class-fund-amount').textContent = `${Number(cls.balance || 0).toLocaleString()} VNĐ`;
@@ -1130,7 +1149,7 @@
             });
         }
 
-        /* GIAO DỊCH QUỸ LỚP */
+        /* GIAO DỊCH QUỶ LỚP */
         async function handleFundTransaction(e) {
             e.preventDefault();
             const type = document.getElementById('trans-type').value;
@@ -1211,29 +1230,38 @@
             `).join('');
         }
 
+        // CẢI TIẾN: Duyệt qua Object.entries để hỗ trợ hiển thị và xóa key undefined / dữ liệu rác
         function renderAdminUsersList(usersMap) {
             const container = document.getElementById('admin-users-list');
             if (!container) return;
-            const list = Object.values(usersMap);
+            const entries = Object.entries(usersMap || {});
 
-            if (list.length === 0) {
+            if (entries.length === 0) {
                 container.innerHTML = '<p class="text-slate-400 text-xs col-span-3 py-2">Chưa có sinh viên nào.</p>';
                 return;
             }
 
-            container.innerHTML = list.map(u => `
-                <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
-                    <div class="overflow-hidden pr-2">
-                        <p class="font-bold text-slate-100 text-xs truncate">${u.fullname}</p>
-                        <p class="text-[11px] text-slate-400">MSSV: <span class="font-mono text-blue-300">${u.mssv}</span></p>
-                        <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${u.password}</span></p>
-                        <p class="text-[11px] text-slate-400">Lớp: ${u.joinedClassCode || 'Chưa vào'}</p>
+            container.innerHTML = entries.map(([key, u]) => {
+                const userObj = u || {};
+                const displayMssv = userObj.mssv || key;
+                const displayName = userObj.fullname || '(Không xác định / Undefined)';
+                const displayPass = userObj.password || '---';
+                const displayClass = userObj.joinedClassCode || 'Chưa vào';
+
+                return `
+                    <div class="bg-slate-700/60 border border-slate-600/60 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+                        <div class="overflow-hidden pr-2">
+                            <p class="font-bold text-slate-100 text-xs truncate">${displayName}</p>
+                            <p class="text-[11px] text-slate-400">MSSV / Key: <span class="font-mono text-blue-300">${displayMssv}</span></p>
+                            <p class="text-[11px] text-slate-400">Mật Khẩu: <span class="font-mono text-amber-300 font-bold">${displayPass}</span></p>
+                            <p class="text-[11px] text-slate-400">Lớp: ${displayClass}</p>
+                        </div>
+                        <button onclick="deleteAdminUser('${key}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0" title="Xóa tài khoản này">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </div>
-                    <button onclick="deleteAdminUser('${u.mssv}')" class="bg-rose-600/80 hover:bg-rose-600 text-white p-2 rounded-lg text-xs transition shadow-sm flex-shrink-0">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function renderAdminRequestsList(reqsMap) {
@@ -1272,9 +1300,17 @@
             alert(`Đã cấp quyền Thủ quỹ Lớp ${classCode} cho sinh viên ${fullname}!`);
         }
 
-        async function deleteAdminUser(mssv) {
-            if (confirm(`Xóa tài khoản sinh viên ${mssv}?`)) {
-                await db.ref('users/' + mssv).remove();
+        // CẢI TIẾN: Xóa trực tiếp theo Key node CSDL (Xóa được cả key "undefined")
+        async function deleteAdminUser(key) {
+            if (!key) return;
+            const targetKey = String(key);
+            if (confirm(`Bạn có chắc chắn muốn xóa tài khoản / node "${targetKey}" khỏi hệ thống?`)) {
+                try {
+                    await db.ref('users/' + targetKey).remove();
+                    alert(`Đã xóa tài khoản / node "${targetKey}" thành công!`);
+                } catch (err) {
+                    alert("Lỗi khi xóa tài khoản: " + err.message);
+                }
             }
         }
 
@@ -1338,7 +1374,7 @@
             const classSnap = await db.ref('classes/' + classCode).once('value');
             
             const cls = classSnap.val() || {};
-            const members = Object.values(usersSnap.val() || {}).filter(u => u.joinedClassCode === classCode);
+            const members = Object.values(usersSnap.val() || {}).filter(u => u && u.joinedClassCode === classCode);
 
             body.innerHTML = members.map(m => `
                 <div class="bg-slate-100 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
@@ -1364,7 +1400,7 @@
             const classSnap = await db.ref('classes/' + classCode).once('value');
 
             const cls = classSnap.val() || {};
-            const members = Object.values(usersSnap.val() || {}).filter(u => u.joinedClassCode === classCode);
+            const members = Object.values(usersSnap.val() || {}).filter(u => u && u.joinedClassCode === classCode);
 
             body.innerHTML = members.map(m => `
                 <div class="bg-slate-700/60 border border-slate-600/80 p-3 rounded-xl flex items-center justify-between">
@@ -1511,6 +1547,15 @@
             document.getElementById('admin-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
 
+            const btnReturnAdmin = document.getElementById('btn-return-admin');
+            if (btnReturnAdmin) {
+                if (isAdminLoggedIn || localStorage.getItem('drl_is_admin') === 'true') {
+                    btnReturnAdmin.classList.remove('hidden');
+                } else {
+                    btnReturnAdmin.classList.add('hidden');
+                }
+            }
+
             document.getElementById('user-display-name').textContent = currentUser.fullname;
             document.getElementById('dropdown-user-name').textContent = currentUser.fullname;
             document.getElementById('user-display-mssv').textContent = `MSSV: ${currentUser.mssv}`;
@@ -1519,6 +1564,9 @@
             renderDRLTable();
             calculateTotalHUD();
             renderClassFundHUD();
+
+            // Khởi chạy listener phiên đăng nhập của sinh viên
+            setupUserSessionListener(currentUser.mssv);
         }
 
         function showAdminDashboard() {
@@ -1536,6 +1584,10 @@
         }
 
         function handleLogout() {
+            if (currentUserListenerRef) {
+                currentUserListenerRef.off();
+                currentUserListenerRef = null;
+            }
             localStorage.removeItem('drl_current_user_api');
             localStorage.removeItem('drl_is_admin');
             currentUser = null;
@@ -1555,28 +1607,4 @@
             renderDRLTable();
         }
 
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            localStorage.setItem('drl_theme', isDark ? 'dark' : 'light');
-        }
-
-        function loadSavedTheme() {
-            if (localStorage.getItem('drl_theme') === 'dark') document.body.classList.add('dark-mode');
-        }
-
-        function toggleBgModal(show) { document.getElementById('bg-modal').classList.toggle('hidden', !show); }
-        function setBgImage(url) { document.body.style.backgroundImage = `url('${url}')`; localStorage.setItem('drl_custom_bg', url); }
-        function applyUrlBg() { const url = document.getElementById('bg-url-input').value.trim(); if(url) setBgImage(url); toggleBgModal(false); }
-        function handleFileUpload(e) { const file = e.target.files[0]; if (file) { const r = new FileReader(); r.onload = (evt) => { setBgImage(evt.target.result); toggleBgModal(false); }; r.readAsDataURL(file); } }
-        function removeBgImage() { document.body.style.backgroundImage = ''; localStorage.removeItem('drl_custom_bg'); toggleBgModal(false); }
-        function loadSavedBg() { const bg = localStorage.getItem('drl_custom_bg'); if (bg) document.body.style.backgroundImage = `url('${bg}')`; }
-        function changeUiOpacity(val) { document.documentElement.style.setProperty('--ui-opacity', val / 100); }
-        function changeUiBlur(val) { document.documentElement.style.setProperty('--ui-blur', `${val}px`); }
-        function setQuickUiPreset(mode) { changeUiOpacity(mode === 'transparent' ? 45 : 95); changeUiBlur(mode === 'transparent' ? 18 : 5); }
-        function loadSavedUiCustomization() { changeUiOpacity(95); changeUiBlur(12); }
-        function toggleSettingsDropdown(e) { e.stopPropagation(); document.getElementById('settings-dropdown').classList.toggle('hidden'); }
-        function uploadAvatar(e) { const file = e.target.files[0]; if(file) { const r = new FileReader(); r.onload = (evt) => { document.getElementById('nav-user-avatar').src = evt.target.result; document.getElementById('dropdown-user-avatar').src = evt.target.result; }; r.readAsDataURL(file); } }
-        function loadSavedAvatar() {}
-    </script>
-</body>
-</html>
+     
